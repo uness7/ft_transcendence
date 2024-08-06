@@ -9,4 +9,4 @@ clean: stop
 
 re: stop all
 
-.PHONY: all down clean re
+.PHONY: all stop clean re
