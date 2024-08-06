@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.12-bookworm
 
 # turn off automatic check for pip updates
 ENV PIP_DISABLE_PIP_VERSION_CHECK 1
