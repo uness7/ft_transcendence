@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import AboutView from '../views/AboutView.vue'
 import ModeView from '../views/ModeView.vue'
+import UserView from '../views/UserView.vue'
 
 const routes = [
   {
@@ -36,6 +37,15 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '/user/:id',
+    name: 'user',
+    component: UserView,
+    meta: {
+      requiresAuth: true,
+    },
+    props: true,
   }
 ]
 
