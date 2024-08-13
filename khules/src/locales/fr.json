@@ -4,5 +4,7 @@
     "login": "connexion",
     "aiText": "Joueur vs IA",
     "lanText": "Joueur vs Joueur",
-    "multiText": "Multijoueur"
+    "multiText": "Multijoueur",
+    "profile": "profile",
+    "settings": "settings"
 }

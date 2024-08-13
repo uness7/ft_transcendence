@@ -100,7 +100,7 @@ export default {
 
   #about-button:hover {
     transform: scale(1.05);
-    color: rgb(255, 89, 0);
+    color: var(--primary-color);
   }
 
   #login-button {
@@ -118,6 +118,6 @@ export default {
 
   #login-button:hover {
     transform: scale(1.05);
-    color: rgb(255, 89, 0);
+    color: var(--primary-color);
   }
 </style>
