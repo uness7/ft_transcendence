@@ -16,13 +16,13 @@ export default {
     justify-content: center;
     align-items: center;
     height: calc(100vh - 92px);
-    background-color: rgb(10, 10, 10);
+    background-color: var(--background-color);
     margin-top: 84px;
   }
 
   #play-button {
     font-size: 200px;
-    background-color: rgb(10, 10, 10);
+    background-color: var(--background-color);
     border: none;
     text-decoration: none;
     color: white;
@@ -32,18 +32,18 @@ export default {
 
   #play-button:hover {
     animation: none;
-    background-color: rgb(10, 10, 10);
-    color: rgb(255, 89, 0);
+    background-color: var(--background-color);
+    color: var(--primary-color);
   }
 
   @keyframes blink {
     0%, 49% {
-        background-color: rgb(10, 10, 10);
+        background-color: var(--background-color);
         color: rgb(255, 255, 255);
     }
     50%, 100% {
-        background-color: rgb(10, 10, 10);
-        color: rgb(10, 10, 10);
+        background-color: var(--background-color);
+        color: var(--background-color);
     }
   }
 </style>

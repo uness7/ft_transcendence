@@ -6,5 +6,6 @@
     "lanText": "Joueur vs Joueur",
     "multiText": "Multijoueur",
     "profile": "profile",
-    "settings": "settings"
+    "settings": "settings",
+    "logout": "logout"
 }

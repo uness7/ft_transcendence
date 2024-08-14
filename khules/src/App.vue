@@ -46,14 +46,14 @@ export default {
       src: url('./assets/font/8bit.ttf') format('truetype');
   }
   :global(body) {
-    background-color: rgb(10, 10, 10);
+    background-color: var(--background-color);
   }
 
 /*  ##### HEADER  ##### */  
 
   .top-bar {
     width: 100%;
-    background-color: rgb(10, 10, 10);
+    background-color: var(--background-color);
     position: fixed;
     top: 0;
     left: 0;
