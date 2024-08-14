@@ -15,9 +15,9 @@
         </div>
       </div>
     </div>
-  </template>
+</template>
     
-  <script>
+<script>
   export default {
     data() {
       return {
@@ -38,12 +38,13 @@
       this.updateCssVariables(savedColor);
     }
   };
-  </script>
+</script>
     
-  <style scoped>
+<style scoped>
   .content {
     color: white;
     margin-top: 80px; /* <--- ne pas trop changer */
+    margin-left: 300px;
   }
   
   .settings {

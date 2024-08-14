@@ -47,14 +47,14 @@
   @font-face {
       font-family: '8bit';
       src: url('../assets/font/8bit.ttf') format('truetype');
-}
+  }
 
   .content {
   
     color: white;
     margin-top: 80px;   /* <--- ne pas trop changer */
     font-family: '8bit',sans-serif;
-    margin-left: 200px;
+    margin-left: 300px;
     font-size: 20px;
   }
 
