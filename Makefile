@@ -1,12 +1,12 @@
 all:
-	docker compose up -d
+	docker compose up -d --build
 
 stop:
 	docker compose down
 
-clean: stop
-	docker image rm ft_transcendence-web
+pg:
+	docker compose exec db psql -U django transcendence
 
 re: stop all
 
-.PHONY: all stop clean re
+.PHONY: all stop re pg
