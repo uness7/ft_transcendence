@@ -56,7 +56,7 @@ const router = createRouter({
 
 /*    exemple de router guard : empeche le changement de page si la personne est pas login  */
 
-function isAuthenticated() 
+export function isAuthenticated() 
 {
   return true  //  <--- verifier avec l'api
 }

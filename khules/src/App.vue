@@ -4,13 +4,24 @@
       <router-link to="/"><img src='./assets/img/logo1.png' id="main-image"/></router-link>
       <img :src="currentFlag" alt="flag" id="language-flag" @click="toggleLanguage">
       <router-link to="/about" id="about-button">{{ $t('about') }}</router-link>
-      <router-link to="/login" id="login-button">{{ $t('login') }}</router-link>
+      <router-link v-if="!isLoggedIn" to="/login" id="login-button">{{ $t('login') }}</router-link>
+      <div class="dropdown">
+        <button class="dropbtn">{{ user.username }}</button>
+        <div class="dropdown-content">
+          <a href="#">profile</a>
+          <a href="#">settings</a>
+          <a href="#">logout</a>
+        </div>
+      </div>
     </header>
   </div>
   <router-view/>
 </template>
 
 <script>
+import axios from 'axios';
+import { isAuthenticated } from './router/index';
+
 export default {
   data() {
     return {
@@ -20,7 +31,10 @@ export default {
         fr: require('./assets/img/flags/french.png'),
         es: require('./assets/img/flags/spanish.png')
       },
-      currentLanguageIndex: 0
+      currentLanguageIndex: 0,
+      isLoggedIn: false,
+      user: null,
+      id: 1, // this should be changed later
     }
   },
   computed: {
@@ -32,7 +46,27 @@ export default {
     toggleLanguage() {
       this.currentLanguageIndex = (this.currentLanguageIndex + 1) % this.languages.length;
       this.$i18n.locale = this.languages[this.currentLanguageIndex];
+    },
+    fetchUser() {
+      axios.get(`https://jsonplaceholder.typicode.com/users/${this.id}`)
+        .then(response => {
+          this.user = response.data;
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+        });
+    },
+    checkLoginStatus() {
+      if (isAuthenticated()) {
+        this.isLoggedIn = true;
+        this.fetchUser();
+      } else {
+        this.isLoggedIn = false;
+      }
     }
+  },
+  created() {
+    this.checkLoginStatus();
   }
 }
 </script>
@@ -119,5 +153,68 @@ export default {
   #login-button:hover {
     transform: scale(1.05);
     color: var(--primary-color);
+  }
+
+  #username-display {
+    position: absolute;
+    right: 50px;
+    color: white;
+    font-size: xx-large;
+    font-family: '8bit', sans-serif;
+  }
+
+  .dropbtn {
+    background-color: var(--background-color);
+    color: white;
+    font-size: xx-large;
+    border: none;
+    cursor: pointer;
+    font-family: '8bit', sans-serif;
+    transition: all 0.2s ease;
+    padding-bottom: 15px;
+  }
+
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
+    position: absolute;
+    right: 50px;
+    top: 20px;
+    font-family: '8bit', sans-serif;
+  }
+
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    font-size: 20px;
+    display: none;
+    position: absolute;
+    background-color: var(--background-color);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: rgb(255, 255, 255);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: rgb(20, 20, 20);
+    color: white;
+  }
+
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  .dropdown:hover .dropbtn {
+    background-color: var(--background-color);
+    color: white;
   }
 </style>
