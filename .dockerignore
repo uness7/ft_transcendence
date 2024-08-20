@@ -4,3 +4,7 @@
 .venv
 .git
 .gitignore
+
+.flake8
+*.md
+command*
