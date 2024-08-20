@@ -3,13 +3,7 @@
       <div class="settings">
         <h2>Change Color</h2>
         <div class="color-options">
-          <button 
-            v-for="color in colors" 
-            :key="color" 
-            :style="{ backgroundColor: color }" 
-            class="color-button" 
-            @click="changeColor(color)"
-          >
+          <button v-for="color in colors" :key="color" :style="{ backgroundColor: color }" class="color-button" @click="changeColor(color)">
             <span class="visually-hidden">{{ color }}</span>
           </button>
         </div>
@@ -21,7 +15,7 @@
   export default {
     data() {
       return {
-        colors: ['#FF5733', '#33FF57', '#3357FF'] // Exemple de couleurs
+        colors: ['#FF5733', '#e71d36', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'] // Exemple de couleurs
       };
     },
     methods: {
@@ -34,7 +28,7 @@
       }
     },
     mounted() {
-      const savedColor = localStorage.getItem('primaryColor') || '#FF5733'; // Couleur par défaut
+      const savedColor = localStorage.getItem('primaryColor') || '#ff451b'; // Couleur par défaut
       this.updateCssVariables(savedColor);
     }
   };

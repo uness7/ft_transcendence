@@ -1,11 +1,12 @@
 <template>
   <div class="top-bar">
     <header id="top-bar-content">
-      <router-link to="/"><img src='./assets/img/logo1.png' id="main-image"/></router-link>
+      <!-- <router-link to="/"><img src='./assets/img/logo1.png' id="main-image"/></router-link> -->
+      <router-link to="/" id="logo-text">ft_transcendence</router-link>
       <img :src="currentFlag" alt="flag" id="language-flag" @click="toggleLanguage">
       <router-link to="/about" id="about-button">{{ $t('about') }}</router-link>
       <router-link v-if="!isLoggedIn" to="/login" id="login-button">{{ $t('login') }}</router-link>
-      <div class="dropdown">
+      <div v-else class="dropdown">
         <button class="dropbtn">{{ user.username }}</button>
         <div class="dropdown-content">
           <a href="#">profile</a>
@@ -103,10 +104,26 @@ export default {
     margin-bottom: 20px;
   }
 
-  #main-image {
+  /*#main-image {
     margin-left: 20px;
     width: 30%;
   }
+  */
+
+  #logo-text {
+  font-family: '8bit', sans-serif;
+  font-size: 40px;
+  text-decoration: none;
+  background-color: rgb(15, 15, 15);
+  color: var(--primary-color);
+  height: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 30px;
+  padding-bottom: 29px;
+  box-sizing: border-box;
+border-bottom: 1px solid rgb(70,70,70);
+}
 
   #language-flag {
     width: 3%;
@@ -155,23 +172,19 @@ export default {
     color: var(--primary-color);
   }
 
-  #username-display {
-    position: absolute;
-    right: 50px;
-    color: white;
-    font-size: xx-large;
-    font-family: '8bit', sans-serif;
-  }
-
   .dropbtn {
     background-color: var(--background-color);
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: xx-large;
     border: none;
     cursor: pointer;
     font-family: '8bit', sans-serif;
     transition: all 0.2s ease;
     padding-bottom: 15px;
+  }
+
+  .dropbtn:hover{
+    color: var(--primary-color);
   }
 
   /* The container <div> - needed to position the dropdown content */
@@ -185,6 +198,7 @@ export default {
   /* Dropdown Content (Hidden by Default) */
   .dropdown-content {
     font-size: 20px;
+    padding-top: 10px;
     display: none;
     position: absolute;
     background-color: var(--background-color);
@@ -215,6 +229,6 @@ export default {
   /* Change the background color of the dropdown button when the dropdown content is shown */
   .dropdown:hover .dropbtn {
     background-color: var(--background-color);
-    color: white;
+    color: var(--primary-color);
   }
 </style>
