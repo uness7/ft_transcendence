@@ -7,5 +7,13 @@
     "multiText": "Multijoueur",
     "profile": "profile",
     "settings": "settings",
-    "logout": "logout"
+    "logout": "logout",
+    "ouissem-about": "FR Ouisam Kazdar is the team representative. He ensures smooth communication and coordination within the team.",
+    "lionel-about": "FR Lionel Guyon is responsible for back-end development, handling server-side logic, and database management.",
+    "jules-about": "FR Jules Norget leads the front-end development, focusing on user experience and interface design.",
+    "navid-about": "FR Navid Sadat specializes in UI/UX design, creating intuitive and user-friendly interfaces.",
+    "ouissem-status": "FR Team Representative",
+    "lionel-status": "FR Back-end Responsible",
+    "jules-status": "FR Front-end Responsible",
+    "navid-status": "FR Front-end Responsible"
 }

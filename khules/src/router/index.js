@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import AboutView from '../views/AboutView.vue'
 import ModeView from '../views/ModeView.vue'
 import UserView from '../views/UserView.vue'
+import GameView from '../views/GameView.vue'
 
 const routes = [
   {
@@ -34,6 +35,14 @@ const routes = [
     path: '/mode',
     name: 'mode',
     component: ModeView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/game',
+    name: 'game',
+    component: GameView,
     meta: {
       requiresAuth: true,
     },
