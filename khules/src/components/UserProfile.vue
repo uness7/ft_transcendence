@@ -2,8 +2,9 @@
   <div class="content">
     <div v-if="user">
       <h1 id="username">{{ user.name }}</h1>
-      <p>{{user.email}}</p>
-      <p>{{user.id}}</p>
+      <p>username : {{user.username}}</p>
+      <p>email : {{user.email}}</p>
+      <p>id : {{ user.id }}</p>
     </div>
     <div v-else-if="loading">
       <p>Chargement...</p>
@@ -54,7 +55,7 @@
     color: white;
     margin-top: 80px;   /* <--- ne pas trop changer */
     font-family: '8bit',sans-serif;
-    margin-left: 300px;
+    margin-left: 400px;
     font-size: 20px;
   }
 

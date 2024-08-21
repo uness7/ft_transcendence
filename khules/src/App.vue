@@ -9,9 +9,9 @@
       <div v-else class="dropdown">
         <button class="dropbtn">{{ user.username }}</button>
         <div class="dropdown-content">
-          <a href="#">profile</a>
-          <a href="#">settings</a>
-          <a href="#">logout</a>
+          <router-link to="/user/1">{{ $t('profile') }}</router-link>
+          <router-link to="/user/settings">{{ $t('settings') }}</router-link>
+          <router-link to="/" id="logout-button">{{ $t('logout') }}</router-link>
         </div>
       </div>
     </header>
@@ -35,7 +35,7 @@ export default {
       currentLanguageIndex: 0,
       isLoggedIn: false,
       user: null,
-      id: 1, // this should be changed later
+      id: 1, // this is for testing only
     }
   },
   computed: {
@@ -114,7 +114,7 @@ export default {
   font-family: '8bit', sans-serif;
   font-size: 40px;
   text-decoration: none;
-  background-color: rgb(15, 15, 15);
+  background-color: rgb(25, 25, 25);
   color: var(--primary-color);
   height: 100%;
   padding-left: 20px;
@@ -122,7 +122,8 @@ export default {
   padding-top: 30px;
   padding-bottom: 29px;
   box-sizing: border-box;
-border-bottom: 1px solid rgb(70,70,70);
+  border-bottom: 1px solid rgb(70,70,70);
+  border-right: 1px solid rgb(70,70,70);
 }
 
   #language-flag {
@@ -171,6 +172,15 @@ border-bottom: 1px solid rgb(70,70,70);
     transform: scale(1.05);
     color: var(--primary-color);
   }
+
+  #logout-button{
+    background-color: darkred;
+  }
+
+  #logout-button:hover{
+    background-color: rgb(200,0,0);
+  }
+
 
   .dropbtn {
     background-color: var(--background-color);

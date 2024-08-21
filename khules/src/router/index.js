@@ -5,6 +5,7 @@ import AboutView from '../views/AboutView.vue'
 import ModeView from '../views/ModeView.vue'
 import UserView from '../views/UserView.vue'
 import GameView from '../views/GameView.vue'
+import UserSettings from '@/components/UserSettings.vue'
 
 const routes = [
   {
@@ -55,6 +56,14 @@ const routes = [
       requiresAuth: true,
     },
     props: true,
+  },
+  {
+    path: '/user/settings',
+    name: 'settings',
+    component: UserSettings,
+    meta: {
+      requiresAuth: true,
+    },
   }
 ]
 

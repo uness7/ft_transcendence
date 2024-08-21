@@ -1,20 +1,13 @@
 <template>
   <div class="content">
     <p>game page</p>
-    <!-- Chat box -->
     <div class="chat-box">
       <div class="messages">
         <div v-for="(message, index) in messages" :key="index" class="message">
           {{ message }}
         </div>
       </div>
-      <input
-        v-model="newMessage"
-        @keyup.enter="sendMessage"
-        type="text"
-        placeholder="Type a message..."
-        class="input"
-      />
+      <input v-model="newMessage" @keyup.enter="sendMessage" type="text" placeholder="Type a message..." class="input" />
       <button @click="sendMessage" class="send-button">Send</button>
     </div>
   </div>
@@ -30,23 +23,19 @@ export default {
     };
   },
   mounted() {
-    // Connexion au WebSocket (ici on utilise un serveur public pour les tests)
+    // Test live chat avec websockets publics
     this.socket = new WebSocket('wss://echo.websocket.org');
 
-    // Écouter les messages du serveur WebSocket
     this.socket.onmessage = (event) => {
       const message = event.data;
       this.messages.push(message);
     };
-
     this.socket.onopen = () => {
       console.log('WebSocket connection established');
     };
-
     this.socket.onclose = () => {
       console.log('WebSocket connection closed');
     };
-
     this.socket.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
@@ -56,12 +45,11 @@ export default {
       if (this.newMessage.trim() !== '' && this.socket && this.socket.readyState === WebSocket.OPEN) {
         this.socket.send(this.newMessage);
         this.messages.push(`You: ${this.newMessage}`);
-        this.newMessage = ''; // Réinitialiser l'input
+        this.newMessage = '';
       }
     }
   },
   beforeUnmont() {
-    // Fermer la connexion WebSocket avant de détruire le composant
     if (this.socket) {
       this.socket.close();
     }
