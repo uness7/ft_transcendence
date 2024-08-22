@@ -17,6 +17,8 @@
     "lionel-status": "Responsable de back-end",
     "jules-status": "Responsable de front-end",
     "navid-status": "Responsable de front-end",
-    "color-theme": "Tema de color"
+    "color-theme": "Tema de color",
+    "error": "Error",
+    "error-text": "La pagina que buscas no existe"
   }
   

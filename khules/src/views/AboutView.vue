@@ -93,7 +93,7 @@ export default {
     align-items: center;
     box-shadow: var(--primary-color);
   }
-
+  The page you are looking for 
   .image:hover {
     border: 3px solid var(--primary-color)
   }

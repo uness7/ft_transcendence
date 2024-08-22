@@ -17,5 +17,7 @@
     "lionel-status": "Back-end Responsible",
     "jules-status": "Front-end Responsible",
     "navid-status": "Front-end Responsible",
-    "color-theme" : "Color theme"
+    "color-theme": "Color theme",
+    "error": "Error",
+    "error-text": "The page you are looking for does not exist"
 }

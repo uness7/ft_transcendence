@@ -64,10 +64,17 @@ export default {
       } else {
         this.isLoggedIn = false;
       }
+    },
+    applyPrimaryColor() {
+      const color = localStorage.getItem('primaryColor') || '#ff451b'; // Couleur par défaut
+      document.documentElement.style.setProperty('--primary-color', color);
     }
   },
   created() {
     this.checkLoginStatus();
+  },
+  mounted() {
+    this.applyPrimaryColor(); // Appliquer la couleur au montage du composant
   }
 }
 </script>
@@ -104,27 +111,21 @@ export default {
     margin-bottom: 20px;
   }
 
-  /*#main-image {
-    margin-left: 20px;
-    width: 30%;
-  }
-  */
-
   #logo-text {
-  font-family: '8bit', sans-serif;
-  font-size: 40px;
-  text-decoration: none;
-  background-color: rgb(25, 25, 25);
-  color: var(--primary-color);
-  height: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 30px;
-  padding-bottom: 29px;
-  box-sizing: border-box;
-  border-bottom: 1px solid rgb(70,70,70);
-  border-right: 1px solid rgb(70,70,70);
-}
+    font-family: '8bit', sans-serif;
+    font-size: 40px;
+    text-decoration: none;
+    background-color: rgb(25, 25, 25);
+    color: var(--primary-color);
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 30px;
+    padding-bottom: 29px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgb(70,70,70);
+    border-right: 1px solid rgb(70,70,70);
+  }
 
   #language-flag {
     width: 3%;
@@ -181,7 +182,6 @@ export default {
     background-color: rgb(200,0,0);
   }
 
-
   .dropbtn {
     background-color: var(--background-color);
     color: rgb(255, 255, 255);
@@ -197,7 +197,6 @@ export default {
     color: var(--primary-color);
   }
 
-  /* The container <div> - needed to position the dropdown content */
   .dropdown {
     position: absolute;
     right: 50px;
@@ -205,7 +204,6 @@ export default {
     font-family: '8bit', sans-serif;
   }
 
-  /* Dropdown Content (Hidden by Default) */
   .dropdown-content {
     font-size: 20px;
     padding-top: 10px;
@@ -217,7 +215,6 @@ export default {
     z-index: 1;
   }
 
-  /* Links inside the dropdown */
   .dropdown-content a {
     color: rgb(255, 255, 255);
     padding: 12px 16px;
@@ -225,18 +222,15 @@ export default {
     display: block;
   }
 
-  /* Change color of dropdown links on hover */
   .dropdown-content a:hover {
     background-color: rgb(20, 20, 20);
     color: white;
   }
 
-  /* Show the dropdown menu on hover */
   .dropdown:hover .dropdown-content {
     display: block;
   }
 
-  /* Change the background color of the dropdown button when the dropdown content is shown */
   .dropdown:hover .dropbtn {
     background-color: var(--background-color);
     color: var(--primary-color);

@@ -5,7 +5,8 @@ import AboutView from '../views/AboutView.vue'
 import ModeView from '../views/ModeView.vue'
 import UserView from '../views/UserView.vue'
 import GameView from '../views/GameView.vue'
-import UserSettings from '@/components/UserSettings.vue'
+import UserSettings from '../components/UserSettings.vue'
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
   {
@@ -64,6 +65,11 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 
