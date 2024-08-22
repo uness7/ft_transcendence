@@ -7,7 +7,7 @@
       <router-link to="/about" id="about-button">{{ $t('about') }}</router-link>
       <router-link v-if="!isLoggedIn" to="/login" id="login-button">{{ $t('login') }}</router-link>
       <div v-else class="dropdown">
-        <button class="dropbtn">{{ user.username }}</button>
+        <button class="dropbtn">{{ user?.username }}</button>
         <div class="dropdown-content">
           <router-link to="/user/1">{{ $t('profile') }}</router-link>
           <router-link to="/user/settings">{{ $t('settings') }}</router-link>
@@ -34,7 +34,9 @@ export default {
       },
       currentLanguageIndex: 0,
       isLoggedIn: false,
-      user: null,
+      user: {
+        username: '' // Initialize to prevent null reference
+      },
       id: 1, // this is for testing only
     }
   },
