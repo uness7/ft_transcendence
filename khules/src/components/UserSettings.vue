@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      colors: ['#FF5733', '#e71d36', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
-      selectedColor: localStorage.getItem('primaryColor') || '#ff451b', // Initialisez avec la couleur sauvegardée
+      colors: ['#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
+      selectedColor: localStorage.getItem('primaryColor') || '#e71d36', // Initialisez avec la couleur sauvegardée
     };
   },
   methods: {

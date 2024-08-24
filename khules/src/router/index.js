@@ -78,25 +78,20 @@ const router = createRouter({
   routes
 })
 
-/*    exemple de router guard : empeche le changement de page si la personne est pas login  */
-
-export function isAuthenticated() 
-{
-  return true  //  <--- verifier avec l'api
+export function isAuthenticated() {
+  return true  // <--- Replace with actual authentication logic
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) 
-  {
-    if (isAuthenticated()) 
-    {
-      next()
-      return
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (isAuthenticated()) {
+      next(); // Allow navigation
+    } else {
+      next('/login'); // Redirect to login
     }
-    next('/login')
+  } else {
+    next(); // Proceed to route
   }
-  next()
-})
-
+});
 
 export default router

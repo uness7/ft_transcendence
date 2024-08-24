@@ -68,7 +68,7 @@ export default {
       }
     },
     applyPrimaryColor() {
-      const color = localStorage.getItem('primaryColor') || '#ff451b'; // Couleur par défaut
+      const color = localStorage.getItem('primaryColor') || '#e71d36'; // Couleur par défaut
       document.documentElement.style.setProperty('--primary-color', color);
     }
   },

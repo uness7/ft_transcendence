@@ -29,7 +29,3 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
 npm install vue-i18n@9
 ```
-##more
-```
-npm install @vue/cli-plugin-babel
-```

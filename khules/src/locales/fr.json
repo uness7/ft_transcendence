@@ -13,10 +13,12 @@
     "lionel-about": "Lionel Guyon est responsable du développement back-end, de la gestion de la logique côté serveur et de la gestion des bases de données.",
     "jules-about": "Jules Norget dirige le développement front-end, en se concentrant sur l'expérience utilisateur et la conception de l'interface.",
     "navid-about": "Navid Sadat est spécialisé dans la conception UI/UX, créant des interfaces intuitives et conviviales.",
+    "youness-about": "Youness Zioual est responsable du développement back-end, de la gestion de la logique côté serveur et de la gestion des bases de données.",
     "ouissem-status": "Représentant d'équipe",
     "lionel-status": "Responsable back-end",
     "jules-status": "Responsable front-end",
     "navid-status": "Responsable front-end",
+    "youness-status": "Responsable back-end",
     "color-theme" : "Theme de couleur",
     "error": "Erreur",
     "error-text": "La page que vous recherchez n'existe pas"

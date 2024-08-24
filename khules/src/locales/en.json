@@ -13,10 +13,12 @@
     "lionel-about": "Lionel Guyon is responsible for back-end development, handling server-side logic, and database management.",
     "jules-about": "Jules Norget leads the front-end development, focusing on user experience and interface design.",
     "navid-about": "Navid Sadat specializes in UI/UX design, creating intuitive and user-friendly interfaces.",
+    "youness-about": "Youness Zioual is responsible for back-end development, handling server-side logic, and database management.",
     "ouissem-status": "Team Representative",
     "lionel-status": "Back-end Responsible",
     "jules-status": "Front-end Responsible",
     "navid-status": "Front-end Responsible",
+    "youness-status": "Back-end Responsible",
     "color-theme": "Color theme",
     "error": "Error",
     "error-text": "The page you are looking for does not exist"

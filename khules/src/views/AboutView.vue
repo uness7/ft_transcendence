@@ -49,6 +49,12 @@ export default {
           detailsKey: 'jules-about'
         },
         {
+          name: "Youness Zioual",
+          statusKey: 'youness-status',
+          profileImage: require("../assets/img/pp/yzioual.jpg"),
+          detailsKey: 'youness-about'
+        },
+        {
           name: "Navid Sadat",
           statusKey: 'navid-status',
           profileImage: require("../assets/img/pp/ssadat.jpg"),
@@ -93,7 +99,7 @@ export default {
     align-items: center;
     box-shadow: var(--primary-color);
   }
-  The page you are looking for 
+
   .image:hover {
     border: 3px solid var(--primary-color)
   }
