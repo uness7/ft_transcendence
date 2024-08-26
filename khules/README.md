@@ -29,3 +29,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
 npm install vue-i18n@9
 ```
+##sockets
+```
+npm install socket.io-client
+npm install express socket.io
+```

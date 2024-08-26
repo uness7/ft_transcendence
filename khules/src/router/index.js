@@ -79,18 +79,18 @@ const router = createRouter({
 })
 
 export function isAuthenticated() {
-  return true  // <--- Replace with actual authentication logic
+  return true  // utiliser api
 }
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (isAuthenticated()) {
-      next(); // Allow navigation
+      next();
     } else {
-      next('/login'); // Redirect to login
+      next('/login');
     }
   } else {
-    next(); // Proceed to route
+    next();
   }
 });
 
