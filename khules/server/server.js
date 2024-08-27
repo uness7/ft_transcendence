@@ -8,7 +8,7 @@ const server = http.createServer(app);
 // Configuration de CORS pour Socket.io
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:8081",
+    origin: "http://10.12.4.6:8081", // ca a l'air de marcher en local
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
   
   socket.on('message', (message) => {
     console.log('Message received:', message);
-    io.emit('message', message); // Diffuse le message a tous les clients
+    io.emit('message', message); // diffuse le message a tous les clients
   });
   
   socket.on('disconnect', () => {

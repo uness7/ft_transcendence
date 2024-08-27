@@ -5,29 +5,27 @@
         <img src="../assets/img/pp/okazdar.jpg" alt="Profile Photo" class="profile-photo"/> 
         <div class="profile-info">
           <h1 id="username">{{ user.name }}</h1>
-          <!-- <p>{{user.email}}</p>
-          <p>{{user.username}}</p> -->
         </div>
       </div>
       <div class="profile-stats">
         <div class="stat-item">
-          <span class="stat-label">Games Played:</span>
+          <span class="stat-label">{{$t('games-played')}}:</span>
           <span class="stat-value">{{ user.id }}</span>
         </div>
         <div class="stat-item">
-          <span class="stat-label">Wins:</span>
+          <span class="stat-label">{{$t('wins')}}:</span>
           <span class="stat-value">{{ user.id }}</span>
         </div>
         <div class="stat-item">
-          <span class="stat-label">Losses:</span>
+          <span class="stat-label">{{$t('losses')}}:</span>
           <span class="stat-value">{{ user.id }}</span>
         </div>
         <div class="stat-item">
-          <span class="stat-label">Total Score:</span>
+          <span class="stat-label">{{$t('total-score')}}:</span>
           <span class="stat-value">{{ user.id }}</span>
         </div>
         <div class="friends-list">
-        <h2>Friends</h2>
+        <h2>{{ $t('friends') }}</h2>
          <ul>
           <li v-for="friend in user.friends" :key="friend.id">
             {{ user.id }}
@@ -35,7 +33,6 @@
         </ul>
       </div>
         </div>
-        <!-- <button @click="updateUserData">Update Profile</button> -->
       </div>
     <div v-else-if="loading">
       <p>Chargement...</p>
@@ -83,7 +80,6 @@
 }
 
 .content {
-  /* display: flex; */
   color: white;
   margin-top: 80px;   /* <--- ne pas trop changer */
   font-family: '8bit',sans-serif;

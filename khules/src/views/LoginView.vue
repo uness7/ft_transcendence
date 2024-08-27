@@ -4,10 +4,6 @@
       <div class="inner">
         <div class="signIn" v-if="signIn">
           <div class="top">
-            <!-- <img
-              class="logo"
-              src="https://res.cloudinary.com/dc3c8nrut/image/upload/v1685298768/logo-placeholder_l3yodl.png"
-            /> -->
             <div class="title">Sign in</div>
             <div class="subtitle">
               Don't have an account?
@@ -18,51 +14,19 @@
           </div>
           <form>
             <div class="form">
-              <input
-                required
-                aria-required="true"
-                aria-invalid="false"
-                aria-label="E-mail"
-                type="email"
-                pattern="^[\w.-]+@[\w.-]+\.\w+$"
-                class="w100"
-                :class="{ invalid: email.error }"
-                ref="email"
-                placeholder="Email"
-                autofocus
-                @blur="validateEmail"
-                @keydown="validateEmail"
-                v-model="email.value"
+              <input required aria-required="true" aria-invalid="false" aria-label="E-mail" type="email" pattern="^[\w.-]+@[\w.-]+\.\w+$" class="w100" 
+                :class="{ invalid: email.error }" ref="email" placeholder="Email" autofocus @blur="validateEmail" @keydown="validateEmail" v-model="email.value"
               />
-
-              <input
-                required
-                aria-required="true"
-                type="password"
-                class="w100"
-                :class="{ invalid: password.error }"
-                placeholder="Password"
-                v-model="password.value"
-                @blur="validatePassword"
-                @keydown="validatePassword"
+              <input required aria-required="true" type="password" class="w100" :class="{ invalid: password.error }" placeholder="Password"
+                v-model="password.value" @blur="validatePassword" @keydown="validatePassword"
               />
             </div>
-
-            <input
-              type="submit"
-              value="Submit"
-              class="action"
-              :class="{ 'action-disabled': !loginValid }"
-            />
+            <input type="submit" value="Submit" class="action" :class="{ 'action-disabled': !loginValid }"/>
           </form>
         </div>
 
         <div class="register" v-else>
           <div class="top">
-            <!-- <img
-              class="logo"
-              src="https://res.cloudinary.com/dc3c8nrut/image/upload/v1685298768/logo-placeholder_l3yodl.png"
-            /> -->
             <div class="title">Create an Account</div>
             <div class="subtitle">
               Already have an account?
@@ -73,42 +37,14 @@
           </div>
 
           <div class="form">
-            <input
-              type="text"
-              placeholder="UserName"
-              autofocus
-              v-model="firstName"
-              class="w100"
-            />
+            <input type="text" placeholder="UserName" autofocus v-model="firstName" class="w100"/>
 
-            <!-- <input
-              type="text"
-              placeholder="Last name"
-              v-model="lastName"
-              class="w100"
-            /> -->
+            <input type="text" class="w100" placeholder="Email" v-model="email.value"/>
 
-            <input
-              type="text"
-              class="w100"
-              placeholder="Email"
-              v-model="email.value"
-            />
-            <input
-              type="password"
-              class="w100"
-              placeholder="Password"
-              v-model="password.value"
-            />
+            <input type="password" class="w100" placeholder="Password" v-model="password.value"/>
 
             <p>upload your profile pix</p>
-              <input
-              id="file-input"
-              type="file"
-              accept="image/png, image/jpeg"
-              @change="handleFileChange($event.target)"
-              required
-              />
+              <input id="file-input" type="file" accept="image/png, image/jpeg" @change="handleFileChange($event.target)" required/>
           </div>
 
           <button class="action" :class="{ 'action-disabled': !registerValid }">
@@ -188,7 +124,7 @@ export default {
 </script>
 
 <style scoped>
-/* Mixin emulation */
+
 .box-shadow {
   box-shadow: 0px 0px 30px var(--primary-color);
 }

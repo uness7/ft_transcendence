@@ -68,7 +68,7 @@ export default {
       }
     },
     applyPrimaryColor() {
-      const color = localStorage.getItem('primaryColor') || '#e71d36'; // Couleur par défaut
+      const color = localStorage.getItem('primaryColor') || '#FFFFFF'; // Couleur par défaut
       document.documentElement.style.setProperty('--primary-color', color);
     }
   },
@@ -237,4 +237,5 @@ export default {
     background-color: var(--background-color);
     color: var(--primary-color);
   }
+
 </style>

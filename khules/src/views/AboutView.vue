@@ -71,7 +71,7 @@ export default {
     color: var(--primary-color);
     background-color: var(--background-color);
     margin-top: 200px; /* <--- ne pas trop changer */
-    font-family: '8bit',sans-serif;
+    /* font-family: '8bit',sans-serif; */
   }
 
   .heading {
