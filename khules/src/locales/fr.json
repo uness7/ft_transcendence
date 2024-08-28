@@ -26,5 +26,12 @@
     "wins":"victoires",
     "losses":"defaites",
     "total-score":"Score total",
-    "friends":"amis"
+    "friends":"amis",
+    "create-account":"Creer un compte",
+    "already-account":"Vous avez deja un compte ?",
+    "sign-in":"Se connecter",
+    "no-account":"Vous n'avez pas de compte ?",
+    "image-upload":"Telechargez votre photo de profil"
+
+
 }

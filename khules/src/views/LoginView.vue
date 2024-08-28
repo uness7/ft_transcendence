@@ -4,11 +4,11 @@
       <div class="inner">
         <div class="signIn" v-if="signIn">
           <div class="top">
-            <div class="title">Sign in</div>
+            <div class="title">{{ $t('sign-in') }}</div>
             <div class="subtitle">
-              Don't have an account?
+              {{ $t('no-account') }}
               <span class="subtitle-action" @click="signIn = !signIn">
-                Create Account
+                {{ $t('create-account') }}
               </span>
             </div>
           </div>
@@ -27,11 +27,11 @@
 
         <div class="register" v-else>
           <div class="top">
-            <div class="title">Create an Account</div>
+            <div class="title">{{ $t('create-account') }}</div>
             <div class="subtitle">
-              Already have an account?
+              {{ $t('already-account') }}
               <span class="subtitle-action" @click="signIn = !signIn">
-                Sign In
+                {{ $t('sign-in') }}
               </span>
             </div>
           </div>
@@ -43,12 +43,12 @@
 
             <input type="password" class="w100" placeholder="Password" v-model="password.value"/>
 
-            <p>upload your profile pix</p>
+            <p>{{ $t('image-upload') }}</p>
               <input id="file-input" type="file" accept="image/png, image/jpeg" @change="handleFileChange($event.target)" required/>
           </div>
 
           <button class="action" :class="{ 'action-disabled': !registerValid }">
-            Create Account
+            {{ $t('create-account') }}
           </button>
         </div>
       </div>

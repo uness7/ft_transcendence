@@ -34,3 +34,7 @@ npm install vue-i18n@9
 npm install socket.io-client
 npm install express socket.io
 ```
+##A voir
+```
+ajouter le language au localstorage pour que le choix soit permanent
+```

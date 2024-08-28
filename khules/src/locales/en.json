@@ -26,5 +26,10 @@
     "wins":"Wins",
     "losses":"Losses",
     "total-score":"Total Score",
-    "friends":"friends"
+    "friends":"friends",
+    "create-account":"Create an Account",
+    "already-account":"Already have an account?",
+    "sign-in":"Sign in",
+    "no-account":"Don't have an account?",
+    "image-upload":"Upload your profile picture"
 }

@@ -4,7 +4,8 @@ import LoginView from '../views/LoginView.vue'
 import AboutView from '../views/AboutView.vue'
 import ModeView from '../views/ModeView.vue'
 import UserView from '../views/UserView.vue'
-import GameView from '../views/GameView.vue'
+import RemoteView from '../views/RemoteView.vue'
+import LocalView from '../views/LocalView.vue'
 import UserSettings from '../components/UserSettings.vue'
 import NotFound from '../views/NotFound.vue'
 
@@ -42,9 +43,17 @@ const routes = [
     },
   },
   {
-    path: '/game',
-    name: 'game',
-    component: GameView,
+    path: '/local',
+    name: 'local',
+    component: LocalView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/remote',
+    name: 'remote',
+    component: RemoteView,
     meta: {
       requiresAuth: true,
     },

@@ -26,6 +26,12 @@
     "wins":"gana",
     "losses":"perdidas",
     "total-score":"Puntuacion total",
-    "friends":"amigos"
+    "friends":"amigos",
+    "create-account":"Crear una cuenta",
+    "already-account":"¿Ya tienes una cuenta?",
+    "sign-in":"Iniciar sesion",
+    "no-account":"¿No tienes una cuenta?",
+    "image-upload":"Sube tu foto de perfil"
+
   }
   
