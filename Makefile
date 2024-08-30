@@ -22,7 +22,7 @@ dev-migrate:
 ######################
 ENV_PROD = ./.env.prod
 COMPOSE_PROD = ./compose-prod.yaml
-NAME_DEV = transcendence-prod
+NAME_PROD = transcendence-prod
 DOCKER_COMMAND_PROD = docker compose -f $(COMPOSE_PROD) --env-file $(ENV_PROD) -p $(NAME_PROD)
 
 all:
