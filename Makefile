@@ -1,16 +1,34 @@
+## development
+######################
+ENV_DEV = ./.env.dev
+COMPOSE_DEV = ./compose-dev.yaml
+NAME_DEV = transcendence-dev
+DOCKER_COMMAND_DEV = docker compose -f $(COMPOSE_DEV) --env-file $(ENV_DEV) -p $(NAME_DEV)
+
+dev:
+	$(DOCKER_COMMAND_DEV) up -d
+
+dev-down:
+	$(DOCKER_COMMAND_DEV) down
+
+dev-migrate:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations game
+	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
+
+.PHONY: dev dev-down dev-migrate
+
+
+## production
+######################
+ENV_PROD = ./.env.prod
+COMPOSE_PROD = ./compose-prod.yaml
+NAME_DEV = transcendence-prod
+DOCKER_COMMAND_PROD = docker compose -f $(COMPOSE_PROD) --env-file $(ENV_PROD) -p $(NAME_PROD)
+
 all:
-	docker compose up -d --build
+	$(DOCKER_COMMAND_PROD) up -d
 
-stop:
-	docker compose down
+down:
+	$(DOCKER_COMMAND_PROD) down
 
-pg:
-	docker compose exec db psql -U django transcendence
-
-migrate:
-	docker compose exec web python manage.py makemigrations rest
-	docker compose exec web python manage.py migrate
-
-re: stop all
-
-.PHONY: all stop re pg
+.PHONY: all down
