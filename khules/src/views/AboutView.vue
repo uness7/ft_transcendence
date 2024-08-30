@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <section class="about-team">
-      <h1 class="heading">Our Team</h1>
+      <h1 class="heading">{{ $t('team') }}</h1>
       <div class="image-container">
         <div
           class="image"
@@ -49,6 +49,12 @@ export default {
           detailsKey: 'jules-about'
         },
         {
+          name: "Youness Zioual",
+          statusKey: 'youness-status',
+          profileImage: require("../assets/img/pp/yzioual.jpg"),
+          detailsKey: 'youness-about'
+        },
+        {
           name: "Navid Sadat",
           statusKey: 'navid-status',
           profileImage: require("../assets/img/pp/ssadat.jpg"),
@@ -65,7 +71,7 @@ export default {
     color: var(--primary-color);
     background-color: var(--background-color);
     margin-top: 200px; /* <--- ne pas trop changer */
-    font-family: '8bit',sans-serif;
+    /* font-family: '8bit',sans-serif; */
   }
 
   .heading {

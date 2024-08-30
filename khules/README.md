@@ -29,3 +29,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
 npm install vue-i18n@9
 ```
+##sockets
+```
+npm install socket.io-client
+npm install express socket.io
+```
+##A voir
+```
+ajouter le language au localstorage pour que le choix soit permanent
+```

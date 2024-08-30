@@ -4,7 +4,10 @@ import LoginView from '../views/LoginView.vue'
 import AboutView from '../views/AboutView.vue'
 import ModeView from '../views/ModeView.vue'
 import UserView from '../views/UserView.vue'
-import GameView from '../views/GameView.vue'
+import RemoteView from '../views/RemoteView.vue'
+import LocalView from '../views/LocalView.vue'
+import UserSettings from '../components/UserSettings.vue'
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
   {
@@ -40,9 +43,17 @@ const routes = [
     },
   },
   {
-    path: '/game',
-    name: 'game',
-    component: GameView,
+    path: '/local',
+    name: 'local',
+    component: LocalView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/remote',
+    name: 'remote',
+    component: RemoteView,
     meta: {
       requiresAuth: true,
     },
@@ -55,6 +66,19 @@ const routes = [
       requiresAuth: true,
     },
     props: true,
+  },
+  {
+    path: '/user/settings',
+    name: 'settings',
+    component: UserSettings,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 
@@ -63,25 +87,20 @@ const router = createRouter({
   routes
 })
 
-/*    exemple de router guard : empeche le changement de page si la personne est pas login  */
-
-export function isAuthenticated() 
-{
-  return true  //  <--- verifier avec l'api
+export function isAuthenticated() {
+  return true  // utiliser api
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) 
-  {
-    if (isAuthenticated()) 
-    {
-      next()
-      return
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (isAuthenticated()) {
+      next();
+    } else {
+      next('/login');
     }
-    next('/login')
+  } else {
+    next();
   }
-  next()
-})
-
+});
 
 export default router

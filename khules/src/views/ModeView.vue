@@ -3,15 +3,11 @@
         <div class="cards-container">
             <div class="cards">
                 <div class="card">
-                    <img src="../assets/img/mods/ai1.png" alt="card1" class="ai-card" id="aiCard">
-                    <div class="card-text ai-text" id="aiText">{{ $t('aiText') }}</div>
-                </div>
-                <div class="card">
-                    <img src="../assets/img/mods/lan1.png" alt="card2" class="lan-card" id="lanCard">
+                    <router-link to="/local"><img src="../assets/img/mods/lan1.png" alt="card2" class="lan-card" id="lanCard"></router-link>
                     <div class="card-text lan-text" id="lanText">{{ $t('lanText') }}</div>
                 </div>
                 <div class="card">
-                    <img src="../assets/img/mods/multiplayer1.png" alt="card3" class="multi-card" id="multiCard">
+                    <router-link to="/remote"><img src="../assets/img/mods/multiplayer1.png" alt="card3" class="multi-card" id="multiCard"></router-link>
                     <div class="card-text multi-text" id="multiText">{{ $t('multiText') }}</div>
                 </div>
             </div>
@@ -45,7 +41,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 100px;
+        gap: 200px;
     }
 
     .card {

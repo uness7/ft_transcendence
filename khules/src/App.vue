@@ -7,11 +7,11 @@
       <router-link to="/about" id="about-button">{{ $t('about') }}</router-link>
       <router-link v-if="!isLoggedIn" to="/login" id="login-button">{{ $t('login') }}</router-link>
       <div v-else class="dropdown">
-        <button class="dropbtn">{{ user.username }}</button>
+        <button class="dropbtn">{{ user?.username }}</button>
         <div class="dropdown-content">
-          <a href="#">profile</a>
-          <a href="#">settings</a>
-          <a href="#">logout</a>
+          <router-link to="/user/1">{{ $t('profile') }}</router-link>
+          <router-link to="/user/settings">{{ $t('settings') }}</router-link>
+          <router-link to="/" id="logout-button">{{ $t('logout') }}</router-link>
         </div>
       </div>
     </header>
@@ -34,8 +34,10 @@ export default {
       },
       currentLanguageIndex: 0,
       isLoggedIn: false,
-      user: null,
-      id: 1, // this should be changed later
+      user: {
+        username: '' // Initialize to prevent null reference
+      },
+      id: 1, // this is for testing only
     }
   },
   computed: {
@@ -64,10 +66,17 @@ export default {
       } else {
         this.isLoggedIn = false;
       }
+    },
+    applyPrimaryColor() {
+      const color = localStorage.getItem('primaryColor') || '#FFFFFF'; // Couleur par défaut
+      document.documentElement.style.setProperty('--primary-color', color);
     }
   },
   created() {
     this.checkLoginStatus();
+  },
+  mounted() {
+    this.applyPrimaryColor(); // Appliquer la couleur au montage du composant
   }
 }
 </script>
@@ -104,26 +113,21 @@ export default {
     margin-bottom: 20px;
   }
 
-  /*#main-image {
-    margin-left: 20px;
-    width: 30%;
-  }
-  */
-
   #logo-text {
-  font-family: '8bit', sans-serif;
-  font-size: 40px;
-  text-decoration: none;
-  background-color: rgb(15, 15, 15);
-  color: var(--primary-color);
-  height: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 30px;
-  padding-bottom: 29px;
-  box-sizing: border-box;
-border-bottom: 1px solid rgb(70,70,70);
-}
+    font-family: '8bit', sans-serif;
+    font-size: 40px;
+    text-decoration: none;
+    background-color: rgb(25, 25, 25);
+    color: var(--primary-color);
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 30px;
+    padding-bottom: 29px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgb(70,70,70);
+    border-right: 1px solid rgb(70,70,70);
+  }
 
   #language-flag {
     width: 3%;
@@ -172,6 +176,14 @@ border-bottom: 1px solid rgb(70,70,70);
     color: var(--primary-color);
   }
 
+  #logout-button{
+    background-color: darkred;
+  }
+
+  #logout-button:hover{
+    background-color: rgb(200,0,0);
+  }
+
   .dropbtn {
     background-color: var(--background-color);
     color: rgb(255, 255, 255);
@@ -187,7 +199,6 @@ border-bottom: 1px solid rgb(70,70,70);
     color: var(--primary-color);
   }
 
-  /* The container <div> - needed to position the dropdown content */
   .dropdown {
     position: absolute;
     right: 50px;
@@ -195,7 +206,6 @@ border-bottom: 1px solid rgb(70,70,70);
     font-family: '8bit', sans-serif;
   }
 
-  /* Dropdown Content (Hidden by Default) */
   .dropdown-content {
     font-size: 20px;
     padding-top: 10px;
@@ -207,7 +217,6 @@ border-bottom: 1px solid rgb(70,70,70);
     z-index: 1;
   }
 
-  /* Links inside the dropdown */
   .dropdown-content a {
     color: rgb(255, 255, 255);
     padding: 12px 16px;
@@ -215,20 +224,18 @@ border-bottom: 1px solid rgb(70,70,70);
     display: block;
   }
 
-  /* Change color of dropdown links on hover */
   .dropdown-content a:hover {
     background-color: rgb(20, 20, 20);
     color: white;
   }
 
-  /* Show the dropdown menu on hover */
   .dropdown:hover .dropdown-content {
     display: block;
   }
 
-  /* Change the background color of the dropdown button when the dropdown content is shown */
   .dropdown:hover .dropbtn {
     background-color: var(--background-color);
     color: var(--primary-color);
   }
+
 </style>

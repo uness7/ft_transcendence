@@ -1,8 +1,8 @@
 <template>
   <div class="sidebar">
     <ul class="nav-list">
-      <li class="nav-item" @click="navigate('UserProfile')">{{ $t('profile') }}</li>
-      <li class="nav-item" @click="navigate('UserSettings')">{{ $t('settings') }}</li>
+      <li class="nav-item" ><router-link to="/user/1" id="profile-button">{{ $t('profile') }}</router-link></li>
+      <li class="nav-item" ><router-link to="/user/settings" id="settings-button">{{ $t('settings') }}</router-link></li>
     </ul>
     <div class="logout-box" @click="logout">
       <router-link to="/" id="logout-button">{{ $t('logout') }}</router-link>
@@ -33,16 +33,15 @@ export default {
 
 .sidebar {
   color: white;
-  margin-top: 100px;   /* <--- ne pas trop changer */
-  margin-left: 100px;
+  margin-top: 82px;   /* <--- ne pas trop changer */
+  margin-left: 140px;
   position: fixed;
   top: 0;
   left: 0;
   width: 200px;
-  height: 100vh;
+  height: 100%;
   background-color: var(--background-color);
-  padding: 20px 0;
-  border-right: solid rgb(25, 25, 25) 1px;
+  border-right: solid rgb(70, 70, 70) 1px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -50,7 +49,7 @@ export default {
 
 .nav-list {
   list-style-type: none;
-  padding: 0;
+  padding: 100px 0 0 0px;
   margin: 0;
   flex: 1;
 }
@@ -58,9 +57,10 @@ export default {
 .nav-item {
   padding: 15px 20px;
   color: white;
-  font-size: 20px;
+  font-size: 25px;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-family: '8bit',sans-serif;
 }
 
 .nav-item:hover {
@@ -73,6 +73,26 @@ export default {
   left: 100;
   padding: 0 10px;
   box-sizing: border-box;
+}
+
+#profile-button{
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+#profile-button:hover{
+  color: var(--primary-color);
+}
+
+#settings-button{
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+#settings-button:hover{
+  color: var(--primary-color);
 }
 
 #logout-button {
