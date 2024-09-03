@@ -11,10 +11,10 @@ PATCH                           | /api/user/user_pk             | Modifies a spe
 
 '''
 
-from rest_framework.permissions import AllowAny;
+from rest_framework.permissions import AllowAny, IsAuthenticated;
 from rest_framework import viewsets;
-from user.model import User;
-from user.model.serializers import UserSerializer;
+from user.models import User;
+from user.serializers import UserSerializer;
 
 class   UserViewSet(viewsets.ModelViewSet):
     http_method_names = (
@@ -22,7 +22,7 @@ class   UserViewSet(viewsets.ModelViewSet):
             'get'
     );
     permission_classes = (
-            AllowAny,
+            IsAuthenticated,
     );
     serializer_class = UserSerializer;
 

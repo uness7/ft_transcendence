@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,12 +29,13 @@ INSTALLED_APPS = [
 
     # third-party packages
     "rest_framework",
+    "rest_framework_simplejwt",
 
     # local_apps
     'user',
 ]
 
-AUTH_USER_MODEL = "user.User";
+AUTH_USER_MODEL = 'user.User';
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -121,3 +121,13 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS':
+    [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ]
+}
