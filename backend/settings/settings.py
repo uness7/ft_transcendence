@@ -33,6 +33,7 @@ INSTALLED_APPS = [
 
     # local_apps
     'user',
+    'authentication',
 ]
 
 AUTH_USER_MODEL = 'user.User';
