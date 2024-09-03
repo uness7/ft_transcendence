@@ -10,6 +10,11 @@ dev:
 
 dev-down:
 	$(DOCKER_COMMAND_DEV) down
+dev-logs-web:
+	$(DOCKER_COMMAND_DEV) logs web
+
+dev-ps:
+	$(DOCKER_COMMAND_DEV) ps
 
 dev-migrate:
 	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations game
