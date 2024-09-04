@@ -28,8 +28,9 @@ dev-migrate-user:
 	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations user
 	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
 
-dev-runserver:
-	$(DOCKER_COMMAND_DEV) exec web python3 manage.py runserver 0.0.0.0:8001
+dev-migrate-auth:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations authentication 
+	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
 
 dev-startapp:
 	@if [ -z "$(name_app)" ]; then \
