@@ -3,21 +3,12 @@
     <section class="about-team">
       <h1 class="heading">{{ $t('team') }}</h1>
       <div class="image-container">
-        <div
-          class="image"
-          v-for="(member, index) in teamMembers"
-          :key="index"
-          @click="selectedMemberIndex = index"
-        >
-          <img :src="member.profileImage" alt="">
-        </div>
-      </div>
-      <div class="info-container">
-        <img class="profile" :src="teamMembers[selectedMemberIndex].profileImage" alt="Profile Picture">
-        <div class="info">
-          <h1 class="name">{{ teamMembers[selectedMemberIndex].name }}</h1>
-          <h3 class="status">{{ $t(teamMembers[selectedMemberIndex].statusKey) }}</h3>
-          <p class="about">{{ $t(teamMembers[selectedMemberIndex].detailsKey) }}</p>
+        <div class="img" v-for="(member, index) in teamMembers" :key="index" @click="selectedMemberIndex = index">
+          <img :src="member.profileImage" :alt="member.name" />
+          <div class="info">
+            <h2 class="name">{{ member.name }}</h2>
+            <p>{{ $t(member.statusKey) }}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -31,34 +22,29 @@ export default {
       selectedMemberIndex: 0,
       teamMembers: [
         {
-          name: "Ouissem Kazdar",
-          statusKey: 'ouissem-status',
-          profileImage: require("../assets/img/pp/okazdar.jpg"),
-          detailsKey: 'ouissem-about'
-        },
-        {
-          name: "Lionel Guyon",
-          statusKey: 'lionel-status',
-          profileImage: require("../assets/img/pp/liguyon.jpg"),
-          detailsKey: 'lionel-about'
-        },
-        {
           name: "Jules Norget",
           statusKey: 'jules-status',
           profileImage: require("../assets/img/pp/jnorget.jpg"),
-          detailsKey: 'jules-about'
-        },
-        {
-          name: "Youness Zioual",
-          statusKey: 'youness-status',
-          profileImage: require("../assets/img/pp/yzioual.jpg"),
-          detailsKey: 'youness-about'
         },
         {
           name: "Navid Sadat",
           statusKey: 'navid-status',
           profileImage: require("../assets/img/pp/ssadat.jpg"),
-          detailsKey: 'navid-about'
+        },
+        {
+          name: "Lionel Guyon",
+          statusKey: 'lionel-status',
+          profileImage: require("../assets/img/pp/liguyon.jpg"),
+        },
+        {
+          name: "Youness Zioual",
+          statusKey: 'youness-status',
+          profileImage: require("../assets/img/pp/yzioual.jpg"),
+        },
+        {
+          name: "Ouissem Kazdar",
+          statusKey: 'ouissem-status',
+          profileImage: require("../assets/img/pp/okazdar.jpg"),
         }
       ]
     };
@@ -67,89 +53,68 @@ export default {
 </script>
 
 <style scoped>
-  .content {
-    color: var(--primary-color);
-    background-color: var(--background-color);
-    margin-top: 200px; /* <--- ne pas trop changer */
-    /* font-family: '8bit',sans-serif; */
-  }
 
-  .heading {
-    text-align: center;
-    font-size: 2rem;
-    margin: 0;
-    padding: 0;
-  }
+.content {
+  color: white;
+  background-color: var(--background-color);
+  margin-top: 200px; /* <--- ne pas trop changer */
+  /* font-family: '8bit', sans-serif; */
+}
 
-  .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.heading {
+  text-align: center;
+  font-size: 3rem;
+  margin: 0;
+  padding: 0 1rem;
+  font-family: '8bit', sans-serif;
+}
 
-  .image {
-    width: 120px;
-    height: 120px;
-    background: var(--background-color);
-    margin: 2px 50px;
-    border-radius: 50%;
-    border: 3px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: var(--primary-color);
-  }
+.image-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 80px;
+  padding: 100px;
+}
 
-  .image:hover {
-    border: 3px solid var(--primary-color)
-  }
+.img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 200px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 0 var(--primary-color);
+}
 
-  img {
-    width: 116px;
-    height: 116px;
-    border-radius: 50%;
-  }
+.img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 10px 5px var(--primary-color);
+}
 
-  .info-container {
-    width: 1100px;
-    height: 350px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgb(15,15,15);
-    margin: 0 auto;
-    margin-top: 50px;
-    border-top: 5px;
-    box-shadow: 0px 0px 30px var(--primary-color);
-    border-radius: 20px;
-  }
+.img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 5%;
+}
 
-  .profile {
-    width: 250px;
-    height: 325px;
-    border-radius: 15px;
-    padding: 10px;
-    margin: 0;
-  }
+.info {
+  text-align: center;
+  margin-top: 10px;
+}
 
-  .name {
-    margin-top: 80px;
-    padding: 0px 15px;
-    text-align: left;
-    font-size: 50px;
-    line-height: 20px;
-  }
+.name {
+  font-size: 1.2rem;
+  margin: 5px 0 2px 0;
+  color: white;
+}
 
-  .status {
-    padding: 0px 20px;
-    text-align: left;
-    line-height: 20px;
-    margin: 0;
-  }
-
-  .about {
-    height: 240px;
-    padding: 0 20px;
-  }
+p {
+  font-size: 1rem;
+  color: white;
+  margin: 0;
+}
 </style>
-
