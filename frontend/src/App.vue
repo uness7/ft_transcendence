@@ -1,7 +1,6 @@
 <template>
   <div class="top-bar">
     <header id="top-bar-content">
-      <!-- <router-link to="/"><img src='./assets/img/logo1.png' id="main-image"/></router-link> -->
       <router-link to="/" id="logo-text">ft_transcendence</router-link>
       <img :src="currentFlag" alt="flag" id="language-flag" @click="toggleLanguage">
       <router-link to="/about" id="about-button">{{ $t('about') }}</router-link>
@@ -35,10 +34,10 @@ export default {
       currentLanguageIndex: 0,
       isLoggedIn: false,
       user: {
-        username: '' // Initialize to prevent null reference
+        username: ''
       },
-      id: 1, // this is for testing only
-    }
+      id: 1, // pour test
+    };
   },
   computed: {
     currentFlag() {
@@ -48,7 +47,11 @@ export default {
   methods: {
     toggleLanguage() {
       this.currentLanguageIndex = (this.currentLanguageIndex + 1) % this.languages.length;
-      this.$i18n.locale = this.languages[this.currentLanguageIndex];
+      const selectedLanguage = this.languages[this.currentLanguageIndex];
+      this.$i18n.locale = selectedLanguage;
+
+      // stock la langue dans le localstorage pour garder le choix permanent
+      localStorage.setItem('selectedLanguage', selectedLanguage);
     },
     fetchUser() {
       axios.get(`https://jsonplaceholder.typicode.com/users/${this.id}`)
@@ -68,17 +71,27 @@ export default {
       }
     },
     applyPrimaryColor() {
-      const color = localStorage.getItem('primaryColor') || '#FFFFFF'; // Couleur par défaut
+      const color = localStorage.getItem('primaryColor') || '#FFFFFF';
       document.documentElement.style.setProperty('--primary-color', color);
+    },
+    loadSavedLanguage() {
+      // recupere la langue depuis le localstorage
+      const savedLanguage = localStorage.getItem('selectedLanguage');
+      if (savedLanguage) {
+        this.currentLanguageIndex = this.languages.indexOf(savedLanguage);
+        this.$i18n.locale = savedLanguage;
+      }
     }
   },
   created() {
     this.checkLoginStatus();
+    this.loadSavedLanguage();
   },
   mounted() {
-    this.applyPrimaryColor(); // Appliquer la couleur au montage du composant
+    this.applyPrimaryColor();
   }
 }
+
 </script>
 
 <style scoped>

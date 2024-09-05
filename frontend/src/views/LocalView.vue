@@ -15,11 +15,11 @@
 export default {
   data() {
     return {
-      ballX: 600, // Centrer la balle pour la nouvelle taille
+      ballX: 600,
       ballY: 300,
       ballSpeedX: 8,
       ballSpeedY: 8,
-      paddle1Y: 250, // Centrer les palettes pour la nouvelle taille
+      paddle1Y: 250,
       paddle2Y: 250,
       paddleSpeed: 4,
       wPressed: false,
@@ -33,6 +33,16 @@ export default {
       gameStarted: false,
       winnerMessage: '',
       canvasContext: null,
+      countdown: 0,
+      countdownActive: false,
+
+      // Nouveau état pour l'animation d'explosion
+      explosionActive: false,
+      explosionX: 0,
+      explosionY: 0,
+      explosionRadius: 0,
+      explosionMaxRadius: 100,
+      explosionFade: 1
     };
   },
   mounted() {
@@ -99,25 +109,69 @@ export default {
       ctx.font = '60px Arial';
 
       // Player 1 Score
-      ctx.fillStyle = this.gameOver ? (this.player1Score > this.player2Score ? 'green' : 'red') : 'white';
+      ctx.fillStyle = this.gameOver ? (this.player1Score > this.player2Score ? '#49a078' : '#e71d36') : 'white';
       ctx.fillText(`${this.player1Score}`, canvasWidth / 4, canvasHeight / 2);
 
       // Player 2 Score
-      ctx.fillStyle = this.gameOver ? (this.player2Score > this.player1Score ? 'green' : 'red') : 'white';
+      ctx.fillStyle = this.gameOver ? (this.player2Score > this.player1Score ? '#49a078' : '#e71d36') : 'white';
       ctx.fillText(`${this.player2Score}`, (canvasWidth / 4) * 3, canvasHeight / 2);
 
       // Draw Winner Text
       if (this.gameOver) {
+        this.countdownActive = false;
         ctx.font = '30px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         const winnerX = this.player1Score > this.player2Score ? canvasWidth / 4 : (canvasWidth / 4) * 3;
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = '#49a078';
         ctx.fillText('winner!', winnerX, canvasHeight / 2 + 40);
       }
+
+      // Draw Countdown
+      if (this.countdownActive) {
+        ctx.font = '50px 8bit';
+        ctx.fillStyle = 'grey';
+        ctx.fillText(this.countdown, canvasWidth / 2, canvasHeight / 2);
+      }
+
+      // Draw explosion effect
+      if (this.explosionActive) {
+        this.drawExplosion(ctx);
+      }
+    },
+    drawExplosion(ctx) {
+      // Dessiner l'animation de l'explosion
+      ctx.beginPath();
+      const gradient = ctx.createRadialGradient(
+        this.explosionX, this.explosionY, 0,
+        this.explosionX, this.explosionY, this.explosionRadius
+      );
+      gradient.addColorStop(0, `rgba(0, 255, 255, ${this.explosionFade})`);
+      gradient.addColorStop(1, `rgba(0, 255, 255, 0)`);
+
+      ctx.fillStyle = gradient;
+      ctx.arc(this.explosionX, this.explosionY, this.explosionRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mise à jour de l'état de l'animation
+      this.explosionRadius += 5;
+      this.explosionFade -= 0.05;
+
+      // Si l'explosion atteint sa taille maximale, on l'arrête
+      if (this.explosionRadius >= this.explosionMaxRadius) {
+        this.explosionActive = false;
+      }
+    },
+    triggerExplosion(x, y) {
+      // Activer l'animation d'explosion
+      this.explosionActive = true;
+      this.explosionX = x;
+      this.explosionY = y;
+      this.explosionRadius = 0;
+      this.explosionFade = 1;
     },
     moveEverything() {
-      if (!this.gameStarted) return;
+      if (!this.gameStarted || this.countdownActive) return;
 
       this.ballX += this.ballSpeedX;
       this.ballY += this.ballSpeedY;
@@ -136,8 +190,9 @@ export default {
           this.ballSpeedX = -this.ballSpeedX;
         } else if (this.ballX < 0) {
           this.player2Score++;
+          this.triggerExplosion(0, this.ballY); // Explosion à gauche
           this.checkGameOver();
-          this.ballReset();
+          this.startCountdown();
         }
       }
 
@@ -146,8 +201,9 @@ export default {
           this.ballSpeedX = -this.ballSpeedX;
         } else if (this.ballX > canvasWidth) {
           this.player1Score++;
+          this.triggerExplosion(canvasWidth, this.ballY); // Explosion à droite
           this.checkGameOver();
-          this.ballReset();
+          this.startCountdown();
         }
       }
 
@@ -159,10 +215,24 @@ export default {
       if (this.upPressed && this.paddle2Y > 0) this.paddle2Y -= this.paddleSpeed;
       if (this.downPressed && this.paddle2Y < canvasHeight - 100) this.paddle2Y += this.paddleSpeed;
     },
+    startCountdown() {
+      this.countdownActive = true;
+      this.countdown = 3;
+
+      const countdownInterval = setInterval(() => {
+        this.countdown--;
+        if (this.countdown === 0) {
+          clearInterval(countdownInterval);
+          this.countdownActive = false;
+          this.ballReset();
+        }
+      }, 1000);
+    },
     ballReset() {
-      this.ballX = 600; // Centrer la balle pour la nouvelle taille
+      this.ballX = 600;
       this.ballY = 300;
       this.ballSpeedX = -this.ballSpeedX;
+      this.drawEverything();
     },
     checkGameOver() {
       if (this.player1Score === this.winningScore) {
@@ -181,7 +251,7 @@ export default {
       this.winnerMessage = '';
       this.ballReset();
       this.drawEverything();
-    },
+    }
   },
 };
 </script>
