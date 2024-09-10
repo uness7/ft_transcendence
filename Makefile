@@ -11,9 +11,33 @@ dev:
 dev-down:
 	$(DOCKER_COMMAND_DEV) down
 
+dev-logs-web:
+	$(DOCKER_COMMAND_DEV) logs web
+
+dev-build:
+	$(DOCKER_COMMAND_DEV) up --build -d
+
+dev-ps:
+	$(DOCKER_COMMAND_DEV) ps
+
 dev-migrate:
 	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations game
 	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
+
+dev-migrate-user:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations user
+	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
+
+dev-migrate-auth:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations authentication 
+	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
+
+dev-startapp:
+	@if [ -z "$(name_app)" ]; then \
+		echo "You must provide a name for the app. Usage: make startapp name_app=your_app_name"; \
+		exit 1; \
+	fi
+	$(DOCKER_COMMAND_DEV) exec web python3 manage.py startapp $(name_app)
 
 .PHONY: dev dev-down dev-migrate
 
