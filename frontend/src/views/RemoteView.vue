@@ -7,18 +7,18 @@
     <div v-if="gameOver" class="play-again-button">
       <button @click="resetGame">Play Again</button>
     </div>
-    <ChatVue/>
+    <!-- <ChatVue/> -->
   </div>
 </template>
 
 
 <script>
-import ChatVue from '../components/ChatVue.vue'
+// import ChatVue from '../components/ChatVue.vue'
 
 export default {
-  components: {
-    ChatVue
-  },
+  // components: {
+  //   ChatVue
+  // },
   data() {
     return {
       ballX: 600, // Centrer la balle pour la nouvelle taille
