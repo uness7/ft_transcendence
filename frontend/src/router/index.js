@@ -7,6 +7,7 @@ import UserView from '../views/UserView.vue'
 import RemoteView from '../views/RemoteView.vue'
 import LocalView from '../views/LocalView.vue'
 import UserSettings from '../components/UserSettings.vue'
+import TournamentView from '../views/TournamentView.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
@@ -71,6 +72,14 @@ const routes = [
     path: '/user/settings',
     name: 'settings',
     component: UserSettings,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/tournament',
+    name: 'tournament',
+    component: TournamentView,
     meta: {
       requiresAuth: true,
     },
