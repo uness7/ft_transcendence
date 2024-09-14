@@ -26,5 +26,11 @@
     "already-account":"Already have an account?",
     "sign-in":"Sign in",
     "no-account":"Don't have an account?",
-    "image-upload":"Upload your profile picture"
+    "image-upload":"Upload your profile picture",
+    "local": "1v1 local",
+    "localDesc": "Local multiplayer mode for playing with friends on the same device.",
+    "remote": "1v1 remote",
+    "remoteDesc": "Play with friends remotely over the internet.",
+    "tournament": "Tournament",
+    "tournamentDesc": "Compete in a tournament with multiple rounds and opponents."
 }

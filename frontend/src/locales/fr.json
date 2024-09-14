@@ -26,7 +26,11 @@
     "already-account":"Vous avez deja un compte ?",
     "sign-in":"Se connecter",
     "no-account":"Vous n'avez pas de compte ?",
-    "image-upload":"Telechargez votre photo de profil"
-
-
+    "image-upload":"Telechargez votre photo de profil",
+    "local": "1v1 local",
+    "localDesc": "Mode multijoueur local pour jouer avec des amis sur le meme appareil.",
+    "remote": "1v1 distant",
+    "remoteDesc": "Jouez avec des amis a distance via Internet.",
+    "tournament": "Tournoi",
+    "tournamentDesc": "Participez a un tournoi avec plusieurs manches et adversaires."
 }

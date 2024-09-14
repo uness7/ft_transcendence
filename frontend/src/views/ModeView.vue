@@ -3,22 +3,22 @@
         <div class="left-side">
             <router-link to="/local" class="left-up link">
                 <div class="text-container">
-                    <p class="title">1v1 local</p>
-                    <p class="description">Local multiplayer mode for playing with friends on the same device.</p>
+                    <p class="title">{{ $t('local') }}</p>
+                    <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
             <router-link to="/remote" class="left-bottom link">
                 <div class="text-container">
-                    <p class="title">1v1 remote</p>
-                    <p class="description">Play with friends remotely over the internet.</p>
+                    <p class="title">{{ $t('remote') }}</p>
+                    <p class="description">{{ $t('remoteDesc') }}</p>
                 </div>
             </router-link>
         </div>
         <div class="right-side">
             <router-link to="/tournament" class="link">
                 <div class="text-container">
-                    <p class="title">Tournament</p>
-                    <p class="description">Compete in a structured tournament with multiple rounds and opponents.</p>
+                    <p class="title">{{ $t('tournament') }}</p>
+                    <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
         </div>
