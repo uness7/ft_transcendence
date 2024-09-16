@@ -28,5 +28,15 @@ services:
     depends_on:
       - db
 
+  vue:
+    container_name: vue-app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+
 volumes:
   pgdata:
