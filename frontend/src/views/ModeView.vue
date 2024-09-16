@@ -1,91 +1,115 @@
 <template>
     <div class="content">
-        <div class="cards-container">
-            <div class="cards">
-                <div class="card">
-                    <router-link to="/local"><img src="../assets/img/mods/lan1.png" alt="card2" class="lan-card" id="lanCard"></router-link>
-                    <div class="card-text lan-text" id="lanText">{{ $t('lanText') }}</div>
+        <div class="left-side">
+            <router-link to="/local" class="left-up link">
+                <div class="text-container">
+                    <p class="title">{{ $t('local') }}</p>
+                    <p class="description">{{ $t('localDesc') }}</p>
                 </div>
-                <div class="card">
-                    <router-link to="/remote"><img src="../assets/img/mods/multiplayer1.png" alt="card3" class="multi-card" id="multiCard"></router-link>
-                    <div class="card-text multi-text" id="multiText">{{ $t('multiText') }}</div>
+            </router-link>
+            <router-link to="/remote" class="left-bottom link">
+                <div class="text-container">
+                    <p class="title">{{ $t('remote') }}</p>
+                    <p class="description">{{ $t('remoteDesc') }}</p>
                 </div>
-            </div>
+            </router-link>
+        </div>
+        <div class="right-side">
+            <router-link to="/tournament" class="link">
+                <div class="text-container">
+                    <p class="title">{{ $t('tournament') }}</p>
+                    <p class="description">{{ $t('tournamentDesc') }}</p>
+                </div>
+            </router-link>
         </div>
     </div>
 </template>
 
-<script>
-</script>
-
 <style scoped>
-
     .content {
-        color: white;
-        margin-top: 200px; /* <--- ne pas trop changer */
         display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
+        height: calc(100vh - 90px);
+        color: white;
+        background-color: var(--background-color);
+        font-size: 50px;
+        font-family: '8bit', sans-serif;
+        margin-top: 82px;
+        box-sizing: border-box;
     }
 
-    .cards-container {
+    .left-side {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        border-right: 1px solid rgb(25,25,25);
+    }
+
+    .left-up, .left-bottom {
+        flex: 1;
         display: flex;
         justify-content: center;
         align-items: center;
+        border-bottom: 1px solid rgb(25,25,25);
+        position: relative;
+        overflow: hidden;
+        transition: background-color 0.3s ease;
+    }
+
+    .left-bottom {
+        border-bottom: none;
+        border-top: 1px solid rgb(25,25,25);
+    }
+
+    .right-side {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left: 1px solid rgb(25,25,25);
+    }
+
+    .link {
         width: 100%;
-        margin-top: 50px;
-    }
-
-    .cards {
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 200px;
-    }
-
-    .card {
-        position: relative;
-        display: inline-block;
-        transition: transform 0.3s;
-    }
-
-    .card img {
-        width: 300px;
-        height: auto;
-    }
-
-    .card-text {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+        text-decoration: none;
         color: white;
-        font-family: '8bit';
+        position: relative;
+        overflow: hidden;
+    }
+
+    .link:hover {
+        background-color: rgb(20, 20, 20);
+        color: var(--primary-color);
+    }
+
+    .text-container {
         text-align: center;
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 18px;
+        position: relative;
+        overflow: hidden;
     }
 
-    .card:hover {
-        transform: scale(1.2);
+    .title {
+        transition: transform 0.3s ease;
     }
 
-    .ai-text {
-        font-size: 50px;
-        bottom: 60px;
+    .description {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        color: rgb(200, 200, 200);
+        padding: 0 10px;
+        margin-top: 10px;
+        box-sizing: border-box;
     }
 
-    .lan-text {
-        font-size: 50px;
-        bottom: 40px;
+    .link:hover .title {
+        transform: translateY(-10px);
     }
 
-    .multi-text {
-    font-size: 45px;
-    bottom: 100px;
+    .link:hover .description {
+        max-height: 100px;
     }
-
 </style>
