@@ -16,22 +16,21 @@
                                 type="email"
                                 pattern="^[\w.-]+@[\w.-]+\.\w+$"
                                 class="w100"
-                                :class="{ invalid: email.error }"
-                                ref="email"
+                                :class="{ invalid: emailError }"
                                 placeholder="Email"
                                 autofocus
                                 @blur="validateEmail"
                                 @keydown="validateEmail"
-                                v-model="email.value"
+                                v-model="email"
                             />
                             <input
                                 required
                                 aria-required="true"
                                 type="password"
                                 class="w100"
-                                :class="{ invalid: password.error }"
+                                :class="{ invalid: passwordError }"
                                 placeholder="Password"
-                                v-model="password.value"
+                                v-model="password"
                                 @blur="validatePassword"
                                 @keydown="validatePassword"
                             />
@@ -50,47 +49,60 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/store/auth';
+
 export default {
-    data() {
-        return {
-            emailRegex: /^[\w.-]+@[\w.-]+\.\w+$/,
-            password: {
-                value: "",
-                error: false,
-            },
-            email: {
-                value: "",
-                error: false,
-            },
-        };
-    },
-    methods: {
-        validateEmail() {
-            this.email.error = !this.emailRegex.test(this.email.value);
-        },
-        validatePassword() {
-            this.password.error = this.password.value === "";
-        },
-        handleSubmit() {
-            // Handle login logic here
-            console.log(
-                "Login submitted",
-                this.email.value,
-                this.password.value
-            );
-        },
-    },
-    computed: {
-        emailValid() {
-            return this.emailRegex.test(this.email.value);
-        },
-        passwordValid() {
-            return this.password.value.length > 0;
-        },
-        loginValid() {
-            return this.emailValid && this.passwordValid;
-        },
-    },
+  setup() {
+    const router = useRouter();
+    const authStore = useAuthStore();
+
+    const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
+    const email = ref('');
+    const password = ref('');
+    const emailError = ref(false);
+    const passwordError = ref(false);
+
+    const validateEmail = () => {
+      emailError.value = !emailRegex.test(email.value);
+    };
+
+    const validatePassword = () => {
+      passwordError.value = password.value === '';
+    };
+
+    const handleSubmit = async () => {
+      const formData = {
+        email: email.value,
+        password: password.value
+      };
+      const success = await authStore.login(formData);
+      if (success) {
+        router.push('/');
+      } else {
+        router.push('/login');
+        console.log("Login failed");
+      }
+    };
+
+    const emailValid = computed(() => emailRegex.test(email.value));
+    const passwordValid = computed(() => password.value.length > 0);
+    const loginValid = computed(() => emailValid.value && passwordValid.value);
+
+    return {
+      email,
+      password,
+      emailError,
+      passwordError,
+      validateEmail,
+      validatePassword,
+      handleSubmit,
+      emailValid,
+      passwordValid,
+      loginValid
+    };
+  }
 };
 </script>
 

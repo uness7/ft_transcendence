@@ -18,14 +18,14 @@
 							<input
 								type="text"
 								placeholder="First Name"
-								v-model="firstName"
+								v-model="first_name"
 								class="w100"
 								required
 							/>
 							<input
 								type="text"
 								placeholder="Last Name"
-								v-model="lastName"
+								v-model="last_name"
 								class="w100"
 								required
 							/>
@@ -73,108 +73,102 @@
 </template>	
 
 <script>
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/store/auth';
+
 export default {
-	data() {
-		return {
-			username: "",
-			firstName: "",
-			lastName: "",
-			email: "",
-			password: "",
-			confirmPassword: "",
-			errorMessage: "",
-			emailRegex: /^[\w.-]+@[\w.-]+\.\w+$/,
-			passwordRegex:
-				/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/,
-			isLoading : false,
-		};
-	},
+  setup() {
+    const router = useRouter();
+    const authStore = useAuthStore();
 
-	methods: {
-		handleRegistrationSuccess(responseData) {
-			console.log('Registration was successful:', responseData);
-		},
-		validateEmail() {
-			if (!this.emailRegex.test(this.email)) {
-				this.errorMessage = "Please enter a valid email address.";
-			} else {
-				this.errorMessage = "";
-			}
-		},
-		validatePassword() {
-			if (!this.passwordRegex.test(this.password)) {
-				this.errorMessage =
-					"Password must be at least 8 characters long and contain at least one number and one special character.";
-			} else {
-				this.errorMessage = "";
-			}
-		},
-		validateConfirmPassword() {
-			if (this.password !== this.confirmPassword) {
-				this.errorMessage = "Passwords do not match.";
-			} else {
-				this.errorMessage = "";
-			}
-		},
-		handleSubmit()
-		{
-			if (this.isFormValid)
-			{
-				const	data = {
-					username: this.username,
-					firstName: this.firstName,
-					lastName: this.lastName,
-					email: this.email,
-					password: this.password,
-				};
-				const	apiUrl = 'http://localhost:8000/api/authentication/register/';
-				const	requestOptions = {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(data),
-				};
+    const username = ref('');
+    const first_name = ref('');
+    const last_name = ref('');
+    const email = ref('');
+    const password = ref('');
+    const confirmPassword = ref('');
+    const errorMessage = ref('');
+    const isLoading = ref(false);
 
-				this.isLoading = true;
-				this.errorMessage = '';
+    const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
-				// Making API call : POST Request
-				fetch (apiUrl, requestOptions)
-					.then(res => {
-						if (!res.ok)
-						{
-							throw new Error('Network response was not ok');
-						}
-						return res.json();
-					})
-					.then(data => {
-						console.log("Registration was successfull");
-						this.$emit('registration-success', data);
-						this.$router.push('/login');
-					})
-					.catch(err => {
-						console.error('Error:', err);
-					})
-					.finally (() => {
-						this.isLoading = false;
-					});
-			}
-		},
-	},
+    const validateEmail = () => {
+      if (!emailRegex.test(email.value)) {
+        errorMessage.value = "Please enter a valid email address.";
+      } else {
+        errorMessage.value = "";
+      }
+    };
 
-	computed: {
-		isFormValid() {
-			return (
-				this.username.trim() !== "" &&
-				this.firstName.trim() !== "" &&
-				this.lastName.trim() !== "" &&
-				this.emailRegex.test(this.email) &&
-				this.passwordRegex.test(this.password) &&
-				this.password === this.confirmPassword
-			);
-		},
-	},
+    const validatePassword = () => {
+      if (!passwordRegex.test(password.value)) {
+        errorMessage.value = "Password must be at least 8 characters long and contain at least one number and one special character.";
+      } else {
+        errorMessage.value = "";
+      }
+    };
+
+    const validateConfirmPassword = () => {
+      if (password.value !== confirmPassword.value) {
+        errorMessage.value = "Passwords do not match.";
+      } else {
+        errorMessage.value = "";
+      }
+    };
+
+    const handleSubmit = async () => {
+      if (isFormValid.value) {
+        isLoading.value = true;
+        const data = {
+          username: username.value,
+          first_name: first_name.value,
+          last_name: last_name.value,
+          email: email.value,
+          password: password.value,
+        };
+        try {
+          const success = await authStore.register(data);
+          if (success) {
+            router.push('/login');
+          } else {
+            errorMessage.value = "Registration failed. Please try again.";
+          }
+        } catch (error) {
+          console.error("Registration error:", error);
+          errorMessage.value = "An error occurred during registration.";
+        } finally {
+          isLoading.value = false;
+        }
+      }
+    };
+
+    const isFormValid = computed(() => 
+      username.value.trim() !== "" &&
+      first_name.value.trim() !== "" &&
+      last_name.value.trim() !== "" &&
+      emailRegex.test(email.value) &&
+      passwordRegex.test(password.value) &&
+      password.value === confirmPassword.value
+    );
+
+    return {
+      username,
+      first_name,
+      last_name,
+      email,
+      password,
+      confirmPassword,
+      errorMessage,
+      isLoading,
+      validateEmail,
+      validatePassword,
+      validateConfirmPassword,
+      handleSubmit,
+      isFormValid
+    };
+  }
 };
 </script>
 
