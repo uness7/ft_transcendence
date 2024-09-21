@@ -9,6 +9,9 @@ import LocalView from '../views/LocalView.vue'
 import UserSettings from '../components/UserSettings.vue'
 import TournamentView from '../views/TournamentView.vue'
 import NotFound from '../views/NotFound.vue'
+import CreateTournament from '../views/CreateTournament.vue'
+import ListTournaments from '../views/ListTournaments.vue'
+import TournamentDetails from '../views/TournamentDetails.vue'
 
 const routes = [
   {
@@ -80,6 +83,31 @@ const routes = [
     path: '/tournament',
     name: 'tournament',
     component: TournamentView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/create-tournament',
+    name: 'create-tournament',
+    component: CreateTournament,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/list-tournament',
+    name: 'list-tournament',
+    component: ListTournaments,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/tournament-details/:id',
+    name: 'TournamentDetails',
+    component: TournamentDetails,
+    props: true,
     meta: {
       requiresAuth: true,
     },

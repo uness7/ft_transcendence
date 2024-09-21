@@ -70,13 +70,13 @@ export default {
 }
 
 .player1 {
-  background-color: black; /* Distinct background for player 1 */
+  background-color: black;
   border: 1px solid #fff;
   font-family: '8bit',sans-serif;
   letter-spacing: 1px;
 }
 .player2 {
-  background-color: black; /* Distinct background for player 2 */
+  background-color: black;
   border: 1px solid #fff;
   letter-spacing: 1px;
 }

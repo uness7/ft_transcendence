@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       colors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
-      selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF', // Initialisez avec la couleur sauvegardée
+      selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
     };
   },
   methods: {
@@ -41,7 +41,7 @@ export default {
       return {
         backgroundColor: color,
         border: this.selectedColor === color ? '5px solid white' : 'none',
-        borderRadius: '10px', // Coins arrondis
+        borderRadius: '10px',
       };
     },
   },
@@ -66,13 +66,13 @@ export default {
 
 .color-options {
   display: flex;
-  gap: 20px; /* Augmentez l'espacement entre les boutons */
+  gap: 20px;
 }
 
 .color-button {
-  width: 60px; /* Augmentez la taille si vous le souhaitez */
+  width: 60px;
   height: 60px;
-  border-radius: 10px; /* Coins légèrement arrondis pour le carré */
+  border-radius: 10px;
   cursor: pointer;
   outline: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
