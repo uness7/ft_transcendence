@@ -7,10 +7,16 @@
                     <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
-            <router-link to="/remote" class="left-bottom link">
+            <router-link to="/remote" class="left-middle link">
                 <div class="text-container">
                     <p class="title">{{ $t('remote') }}</p>
                     <p class="description">{{ $t('remoteDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link to="/ai" class="left-bottom link">
+                <div class="text-container">
+                    <p class="title">{{ $t('ia') }}</p>
+                    <p class="description">{{ $t('iaDesc') }}</p>
                 </div>
             </router-link>
         </div>
@@ -44,7 +50,7 @@
         border-right: 1px solid rgb(25,25,25);
     }
 
-    .left-up, .left-bottom {
+    .left-up, .left-middle, .left-bottom {
         flex: 1;
         display: flex;
         justify-content: center;
@@ -53,6 +59,10 @@
         position: relative;
         overflow: hidden;
         transition: background-color 0.3s ease;
+    }
+
+    .left-middle {
+        border-top: 1px solid rgb(25,25,25);
     }
 
     .left-bottom {

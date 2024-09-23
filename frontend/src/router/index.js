@@ -12,6 +12,7 @@ import NotFound from '../views/NotFound.vue'
 import CreateTournament from '../views/CreateTournament.vue'
 import ListTournaments from '../views/ListTournaments.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
+import AiView from '../views/AiView.vue'
 
 const routes = [
   {
@@ -42,6 +43,14 @@ const routes = [
     path: '/mode',
     name: 'mode',
     component: ModeView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/ai',
+    name: 'ai',
+    component: AiView,
     meta: {
       requiresAuth: true,
     },

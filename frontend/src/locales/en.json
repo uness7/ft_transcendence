@@ -32,5 +32,11 @@
     "remote": "1v1 remote",
     "remoteDesc": "Play with friends remotely over the internet.",
     "tournament": "Tournament",
-    "tournamentDesc": "Compete in a tournament with multiple rounds and opponents."
+    "tournamentDesc": "Compete in a tournament with multiple rounds and opponents.",
+    "ia":"1v1 AI",
+    "iaDesc":"Play against an artificial intelligence",
+    "difficulty":"difficulty",
+    "easy":"easy",
+    "medium":"medium",
+    "hard":"hard"
 }

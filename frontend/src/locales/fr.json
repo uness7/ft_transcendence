@@ -32,5 +32,11 @@
     "remote": "1v1 distant",
     "remoteDesc": "Jouez avec des amis a distance via Internet.",
     "tournament": "Tournoi",
-    "tournamentDesc": "Participez a un tournoi avec plusieurs manches et adversaires."
+    "tournamentDesc": "Participez a un tournoi avec plusieurs manches et adversaires.",
+    "ia": "1v1 IA",
+    "iaDesc": "Jouez contre une intelligence artificielle",
+    "difficulty":"difficulte",
+    "easy":"facile",
+    "medium":"moyenne",
+    "hard":"elevee"
 }
