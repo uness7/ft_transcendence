@@ -58,8 +58,39 @@ class Paddle {
 	}
 }
 
-paddleLeft = new Paddle(15, 100, 20);
-paddleRight = new Paddle(15, 100, 20, "right");
+class Ball {
+	#position;
+	#radius;
+	#color;
+
+	constructor(radius=10, color="white") {
+		this.#position = new Vec2(canvasWidth / 2, canvasHeight / 2);
+		this.#radius = radius;
+		this.#color = color;
+	}
+
+	get position() {
+		return this.#position;
+	}
+
+	get radius() {
+		return this.#radius;
+	}
+
+	moveToCenter() {
+		this.#position.setCoordinates(canvasWidth / 2, canvasHeight / 2);
+	}
+
+	render(ctx) {
+		ctx.fillStyle = this.#color;
+		ctx.arc(this.#position.x, this.#position.y, this.radius, 0, 2 * Math.PI);
+		ctx.fill();
+	}
+}
+
+const paddleLeft = new Paddle(15, 100, 20);
+const paddleRight = new Paddle(15, 100, 20, "right");
+const ball = new Ball();
 
 document.addEventListener("keydown", event => {
 	// w: 		  player left  - move up
@@ -76,6 +107,7 @@ const render = () => {
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 	paddleLeft.render(ctx);
 	paddleRight.render(ctx);
+	ball.render(ctx);
 }
 
 const mainLoop = () => {
