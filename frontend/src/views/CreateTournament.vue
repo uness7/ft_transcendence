@@ -81,19 +81,20 @@
     padding: 15px 30px;
     font-size: 1rem;
     color: white;
-    background-color: var(--primary-color);
-    border-radius: 5px;
+    background-color: rgb(30, 30, 30);
     text-decoration: none;
     transition: background-color 0.3s ease;
     cursor: pointer;
+    outline: none;
+    border: none;
   }
   
   .btn:hover {
-    background-color: var(--primary-color);;
+    background-color: rgb(30, 30, 30);
   }
   
   .btn:active {
-    background-color: var(--primary-color);
+    background-color: rgb(30, 30, 30);
   }
   </style>
   

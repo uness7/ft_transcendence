@@ -71,7 +71,7 @@
     padding: 10px 20px;
     font-size: 1rem;
     color: white;
-    background-color: var(--primary-color);
+    background-color: rgb(30, 30, 30);
     border-radius: 5px;
     text-decoration: none;
     transition: background-color 0.3s ease;

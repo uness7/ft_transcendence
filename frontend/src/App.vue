@@ -46,7 +46,7 @@ export default {
 		};
 
 		const truncatedUsername = computed(() => {
-			const username = user.value.username;
+			const username = user.value.username || 'default';
 			if (username.length > 5) {
 				return username.substring(0, 4) + '.';
 			}
