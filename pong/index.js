@@ -91,6 +91,7 @@ class Ball {
 const paddleLeft = new Paddle(15, 100, 20);
 const paddleRight = new Paddle(15, 100, 20, "right");
 const ball = new Ball();
+const gameEntities = [paddleLeft, paddleRight, ball];
 
 document.addEventListener("keydown", event => {
 	// w: 		  player left  - move up
@@ -103,15 +104,17 @@ document.addEventListener("keydown", event => {
 
 });
 
-const render = () => {
+const render = entities => {
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	paddleLeft.render(ctx);
-	paddleRight.render(ctx);
-	ball.render(ctx);
+	entities.forEach(entity => {
+		if (entity.render) {
+			entity.render(ctx);
+		}
+	});
 }
 
 const mainLoop = () => {
-	render();
+	render(gameEntities);
 	requestAnimationFrame(mainLoop);
 }
 
