@@ -101,10 +101,21 @@ export default class Pong {
 
 			// left paddle collision
 			if (ball.position.x - ball.radius >= paddleLeft.position.x
-				&& ball.position.x - ball.radius <= paddleLeft.position.x + paddleLeft.width
-				&& ball.position.y >= paddleLeft.position.y
-				&& ball.position.y <= paddleLeft.position.y + paddleLeft.height) {
-					ball.speed.mul(-1);
+			&& ball.position.x - ball.radius <= paddleLeft.position.x + paddleLeft.width) {
+				const paddleDivide = paddleLeft.height / 3;
+				if (ball.position.y >= paddleLeft.position.y
+				&& ball.position.y <= paddleLeft.position.y + paddleDivide) {
+					const ballTmp = new Vec2(-ball.speed.x, -370);
+					ball.speed.set(ballTmp);
+				} else if (ball.position.y >= paddleLeft.position.y
+					&& ball.position.y <= paddleLeft.position.y + paddleDivide * 2) {
+						const ballTmp = new Vec2(-ball.speed.x, 0);
+						ball.speed.set(ballTmp);
+				} else if (ball.position.y >= paddleLeft.position.y
+					&& ball.position.y <= paddleLeft.position.y + paddleDivide * 3) {
+						const ballTmp = new Vec2(-ball.speed.x, 370);
+						ball.speed.set(ballTmp);
+				}
 			}
 			
 			// right paddle collision
