@@ -56,7 +56,7 @@ export default class Pong {
 	load = () => {
 		this.#gameStartTimer()
 			.then(() => {
-				delete this.entities.gameStateText;
+				// delete this.entities.gameStateText;
 				this.state = GameState.Serve;
 				this.gameLoop();
 			});
@@ -73,6 +73,7 @@ export default class Pong {
 		const ball = this.entities.ball;
 
 		if (this.state === GameState.Play) {
+			this.entities.gameStateText.text = "Play";
 			ball.position.add(ball.speed.newMul(dt / 1000));
 			if (ball.position.x - ball.radius <= 0) {
 				console.log("lost");
@@ -84,12 +85,15 @@ export default class Pong {
 				this.isLeftServe = false;
 			}
 		} else if (this.state === GameState.Serve) {
-			console.log("serve");
+			if (this.isLeftServe)
+				this.entities.gameStateText.text = "Left Serve";
+			else
+				this.entities.gameStateText.text = "Right Serve";
 			ball.moveToCenter();
 			if (this.isLeftServe)
 				ball.speed.mul(-1);
 			else
-				ball.speed = ball.startingSpeed.clone();
+				ball.speed.set(ball.startingSpeed);
 			this.state = GameState.Play;
 		}
 
