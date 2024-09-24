@@ -1,4 +1,5 @@
 const canvas = document.querySelector("#game-canvas")
+const ctx = canvas.getContext("2d");
 
 // global
 const aspectRatio = 16 / 9;
@@ -57,17 +58,30 @@ class Paddle {
 	}
 }
 
+paddleLeft = new Paddle(15, 100, 20);
+paddleRight = new Paddle(15, 100, 20, "right");
 
+document.addEventListener("keydown", event => {
+	// w: 		  player left  - move up
+	// s: 		  player left  - move down
+	if (event.key == "w") {
+		paddleLeft.position.y -= 5;
+	} else if (event.key == "s") {
+		paddleLeft.position.y += 5;
+	}
+
+});
 
 const render = () => {
-	if (canvas.getContext) {
-		const ctx = canvas.getContext("2d");
-
-		paddleLeft = new Paddle(15, 100, 20);
-		paddleLeft.render(ctx);
-		paddleRight = new Paddle(15, 100, 20, "right");
-		paddleRight.render(ctx);
-	}
+	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	paddleLeft.render(ctx);
+	paddleRight.render(ctx);
 }
 
-window.addEventListener("load", render);
+const mainLoop = () => {
+	render();
+	requestAnimationFrame(mainLoop);
+}
+
+
+window.addEventListener("load", mainLoop);
