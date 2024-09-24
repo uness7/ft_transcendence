@@ -71,11 +71,9 @@ export default class Pong {
 		this.timeLastFrame = timeNow;
 	
 		const ball = this.entities.ball;
+
 		if (this.state === GameState.Play) {
-			if (this.isLeftServe)
-				ball.position.x += 400 * dt / 1000;
-			else
-				ball.position.x -= 400 * dt / 1000;
+			ball.position.add(ball.speed.newMul(dt / 1000));
 			if (ball.position.x - ball.radius <= 0) {
 				console.log("lost");
 				this.state = GameState.Serve;
@@ -88,6 +86,10 @@ export default class Pong {
 		} else if (this.state === GameState.Serve) {
 			console.log("serve");
 			ball.moveToCenter();
+			if (this.isLeftServe)
+				ball.speed.mul(-1);
+			else
+				ball.speed = ball.startingSpeed.clone();
 			this.state = GameState.Play;
 		}
 

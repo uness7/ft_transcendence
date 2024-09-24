@@ -11,6 +11,8 @@ export default class Ball {
 		this.#position = new Vec2(canvasWidth / 2, canvasHeight / 2);
 		this.#radius = radius;
 		this.#color = color;
+		this.startingSpeed = new Vec2(-350, 0);
+		this.speed = this.startingSpeed.clone();
 	}
 
 	get position() {

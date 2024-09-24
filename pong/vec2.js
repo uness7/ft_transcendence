@@ -15,4 +15,12 @@ export default class Vec2 {
 		this.x *= k;
 		this.y *= k;
 	}
+
+	newMul = (k) => {
+		return new Vec2(this.x * k, this.y * k);
+	}
+
+	clone = () => {
+		return new Vec2(this.x, this.y);
+	}
 }
