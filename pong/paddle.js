@@ -1,0 +1,42 @@
+import Vec2 from "./vec2.js";
+import { ctx, canvasWidth, canvasHeight } from "./canvas.js";
+
+
+export default class Paddle {
+	#position;
+	#width;
+	#height;
+	#color;
+
+	constructor(width, height, padding, side="left", color="white") {
+		this.#width = width; 
+		this.#height = height;
+		this.#color = color;
+
+		let x = 0;
+		if (side === "left")
+				x = padding;
+		else if (side === "right")
+				x = canvasWidth - padding - this.#width;
+		else
+			throw new Error(`Invalid argument: side must be 'left' or 'right'`);
+		this.#position = new Vec2(x, (canvasHeight / 2) - (this.#height / 2));
+	}
+
+	get position() {
+		return this.#position;
+	}
+
+	get width() {
+		return this.#width;
+	}
+
+	get height() {
+		return  this.#height;
+	}
+
+	render() {
+		ctx.fillStyle = this.#color;
+		ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+	}
+}
