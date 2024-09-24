@@ -17,9 +17,9 @@ export default class TextHUD {
 	}
 
 	set text(newText) {
-		ctx.font = "";
-		this.#text = newText.str;
-		this.#position.x = canvasWidth / 2 - newText.width / 2;
+		this.#text = newText;
+		this.#position.x = canvasWidth / 2 - ctx.measureText(newText).width / 2;
+		// TODO: fix wrong text width after first call
 		console.log(this.#position.x, canvasWidth, newText.width);
 	}
 
