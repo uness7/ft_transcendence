@@ -24,8 +24,8 @@ export default class Vec2 {
 		return new Vec2(this.x, this.y);
 	}
 
-	set = (v) => {
-		this.x = v.x;
-		this.y = v.y;
+	copy = (other) => {
+		this.x = other.x;
+		this.y = other.y;
 	}
 }
