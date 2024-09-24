@@ -152,7 +152,10 @@ export default class Pong {
 			}
 
 			// naive ai right paddle
-			paddleRight.position.y = ball.position.y - paddleRight.height / 2;
+			if (ball.position.y > paddleRight.position.y + (paddleRight.height / 2 + 10))
+				paddleRight.position.y += 250 * dt / 1000;
+			if (ball.position.y < paddleRight.position.y + (paddleRight.height / 2 - 10))
+				paddleRight.position.y -= 250 * dt / 1000;
 
 			// keep paddles inside the canvas
 			paddleRight.position.y = clamp(paddleRight.position.y, 0, canvasHeight - paddleRight.height);
@@ -160,6 +163,7 @@ export default class Pong {
 
 		} else if (this.state === GameState.Serve) {
 			ball.reset();
+			ball.speed.set(ball.startSpeed);
 			paddleLeft.reset();
 			paddleRight.reset();
 
@@ -213,3 +217,8 @@ document.addEventListener("keydown", event => {
 });
 
 window.addEventListener("load", game.load);
+
+window.addEventListener("resize", () => {
+	canvas.width = canvasWidth;
+	canvas.height = canvasHeight;
+});
