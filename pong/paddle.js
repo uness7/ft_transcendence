@@ -2,6 +2,7 @@ import Vec2 from "./vec2.js";
 import { ctx, canvasWidth, canvasHeight } from "./canvas.js";
 
 
+// Paddle -> Player ? Or player instantiates a paddle
 export default class Paddle {
 	#position;
 	#width;
@@ -24,6 +25,7 @@ export default class Paddle {
 		this.#position = this.startPosition.clone();
 		this.speed = 600;
 		this.yDirection = 0;
+		this.score = 0;
 	}
 
 	get position() {

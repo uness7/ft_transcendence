@@ -46,7 +46,8 @@ export default class Pong {
 			gameStateText: new TextHUD(
 				`Game starts in ${this.timeBeforeGameStarts}...`,
 				new Vec2(canvasWidth / 2, 50)),
-			// leftScoreText: new TextHUD(`0`)
+			leftScoreText: new TextHUD('0', new Vec2(canvasWidth / 4, 50)),
+			rightScoreText: new TextHUD('0', new Vec2(3 * canvasWidth / 4, 50)),
 		};
 
 	}
@@ -105,11 +106,13 @@ export default class Pong {
 			// check round finished
 			if (ball.position.x < 0) {
 				paddleRight.score++;
+				this.entities.rightScoreText.text = paddleRight.score.toString();
 				this.state = GameState.Serve;
 				this.isLeftServe = true;
 			} else if (ball.position.x > canvasWidth) {
 				console.log("won");
 				paddleLeft.score++;
+				this.entities.leftScoreText.text = paddleLeft.score.toString();
 				this.state = GameState.Serve;
 				this.isLeftServe = false;
 			}
