@@ -85,7 +85,11 @@ export default class Pong {
 		if (this.state === GameState.Play) {
 			this.entities.gameStateText.text = "Play";
 	
+			paddleLeft.position.y += paddleLeft.yDirection * dt / 1000;
+			paddleLeft.yDirection = 0;
+
 			ball.position.add(ball.speed.newMul(dt / 1000));
+
 			if (ball.position.x < 0) {
 				console.log("lost");
 				this.state = GameState.Serve;
@@ -96,8 +100,11 @@ export default class Pong {
 				this.isLeftServe = false;
 			}
 			
-			paddleLeft.position.y += paddleLeft.yDirection * dt / 1000;
-			paddleLeft.yDirection = 0;
+			if (ball.position.y - ball.radius <= 0
+			|| ball.position.y + ball.radius >= canvasHeight) {
+				ball.speed.y = -ball.speed.y;
+			}
+
 
 			// left paddle collision
 			if (ball.position.x - ball.radius >= paddleLeft.position.x
