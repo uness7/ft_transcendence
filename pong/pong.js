@@ -19,6 +19,15 @@ const timer = (timeToWait) => {
 	});
 }
 
+const clamp = (value, min, max) => {
+	if (value <= min)
+		return min;
+	else if (value >= max)
+		return max;
+	else
+		return value;
+}
+
 export default class Pong {
 
 	constructor() {
@@ -134,6 +143,10 @@ export default class Pong {
 			}
 
 			paddleRight.position.y = ball.position.y - paddleRight.height / 2;
+
+			// keep paddles inside the canvas
+			paddleRight.position.y = clamp(paddleRight.position.y, 0, canvasHeight - paddleRight.height);
+			paddleLeft.position.y = clamp(paddleLeft.position.y, 0, canvasHeight - paddleLeft.height);
 
 		} else if (this.state === GameState.Serve) {
 			if (this.isLeftServe) {
