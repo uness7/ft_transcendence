@@ -88,10 +88,39 @@ class Ball {
 	}
 }
 
+class TextHUD {
+	#color;
+	#font;
+	#text;
+	#position
+
+	constructor(text, yPadding, font="48px serif", color="white") {
+		this.#color = color;
+		this.#font = font;
+		this.#position = new Vec2();
+		this.#position.y = yPadding;
+		this.text = text;
+	}
+
+	set text(newText) {
+		this.#text = newText.str;
+		this.#position.x = canvasWidth / 2 - newText.width / 2;
+	}
+
+	render(ctx) {
+		ctx.font = this.#font;
+		ctx.textAlign = "center";
+		ctx.fillStyle = this.#color;
+		ctx.fillText(this.#text, this.#position.x, this.#position.y);
+	}
+}
+
+
 const paddleLeft = new Paddle(15, 100, 20);
 const paddleRight = new Paddle(15, 100, 20, "right");
 const ball = new Ball();
-const gameEntities = [paddleLeft, paddleRight, ball];
+const mainText = new TextHUD({str: "Hello", width: ctx.measureText("Hello").width}, 50);
+const gameEntities = [paddleLeft, paddleRight, ball, mainText];
 
 document.addEventListener("keydown", event => {
 	// w: 		  player left  - move up
@@ -103,6 +132,14 @@ document.addEventListener("keydown", event => {
 	}
 
 });
+
+// const GameState = {
+// 	Menu: "menu",
+// 	Serve: "serve",
+// 	Play: "play"
+// }
+// let isPlayerServe = true;
+// let currentGameState = GameState.Menu;
 
 const render = entities => {
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
