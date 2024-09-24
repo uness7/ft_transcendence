@@ -11,7 +11,8 @@ const defaultConfig = {
 	},
 	ball: {
 		radius: 8,
-		color: "white"
+		color: "white",
+		speed: 400
 	},
 	game: {
 		maxScore: 3,
