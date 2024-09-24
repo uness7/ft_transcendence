@@ -7,11 +7,11 @@ export default class Ball {
 	#radius;
 	#color;
 
-	constructor(radius=10, color="white") {
+	constructor(radius=8, color="white") {
 		this.#position = new Vec2(canvasWidth / 2, canvasHeight / 2);
 		this.#radius = radius;
 		this.#color = color;
-		this.startingSpeed = new Vec2(-350, 0);
+		this.startingSpeed = new Vec2(-370, 0);
 		this.speed = this.startingSpeed.clone();
 	}
 

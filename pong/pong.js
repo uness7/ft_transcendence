@@ -11,6 +11,14 @@ const GameState = {
 	Serve: "serve",
 }
 
+const timer = (timeToWait) => {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve();
+		}, timeToWait * 1000);
+	});
+}
+
 export default class Pong {
 
 	constructor() {
@@ -71,30 +79,53 @@ export default class Pong {
 		this.timeLastFrame = timeNow;
 	
 		const ball = this.entities.ball;
+		const paddleLeft = this.entities.paddleLeft;
+		const paddleRight = this.entities.paddleRight;
 
 		if (this.state === GameState.Play) {
 			this.entities.gameStateText.text = "Play";
 			ball.position.add(ball.speed.newMul(dt / 1000));
-			if (ball.position.x - ball.radius <= 0) {
+			if (ball.position.x < 0) {
 				console.log("lost");
 				this.state = GameState.Serve;
 				this.isLeftServe = true;
-			} else if (ball.position.x + ball.radius >= canvasWidth) {
+			} else if (ball.position.x > canvasWidth) {
 				console.log("won");
 				this.state = GameState.Serve;
 				this.isLeftServe = false;
 			}
+			
+			// left paddle collision
+			if (ball.position.x - ball.radius >= paddleLeft.position.x
+				&& ball.position.x - ball.radius <= paddleLeft.position.x + paddleLeft.width
+				&& ball.position.y >= paddleLeft.position.y
+				&& ball.position.y <= paddleLeft.position.y + paddleLeft.height) {
+					ball.speed.mul(-1);
+			}
+			
+			// right paddle collision
+			if (ball.position.x + ball.radius >= paddleRight.position.x
+				&& ball.position.x + ball.radius <= paddleRight.position.x + paddleRight.width
+				&& ball.position.y >= paddleRight.position.y
+				&& ball.position.y <= paddleRight.position.y + paddleRight.height) {
+					ball.speed.mul(-1);
+			}
+
 		} else if (this.state === GameState.Serve) {
-			if (this.isLeftServe)
+			if (this.isLeftServe) {
 				this.entities.gameStateText.text = "Left Serve";
-			else
-				this.entities.gameStateText.text = "Right Serve";
-			ball.moveToCenter();
-			if (this.isLeftServe)
 				ball.speed.mul(-1);
-			else
+			}
+			else {
+				this.entities.gameStateText.text = "Right Serve";
 				ball.speed.set(ball.startingSpeed);
-			this.state = GameState.Play;
+			}
+			ball.moveToCenter();
+
+			// timer(2)
+			// 	.then(() => {
+					this.state = GameState.Play;
+				// });
 		}
 
 
