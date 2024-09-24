@@ -84,6 +84,7 @@ export default class Pong {
 
 		if (this.state === GameState.Play) {
 			this.entities.gameStateText.text = "Play";
+	
 			ball.position.add(ball.speed.newMul(dt / 1000));
 			if (ball.position.x < 0) {
 				console.log("lost");
@@ -95,6 +96,9 @@ export default class Pong {
 				this.isLeftServe = false;
 			}
 			
+			paddleLeft.position.y += paddleLeft.yDirection * dt / 1000;
+			paddleLeft.yDirection = 0;
+
 			// left paddle collision
 			if (ball.position.x - ball.radius >= paddleLeft.position.x
 				&& ball.position.x - ball.radius <= paddleLeft.position.x + paddleLeft.width
@@ -147,9 +151,9 @@ document.addEventListener("keydown", event => {
 	// w: 		  player left  - move up
 	// s: 		  player left  - move down
 	if (event.key == "w") {
-		game.entities.paddleLeft.position.y -= 10;
+		game.entities.paddleLeft.yDirection += -game.entities.paddleLeft.speed;
 	} else if (event.key == "s") {
-		paddleLeft.position.y += 5;
+		game.entities.paddleLeft.yDirection -= -game.entities.paddleLeft.speed;
 	}
 
 });

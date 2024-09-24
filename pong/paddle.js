@@ -22,6 +22,8 @@ export default class Paddle {
 		throw new Error(`Invalid argument: side must be 'left' or 'right'`);
 		this.startPosition = new Vec2(x, (canvasHeight / 2) - (this.#height / 2));
 		this.#position = this.startPosition.clone();
+		this.speed = 600;
+		this.yDirection = 0;
 	}
 
 	get position() {
