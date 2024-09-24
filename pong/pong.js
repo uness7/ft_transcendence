@@ -1,8 +1,10 @@
-import { canvas, ctx, canvasWidth, canvasHeight } from "./canvas.js";
+import { canvas, ctx } from "./canvas.js";
 import Ball from "./ball.js";
 import Paddle from "./paddle.js"
 import TextHUD from "./text-hud.js"
-import Vec2 from "./vec2.js";
+import Vec2 from "./maths/vec2.js";
+import CollisionDetector from "./collision-detector.js";
+import defaultConfig from "./game/config.js"
 
 
 const GameState = {
@@ -31,34 +33,44 @@ const clamp = (value, min, max) => {
 export default class Pong {
 
 	constructor() {
-		// game config
-		this.timeBeforeGameStarts = 1;
 		this.timeLastFrame = 0;
-		this.maxScore = 3;
 		this.isLeftServe = false;
 
 		this.state = GameState.Menu;
 		this.entities = {
-			paddleLeft: new Paddle(15, 100, 20),
-			paddleRight: new Paddle(15, 100, 20, "right"),
-			ball: new Ball(),
+			paddleLeft: new Paddle(
+				new Vec2(defaultConfig.paddle.width, defaultConfig.paddle.height),
+				defaultConfig.paddle.padding,
+				true,
+				defaultConfig.paddle.color
+			),
+			paddleRight: new Paddle(
+				new Vec2(defaultConfig.paddle.width, defaultConfig.paddle.height),
+				defaultConfig.paddle.padding,
+				false,
+				defaultConfig.paddle.color
+			),
+			ball: new Ball(
+				defaultConfig.ball.radius,
+				defaultConfig.ball.color
+			),
 			gameStateText: new TextHUD(
-				`Game starts in ${this.timeBeforeGameStarts}...`,
-				new Vec2(canvasWidth / 2, 40)),
-			leftScoreText: new TextHUD('0', new Vec2(canvasWidth / 4, 100)),
-			rightScoreText: new TextHUD('0', new Vec2(3 * canvasWidth / 4, 100)),
+				`Game starts in ${defaultConfig.game.timeBeforeGameStarts}...`,
+				new Vec2(canvas.width / 2, 40)),
+			leftScoreText: new TextHUD('0', new Vec2(canvas.width / 4, 100)),
+			rightScoreText: new TextHUD('0', new Vec2(3 * canvas.width / 4, 100)),
 		};
 
 	}
 
 	render = () => {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		Object.values(this.entities).forEach(entity => entity.render());
 	}
 
 	#gameStartTimer = () => {
 		return new Promise(resolve => {
-			let timeToWait = this.timeBeforeGameStarts;
+			let timeToWait = defaultConfig.game.timeBeforeGameStarts;
 			const timer = setInterval(() => {
 				this.entities.gameStateText.text = `Game starts in ${timeToWait}...`;
 				this.render();
@@ -75,14 +87,12 @@ export default class Pong {
 	load = () => {
 		this.#gameStartTimer()
 			.then(() => {
-				// delete this.entities.gameStateText;
 				this.state = GameState.Serve;
 				this.gameLoop();
 			});
 	}
 
 	gameLoop = () => {
-		// process inputs -> update -> render
 		if (!this.timeLastFrame)
 			this.timeLastFrame = performance.now();
 		const timeNow = performance.now();
@@ -94,7 +104,7 @@ export default class Pong {
 		const paddleRight = this.entities.paddleRight;
 
 		if (this.state === GameState.Menu) {
-			console.log("menu");
+
 		} else if (this.state === GameState.Play) {
 			this.entities.gameStateText.text = "Play";
 	
@@ -102,7 +112,7 @@ export default class Pong {
 			paddleLeft.position.y += paddleLeft.yDirection * dt / 1000;
 			paddleLeft.yDirection = 0;
 
-			ball.position.add(ball.speed.newMul(dt / 1000));
+			ball.position = Vec2.rAdd(ball.position, Vec2.rMul(ball.speed, dt / 1000));
 
 			// collision with left/right
 			if (ball.position.x < 0) {
@@ -110,45 +120,27 @@ export default class Pong {
 				this.entities.rightScoreText.text = paddleRight.score.toString();
 				this.state = GameState.Serve;
 				this.isLeftServe = true;
-			} else if (ball.position.x > canvasWidth) {
+			} else if (ball.position.x > canvas.width) {
 				paddleLeft.score++;
 				this.entities.leftScoreText.text = paddleLeft.score.toString();
 				this.state = GameState.Serve;
 				this.isLeftServe = false;
 			}
-			
 			// collision with top/bottom
 			if (ball.position.y - ball.radius <= 0
-			|| ball.position.y + ball.radius >= canvasHeight) {
+			|| ball.position.y + ball.radius >= canvas.height) {
 				ball.speed.y = -ball.speed.y;
 			}
 
 
 			// left paddle collision
-			if (ball.position.x - ball.radius >= paddleLeft.position.x
-			&& ball.position.x - ball.radius <= paddleLeft.position.x + paddleLeft.width) {
-				const paddleDivide = paddleLeft.height / 3;
-				if (ball.position.y >= paddleLeft.position.y
-				&& ball.position.y <= paddleLeft.position.y + paddleDivide) {
-					const ballTmp = new Vec2(-ball.speed.x, -370);
-					ball.speed.set(ballTmp);
-				} else if (ball.position.y >= paddleLeft.position.y
-					&& ball.position.y <= paddleLeft.position.y + paddleDivide * 2) {
-						const ballTmp = new Vec2(-ball.speed.x, 0);
-						ball.speed.set(ballTmp);
-				} else if (ball.position.y >= paddleLeft.position.y
-					&& ball.position.y <= paddleLeft.position.y + paddleDivide * 3) {
-						const ballTmp = new Vec2(-ball.speed.x, 370);
-						ball.speed.set(ballTmp);
-				}
+			if (CollisionDetector.pointToRect(ball.position, paddleLeft.getRect())) {
+				ball.speed.x *= -1;
 			}
 			
 			// right paddle collision
-			if (ball.position.x + ball.radius >= paddleRight.position.x
-				&& ball.position.x + ball.radius <= paddleRight.position.x + paddleRight.width
-				&& ball.position.y >= paddleRight.position.y
-				&& ball.position.y <= paddleRight.position.y + paddleRight.height) {
-					ball.speed.mul(-1);
+			if (CollisionDetector.pointToRect(ball.position, paddleRight.getRect())) {
+				ball.speed.x *= -1;
 			}
 
 			// naive ai right paddle
@@ -158,21 +150,18 @@ export default class Pong {
 				paddleRight.position.y -= 250 * dt / 1000;
 
 			// keep paddles inside the canvas
-			paddleRight.position.y = clamp(paddleRight.position.y, 0, canvasHeight - paddleRight.height);
-			paddleLeft.position.y = clamp(paddleLeft.position.y, 0, canvasHeight - paddleLeft.height);
+			paddleRight.position.y = clamp(paddleRight.position.y, 0, canvas.height - paddleRight.height);
+			paddleLeft.position.y = clamp(paddleLeft.position.y, 0, canvas.height - paddleLeft.height);
 
 		} else if (this.state === GameState.Serve) {
 			ball.reset();
-			ball.speed.set(ball.startSpeed);
 			paddleLeft.reset();
 			paddleRight.reset();
 
 			if (paddleLeft.score === this.maxScore) {
-				console.log("win");
 				this.state = GameState.Menu;
 			}
 			if (paddleRight.score === this.maxScore) {
-				console.log("lost");
 				this.state = GameState.Menu;
 			}
 			if (this.isLeftServe) {
@@ -181,14 +170,11 @@ export default class Pong {
 			}
 			else {
 				this.entities.gameStateText.text = "Right Serve";
-				ball.speed.set(ball.startSpeed);
+				ball.speed.copy(ball.startSpeed);
 			}
 
-			// timer(2)
-			// 	.then(() => {
 			if (this.state === GameState.Serve)
 				this.state = GameState.Play;
-				// });
 		}
 
 
@@ -198,8 +184,8 @@ export default class Pong {
 }
 
 // set canvas dimensions
-canvas.setAttribute("width", canvasWidth);
-canvas.setAttribute("height", canvasHeight);
+canvas.setAttribute("width", defaultConfig.canvas.width);
+canvas.setAttribute("height", defaultConfig.canvas.height);
 
 
 
@@ -219,6 +205,6 @@ document.addEventListener("keydown", event => {
 window.addEventListener("load", game.load);
 
 window.addEventListener("resize", () => {
-	canvas.width = canvasWidth;
-	canvas.height = canvasHeight;
+	canvas.width = canvas.width;
+	canvas.height = canvas.height;
 });

@@ -1,20 +1,20 @@
 import Vec2 from "./maths/vec2.js";
-import { ctx, canvasWidth, canvasHeight } from "./canvas.js";
+import { canvas, ctx } from "./canvas.js";
 
 
 export default class Ball {
-	constructor(radius=8, color="white") {
+	constructor(radius, color="white") {
 		this.color = color;
 		this.radius = radius;
 		this.startSpeed = new Vec2(370, 0);
-		this.speed = {...this.startSpeed};
-		this.startPosition = new Vec2(canvasWidth / 2, canvasHeight / 2);
-		this.position = {...this.startPosition};
+		this.speed = this.startSpeed.clone();
+		this.startPosition = new Vec2(canvas.width / 2, canvas.height / 2);
+		this.position = this.startPosition.clone();
 	}
 
 	reset = () => {
-		this.position.set(this.startPosition);
-		this.speed.set(this.startSpeed);
+		this.position.copy(this.startPosition);
+		this.speed.copy(this.startSpeed);
 	}
 
 	render = () => {

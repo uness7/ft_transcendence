@@ -1,5 +1,4 @@
-import Vec2 from "./vec2.js";
-import { ctx, canvasWidth } from "./canvas.js";
+import { ctx } from "./canvas.js";
 
 
 export default class TextHUD {

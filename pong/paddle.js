@@ -1,10 +1,10 @@
 import Vec2 from "./maths/vec2.js";
 import Rect2 from "./maths/rect2.js";
-import { ctx, canvasWidth, canvasHeight } from "./canvas.js";
+import { canvas, ctx } from "./canvas.js";
 
 
 export default class Paddle {
-	constructor(size, padding, isLeftSide=true, color="white") {
+	constructor(size, padding, isLeftSide, color) {
 		this.size = size;
 		this.color = color;
 
@@ -12,9 +12,9 @@ export default class Paddle {
 		if (isLeftSide)
 			x = padding;
 		else
-			x = canvasWidth - padding - this.size.x;
-		this.startPosition = new Vec2(x, (canvasHeight / 2) - (this.size.y / 2));
-		this.position = {...this.startPosition};
+			x = canvas.width - padding - this.size.x;
+		this.startPosition = new Vec2(x, (canvas.height / 2) - (this.size.y / 2));
+		this.position = this.startPosition.clone();
 
 		// TODO: remove/refac
 		this.speed = 600;

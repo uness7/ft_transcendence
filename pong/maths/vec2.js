@@ -1,23 +1,18 @@
 export default class Vec2 {
-	// TODO?: set fields to private, implement accessors
 	constructor(x=0, y=0) {
 		this.x = x;
 		this.y = y;
 	}
 
-	add = (v) => {
-		this.x += v.x;
-		this.y += v.y;
+	add = (other) => {
+		this.x += other.x;
+		this.y += other.y;
 	}
 
-	// scalaire
+	// scalar
 	mul = (k) => {
 		this.x *= k;
 		this.y *= k;
-	}
-
-	newMul = (k) => {
-		return new Vec2(this.x * k, this.y * k);
 	}
 
 	clone = () => {
@@ -27,5 +22,13 @@ export default class Vec2 {
 	copy = (other) => {
 		this.x = other.x;
 		this.y = other.y;
+	}
+
+	static rAdd = (u, v) => {
+		return new Vec2(u.x + v.x, u.y + v.y);
+	}
+
+	static rMul = (v, k) => {
+		return new Vec2(v.x * k, v.y * k);
 	}
 }
