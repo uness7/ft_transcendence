@@ -8,6 +8,7 @@ export default class Paddle {
 	#height;
 	#color;
 
+	// TODO: change right/left to (bool)isLeftSide
 	constructor(width, height, padding, side="left", color="white") {
 		this.#width = width; 
 		this.#height = height;

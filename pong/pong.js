@@ -7,7 +7,8 @@ import Vec2 from "./vec2.js";
 
 const GameState = {
 	Menu: "menu",
-	Play: "play"
+	Play: "play",
+	Serve: "serve",
 }
 
 export default class Pong {
@@ -18,6 +19,7 @@ export default class Pong {
 		this.targetFPS = 60;
 		this.frameDuration = 1_000 / this.targetFPS;
 		this.timeLastFrame = 0;
+		this.isLeftServe = false;
 
 		this.state = GameState.Menu;
 		this.entities = {
@@ -55,7 +57,7 @@ export default class Pong {
 		this.#gameStartTimer()
 			.then(() => {
 				delete this.entities.gameStateText;
-				this.state = GameState.Play;
+				this.state = GameState.Serve;
 				this.gameLoop();
 			});
 	}
@@ -68,7 +70,28 @@ export default class Pong {
 		const dt = timeNow - this.timeLastFrame;
 		this.timeLastFrame = timeNow;
 	
-		this.entities.ball.position.x += 400 * dt / 1000;
+		const ball = this.entities.ball;
+		if (this.state === GameState.Play) {
+			if (this.isLeftServe)
+				ball.position.x += 400 * dt / 1000;
+			else
+				ball.position.x -= 400 * dt / 1000;
+			if (ball.position.x - ball.radius <= 0) {
+				console.log("lost");
+				this.state = GameState.Serve;
+				this.isLeftServe = true;
+			} else if (ball.position.x + ball.radius >= canvasWidth) {
+				console.log("won");
+				this.state = GameState.Serve;
+				this.isLeftServe = false;
+			}
+		} else if (this.state === GameState.Serve) {
+			console.log("serve");
+			ball.moveToCenter();
+			this.state = GameState.Play;
+		}
+
+
 		this.render();
 		requestAnimationFrame(this.gameLoop);
 	}
