@@ -13,15 +13,15 @@ export default class Paddle {
 		this.#width = width; 
 		this.#height = height;
 		this.#color = color;
-
 		let x = 0;
 		if (side === "left")
-				x = padding;
+			x = padding;
 		else if (side === "right")
-				x = canvasWidth - padding - this.#width;
+			x = canvasWidth - padding - this.#width;
 		else
-			throw new Error(`Invalid argument: side must be 'left' or 'right'`);
-		this.#position = new Vec2(x, (canvasHeight / 2) - (this.#height / 2));
+		throw new Error(`Invalid argument: side must be 'left' or 'right'`);
+		this.startPosition = new Vec2(x, (canvasHeight / 2) - (this.#height / 2));
+		this.#position = this.startPosition.clone();
 	}
 
 	get position() {

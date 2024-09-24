@@ -121,7 +121,8 @@ export default class Pong {
 				ball.speed.set(ball.startingSpeed);
 			}
 			ball.moveToCenter();
-
+			paddleLeft.position.set(paddleLeft.startPosition);
+			paddleRight.position.set(paddleRight.startPosition);
 			// timer(2)
 			// 	.then(() => {
 					this.state = GameState.Play;
