@@ -51,6 +51,16 @@ class   User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False);
     created = models.DateTimeField(auto_now=True);
     updated = models.DateTimeField(auto_now_add=True);
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True); # optional
+    games_played = models.IntegerField(default=0);
+    games_won = models.IntegerField(default=0);
+    games_lost = models.IntegerField(default=0);
+
+    @property
+    def win_rate(self):
+        if self.games_played == 0:
+            return 0
+        return (self.games_won / self.games_played) * 100
 
     USERNAME_FIELD = 'email';
     REQUIRED_FIELDS = ['username'];
