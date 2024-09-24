@@ -22,7 +22,8 @@ export default class Ball {
 	}
 
 	moveToCenter = () => {
-		this.#position.setCoordinates(canvasWidth / 2, canvasHeight / 2);
+		this.#position.x = canvasWidth / 2;
+		this.#position.y = canvasHeight / 2;
 	}
 
 	render = () => {
