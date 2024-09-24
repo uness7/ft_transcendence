@@ -1,4 +1,4 @@
-import Vec2 from "./maths/vec2.js";
+import Vec2 from "../maths/vec2.js";
 import { canvas, ctx } from "./canvas.js";
 
 
