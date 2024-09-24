@@ -8,11 +8,12 @@ export default class Ball {
 	#color;
 
 	constructor(radius=8, color="white") {
-		this.#position = new Vec2(canvasWidth / 2, canvasHeight / 2);
 		this.#radius = radius;
 		this.#color = color;
-		this.startingSpeed = new Vec2(-370, 0);
-		this.speed = this.startingSpeed.clone();
+		this.startSpeed = new Vec2(-370, 0);
+		this.speed = this.startSpeed.clone();
+		this.startPosition = new Vec2(canvasWidth / 2, canvasHeight / 2);
+		this.#position = new Vec2();
 	}
 
 	get position() {
@@ -23,9 +24,8 @@ export default class Ball {
 		return this.#radius;
 	}
 
-	moveToCenter = () => {
-		this.#position.x = canvasWidth / 2;
-		this.#position.y = canvasHeight / 2;
+	reset = () => {
+		this.position.set(this.startPosition);
 	}
 
 	render = () => {

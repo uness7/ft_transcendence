@@ -40,6 +40,10 @@ export default class Paddle {
 		return  this.#height;
 	}
 
+	reset = () => {
+		this.position.set(this.startPosition);
+	}
+
 	render = () => {
 		ctx.fillStyle = this.#color;
 		ctx.fillRect(this.position.x, this.position.y, this.width, this.height);

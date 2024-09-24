@@ -33,9 +33,8 @@ export default class Pong {
 	constructor() {
 		// game config
 		this.timeBeforeGameStarts = 1;
-		this.targetFPS = 60;
-		this.frameDuration = 1_000 / this.targetFPS;
 		this.timeLastFrame = 0;
+		this.maxScore = 3;
 		this.isLeftServe = false;
 
 		this.state = GameState.Menu;
@@ -45,9 +44,9 @@ export default class Pong {
 			ball: new Ball(),
 			gameStateText: new TextHUD(
 				`Game starts in ${this.timeBeforeGameStarts}...`,
-				new Vec2(canvasWidth / 2, 50)),
-			leftScoreText: new TextHUD('0', new Vec2(canvasWidth / 4, 50)),
-			rightScoreText: new TextHUD('0', new Vec2(3 * canvasWidth / 4, 50)),
+				new Vec2(canvasWidth / 2, 40)),
+			leftScoreText: new TextHUD('0', new Vec2(canvasWidth / 4, 100)),
+			rightScoreText: new TextHUD('0', new Vec2(3 * canvasWidth / 4, 100)),
 		};
 
 	}
@@ -94,7 +93,9 @@ export default class Pong {
 		const paddleLeft = this.entities.paddleLeft;
 		const paddleRight = this.entities.paddleRight;
 
-		if (this.state === GameState.Play) {
+		if (this.state === GameState.Menu) {
+			console.log("menu");
+		} else if (this.state === GameState.Play) {
 			this.entities.gameStateText.text = "Play";
 	
 			// update positions
@@ -103,14 +104,13 @@ export default class Pong {
 
 			ball.position.add(ball.speed.newMul(dt / 1000));
 
-			// check round finished
+			// collision with left/right
 			if (ball.position.x < 0) {
 				paddleRight.score++;
 				this.entities.rightScoreText.text = paddleRight.score.toString();
 				this.state = GameState.Serve;
 				this.isLeftServe = true;
 			} else if (ball.position.x > canvasWidth) {
-				console.log("won");
 				paddleLeft.score++;
 				this.entities.leftScoreText.text = paddleLeft.score.toString();
 				this.state = GameState.Serve;
@@ -159,20 +159,31 @@ export default class Pong {
 			paddleLeft.position.y = clamp(paddleLeft.position.y, 0, canvasHeight - paddleLeft.height);
 
 		} else if (this.state === GameState.Serve) {
+			ball.reset();
+			paddleLeft.reset();
+			paddleRight.reset();
+
+			if (paddleLeft.score === this.maxScore) {
+				console.log("win");
+				this.state = GameState.Menu;
+			}
+			if (paddleRight.score === this.maxScore) {
+				console.log("lost");
+				this.state = GameState.Menu;
+			}
 			if (this.isLeftServe) {
 				this.entities.gameStateText.text = "Left Serve";
 				ball.speed.mul(-1);
 			}
 			else {
 				this.entities.gameStateText.text = "Right Serve";
-				ball.speed.set(ball.startingSpeed);
+				ball.speed.set(ball.startSpeed);
 			}
-			ball.moveToCenter();
-			paddleLeft.position.set(paddleLeft.startPosition);
-			paddleRight.position.set(paddleRight.startPosition);
+
 			// timer(2)
 			// 	.then(() => {
-					this.state = GameState.Play;
+			if (this.state === GameState.Serve)
+				this.state = GameState.Play;
 				// });
 		}
 
