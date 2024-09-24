@@ -44,7 +44,9 @@ export default class Pong {
 			paddleRight: new Paddle(15, 100, 20, "right"),
 			ball: new Ball(),
 			gameStateText: new TextHUD(
-				`Game starts in ${this.timeBeforeGameStarts}...`, 50)
+				`Game starts in ${this.timeBeforeGameStarts}...`,
+				new Vec2(canvasWidth / 2, 50)),
+			// leftScoreText: new TextHUD(`0`)
 		};
 
 	}
@@ -94,21 +96,25 @@ export default class Pong {
 		if (this.state === GameState.Play) {
 			this.entities.gameStateText.text = "Play";
 	
+			// update positions
 			paddleLeft.position.y += paddleLeft.yDirection * dt / 1000;
 			paddleLeft.yDirection = 0;
 
 			ball.position.add(ball.speed.newMul(dt / 1000));
 
+			// check round finished
 			if (ball.position.x < 0) {
-				console.log("lost");
+				paddleRight.score++;
 				this.state = GameState.Serve;
 				this.isLeftServe = true;
 			} else if (ball.position.x > canvasWidth) {
 				console.log("won");
+				paddleLeft.score++;
 				this.state = GameState.Serve;
 				this.isLeftServe = false;
 			}
 			
+			// collision with top/bottom
 			if (ball.position.y - ball.radius <= 0
 			|| ball.position.y + ball.radius >= canvasHeight) {
 				ball.speed.y = -ball.speed.y;
@@ -142,6 +148,7 @@ export default class Pong {
 					ball.speed.mul(-1);
 			}
 
+			// naive ai right paddle
 			paddleRight.position.y = ball.position.y - paddleRight.height / 2;
 
 			// keep paddles inside the canvas
