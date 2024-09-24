@@ -1,11 +1,24 @@
-import { canvas, ctx } from "./canvas.js";
-import Ball from "./ball.js";
-import Paddle from "./paddle.js"
-import TextHUD from "./text-hud.js"
+import { canvas, ctx } from "./misc/canvas.js";
+import Ball from "./entities/ball.js";
+import Paddle from "./entities/paddle.js"
+import TextHUD from "./entities/text-hud.js"
 import Vec2 from "./maths/vec2.js";
-import CollisionDetector from "./collision-detector.js";
+import CollisionDetector from "./misc/collision-detector.js";
 import defaultConfig from "./game/config.js"
+import BoundingBox from "./misc/bounding-box.js";
+import Rect2 from "./maths/rect2.js";
 
+// set canvas dimensions
+canvas.width = defaultConfig.canvas.width;
+canvas.height = defaultConfig.canvas.height;
+// disable resize
+window.addEventListener("resize", () => {
+	canvas.width = defaultConfig.canvas.width;
+	canvas.height = defaultConfig.canvas.height;
+});
+
+const canvasRect = new Rect2(new Vec2(0, 0), new Vec2(canvas.width, canvas.height));
+const gameBox = new BoundingBox(canvasRect);
 
 const GameState = {
 	Menu: "menu",
@@ -51,20 +64,22 @@ export default class Pong {
 				defaultConfig.paddle.color
 			),
 			ball: new Ball(
+				gameBox.getCenter().clone(),
 				defaultConfig.ball.radius,
+				new Vec2(defaultConfig.ball.speed, 0),
 				defaultConfig.ball.color
 			),
 			gameStateText: new TextHUD(
 				`Game starts in ${defaultConfig.game.timeBeforeGameStarts}...`,
-				new Vec2(canvas.width / 2, 40)),
-			leftScoreText: new TextHUD('0', new Vec2(canvas.width / 4, 100)),
-			rightScoreText: new TextHUD('0', new Vec2(3 * canvas.width / 4, 100)),
+				new Vec2(gameBox.getHalfWidth(), 40)),
+			leftScoreText: new TextHUD('0', new Vec2(gameBox.getHalfWidth() / 2, 100)),
+			rightScoreText: new TextHUD('0', new Vec2(3 * gameBox.getHalfWidth() / 2, 100)),
 		};
-
+		console.log(this.entities.ball);
 	}
 
 	render = () => {
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.clearRect(0, 0, gameBox.getSize().x, gameBox.getSize().y);
 		Object.values(this.entities).forEach(entity => entity.render());
 	}
 
@@ -96,7 +111,7 @@ export default class Pong {
 		if (!this.timeLastFrame)
 			this.timeLastFrame = performance.now();
 		const timeNow = performance.now();
-		const dt = timeNow - this.timeLastFrame;
+		const dt = (timeNow - this.timeLastFrame) / 1000;
 		this.timeLastFrame = timeNow;
 	
 		const ball = this.entities.ball;
@@ -109,52 +124,53 @@ export default class Pong {
 			this.entities.gameStateText.text = "Play";
 	
 			// update positions
-			paddleLeft.position.y += paddleLeft.yDirection * dt / 1000;
+			paddleLeft.pos.y += paddleLeft.yDirection * dt;
 			paddleLeft.yDirection = 0;
 
-			ball.position = Vec2.rAdd(ball.position, Vec2.rMul(ball.speed, dt / 1000));
+			ball.move(dt);
 
 			// collision with left/right
-			if (ball.position.x < 0) {
+			if (gameBox.isBeyondLeftBound(ball.pos)) {
 				paddleRight.score++;
 				this.entities.rightScoreText.text = paddleRight.score.toString();
 				this.state = GameState.Serve;
 				this.isLeftServe = true;
-			} else if (ball.position.x > canvas.width) {
+			} else if (gameBox.isBeyondRightBound(ball.pos)) {
 				paddleLeft.score++;
 				this.entities.leftScoreText.text = paddleLeft.score.toString();
 				this.state = GameState.Serve;
 				this.isLeftServe = false;
 			}
+
 			// collision with top/bottom
-			if (ball.position.y - ball.radius <= 0
-			|| ball.position.y + ball.radius >= canvas.height) {
-				ball.speed.y = -ball.speed.y;
+			if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
+			|| gameBox.isBeyondTopBound(ball.getTopPoint())) {
+				ball.inverseYSpeed();
 			}
 
 
 			// left paddle collision
-			if (CollisionDetector.pointToRect(ball.position, paddleLeft.getRect())) {
-				ball.speed.x *= -1;
+			if (CollisionDetector.pointToRect(ball.pos, paddleLeft.getRect())) {
+				ball.inverseXSpeed();
 			}
 			
 			// right paddle collision
-			if (CollisionDetector.pointToRect(ball.position, paddleRight.getRect())) {
-				ball.speed.x *= -1;
+			if (CollisionDetector.pointToRect(ball.pos, paddleRight.getRect())) {
+				ball.inverseXSpeed();
 			}
 
 			// naive ai right paddle
-			if (ball.position.y > paddleRight.position.y + (paddleRight.height / 2 + 10))
-				paddleRight.position.y += 250 * dt / 1000;
-			if (ball.position.y < paddleRight.position.y + (paddleRight.height / 2 - 10))
-				paddleRight.position.y -= 250 * dt / 1000;
+			if (ball.pos.y > paddleRight.pos.y + (paddleRight.height / 2 + 10))
+				paddleRight.pos.y += 250 * dt;
+			if (ball.pos.y < paddleRight.pos.y + (paddleRight.height / 2 - 10))
+				paddleRight.pos.y -= 250 * dt;
 
 			// keep paddles inside the canvas
-			paddleRight.position.y = clamp(paddleRight.position.y, 0, canvas.height - paddleRight.height);
-			paddleLeft.position.y = clamp(paddleLeft.position.y, 0, canvas.height - paddleLeft.height);
+			paddleRight.pos.y = clamp(paddleRight.pos.y, 0, gameBox.getSize().y - paddleRight.height);
+			paddleLeft.pos.y = clamp(paddleLeft.pos.y, 0, gameBox.getSize().y - paddleLeft.height);
 
 		} else if (this.state === GameState.Serve) {
-			ball.reset();
+			ball.reset(this.isLeftServe);
 			paddleLeft.reset();
 			paddleRight.reset();
 
@@ -170,7 +186,7 @@ export default class Pong {
 			}
 			else {
 				this.entities.gameStateText.text = "Right Serve";
-				ball.speed.copy(ball.startSpeed);
+				ball.speed.copy(ball.resetSpeed);
 			}
 
 			if (this.state === GameState.Serve)
@@ -183,9 +199,7 @@ export default class Pong {
 	}
 }
 
-// set canvas dimensions
-canvas.setAttribute("width", defaultConfig.canvas.width);
-canvas.setAttribute("height", defaultConfig.canvas.height);
+
 
 
 
@@ -204,7 +218,4 @@ document.addEventListener("keydown", event => {
 
 window.addEventListener("load", game.load);
 
-window.addEventListener("resize", () => {
-	canvas.width = canvas.width;
-	canvas.height = canvas.height;
-});
+

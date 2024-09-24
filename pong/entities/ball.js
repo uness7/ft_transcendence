@@ -1,14 +1,14 @@
 import Vec2 from "../maths/vec2.js";
-import { canvas, ctx } from "./canvas.js";
+import { ctx } from "../misc/canvas.js";
 
 
 export default class Ball {
-	constructor(radius, speed, color) {
+	constructor(position, radius, speed, color) {
 		this.color = color;
 		this.radius = radius;
 		this.resetSpeed = speed;
 		this.speed = this.resetSpeed.clone();
-		this.resetPos = new Vec2(canvas.width / 2, canvas.height / 2);
+		this.resetPos = position;
 		this.pos = this.resetPos.clone();
 	}
 
@@ -33,11 +33,11 @@ export default class Ball {
 	}
 
 	getTopPoint = () => {
-		return this.pos - this.radius;
+		return new Vec2(this.pos.x, this.pos - this.radius);
 	}
 
 	getBottomPoint = () => {
-		return this.pos + this.radius;
+		return new Vec2(this.pos.x, this.pos + this.radius);
 	}
 
 	render = () => {
