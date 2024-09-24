@@ -133,6 +133,8 @@ export default class Pong {
 					ball.speed.mul(-1);
 			}
 
+			paddleRight.position.y = ball.position.y - paddleRight.height / 2;
+
 		} else if (this.state === GameState.Serve) {
 			if (this.isLeftServe) {
 				this.entities.gameStateText.text = "Left Serve";
