@@ -35,7 +35,7 @@ export default class Paddle {
 		return  this.#height;
 	}
 
-	render() {
+	render = () => {
 		ctx.fillStyle = this.#color;
 		ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 	}

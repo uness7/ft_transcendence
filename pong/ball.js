@@ -21,11 +21,11 @@ export default class Ball {
 		return this.#radius;
 	}
 
-	moveToCenter() {
+	moveToCenter = () => {
 		this.#position.setCoordinates(canvasWidth / 2, canvasHeight / 2);
 	}
 
-	render() {
+	render = () => {
 		ctx.fillStyle = this.#color;
 		ctx.arc(this.#position.x, this.#position.y, this.radius, 0, 2 * Math.PI);
 		ctx.fill();

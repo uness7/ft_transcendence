@@ -23,7 +23,7 @@ export default class TextHUD {
 		console.log(this.#position.x, canvasWidth, newText.width);
 	}
 
-	render() {
+	render = () => {
 		ctx.font = this.#font;
 		ctx.textAlign = "center";
 		ctx.fillStyle = this.#color;
