@@ -4,4 +4,15 @@ export default class Vec2 {
 		this.x = x;
 		this.y = y;
 	}
+
+	add = (v) => {
+		this.x += v.x;
+		this.y += v.y;
+	}
+
+	// scalaire
+	mul = (k) => {
+		this.x *= k;
+		this.y *= k;
+	}
 }
