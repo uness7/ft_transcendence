@@ -53,6 +53,15 @@
 								required
 								@blur="validateConfirmPassword"
 							/>
+							<input
+								type="checkbox"
+								id="consent"
+								name="consent"
+								required
+							/>
+							<label for="consent">
+								I agree to the <router-link to="privacy">privacy policy</router-link>.
+							</label>
 						</div>
 						<button
 							type="submit"
