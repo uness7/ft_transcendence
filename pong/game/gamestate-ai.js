@@ -89,26 +89,41 @@ class Pong {
 		const playerPaddle = this.entities.playerPaddle;
 		const aiPaddle = this.entities.aiPaddle;
 
-		// collision with left/right
+		// collision with left bound
 		if (gameBox.isBeyondLeftBound(ball.pos)) {
 			this.rightScore++;
 			this.state = GameState.Serve;
 			this.isLeftServe = true;
-		} else if (gameBox.isBeyondRightBound(ball.pos)) {
+		}
+
+		// collision with right bound
+		if (gameBox.isBeyondRightBound(ball.pos)) {
 			this.leftScore++;
 			this.state = GameState.Serve;
 			this.isLeftServe = false;
 		}
 
-		// collision with top/bottom
+		// collision with bottom bound
 		if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
-		|| gameBox.isBeyondTopBound(ball.getTopPoint())) {
+		&& ball.isMovingDown()) {
 			ball.inverseYSpeed();
 		}
 
-		// collision with paddles
+		// collision with top bound
+		if (gameBox.isBeyondTopBound(ball.getTopPoint())
+		&& ball.isMovingUp()) {
+			ball.inverseYSpeed();
+		}
+
+		// collision with left paddle
 		if (CollisionDetector.pointToRect(ball.pos, playerPaddle.rect)
-		|| CollisionDetector.pointToRect(ball.pos, aiPaddle.rect)) {
+		&& ball.isMovingLeft()) {
+			ball.inverseXSpeed();
+		}
+
+		// collision with right paddle
+		if (CollisionDetector.pointToRect(ball.pos, aiPaddle.rect)
+		&& ball.isMovingRight()) {
 			ball.inverseXSpeed();
 		}
 	}

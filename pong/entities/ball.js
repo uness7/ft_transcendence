@@ -40,6 +40,22 @@ export default class Ball {
 		return new Vec2(this.pos.x, this.pos + this.radius);
 	}
 
+	isMovingLeft = () => {
+		return this.speed.x <= 0;
+	}
+
+	isMovingRight = () => {
+		return this.speed.x >= 0;
+	}
+
+	isMovingUp = () => {
+		return this.speed.y <= 0;
+	}
+
+	isMovingDown = () => {
+		return this.speed.y >= 0;
+	}
+
 	render = () => {
 		ctx.fillStyle = this.color;
 		ctx.beginPath();
