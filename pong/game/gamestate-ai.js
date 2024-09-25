@@ -84,73 +84,53 @@ class Pong {
 		this.gameLoop();
 	}
 
-	gameLoop = () => {
-		if (!this.timeLastFrame)
-			this.timeLastFrame = performance.now();
-		const timeNow = performance.now();
-		const dt = (timeNow - this.timeLastFrame) / 1000;
-		this.timeLastFrame = timeNow;
-	
+	checkCollisions = () => {
 		const ball = this.entities.ball;
 		const playerPaddle = this.entities.playerPaddle;
 		const aiPaddle = this.entities.aiPaddle;
 
-		if (this.state === GameState.Menu) {
-			this.entities.gameStateText.text = "PRESS SPACE TO START";
-		} else if (this.state === GameState.Play) {
-			this.entities.gameStateText.text = "";
-			
-			
-			// update player position
-			if (leftToggleMoveUp)
-				playerPaddle.moveUp(dt);
-			if (leftToggleMoveDown)
-				playerPaddle.moveDown(dt);
-			playerPaddle.updatePosition();
-			
-			// update ai position
-			aiPaddle.checkMovement(dt, ball.pos, defaultConfig.ai.chaseBuffer);
-			
-			ball.move(dt);
+		// collision with left/right
+		if (gameBox.isBeyondLeftBound(ball.pos)) {
+			this.rightScore++;
+			this.state = GameState.Serve;
+			this.isLeftServe = true;
+		} else if (gameBox.isBeyondRightBound(ball.pos)) {
+			this.leftScore++;
+			this.state = GameState.Serve;
+			this.isLeftServe = false;
+		}
 
-			// collision with left/right
-			if (gameBox.isBeyondLeftBound(ball.pos)) {
-				this.rightScore++;
-				this.entities.rightScoreText.text = this.rightScore.toString();
-				this.state = GameState.Serve;
-				this.isLeftServe = true;
-			} else if (gameBox.isBeyondRightBound(ball.pos)) {
-				this.leftScore++;
-				this.entities.leftScoreText.text = this.leftScore.toString();
-				this.state = GameState.Serve;
-				this.isLeftServe = false;
-			}
+		// collision with top/bottom
+		if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
+		|| gameBox.isBeyondTopBound(ball.getTopPoint())) {
+			ball.inverseYSpeed();
+		}
 
-			// collision with top/bottom
-			if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
-			|| gameBox.isBeyondTopBound(ball.getTopPoint())) {
-				ball.inverseYSpeed();
-			}
+		// collision with paddles
+		if (CollisionDetector.pointToRect(ball.pos, playerPaddle.rect)
+		|| CollisionDetector.pointToRect(ball.pos, aiPaddle.rect)) {
+			ball.inverseXSpeed();
+		}
+	}
 
-			// paddles collision
-			if (CollisionDetector.pointToRect(ball.pos, playerPaddle.rect)
-			|| CollisionDetector.pointToRect(ball.pos, aiPaddle.rect)) {
-				ball.inverseXSpeed();
-			}
-
-		} else if (this.state === GameState.Serve) {
-			ball.reset(this.isLeftServe);
-			playerPaddle.reset();
-			aiPaddle.reset();
-			toggleMoveResetAll();
-
-			if (this.leftScore === defaultConfig.game.maxScore) {
+	checkGameFinished = () => {
+		if (this.leftScore === defaultConfig.game.maxScore
+			|| this.rightScore === defaultConfig.game.maxScore
+		) {
+			if (this.leftScore === defaultConfig.game.maxScore)
+				this.entities.gameStateText.text = "PLAYER WINS";
+			else
+				this.entities.gameStateText.text = "PLAYER LOST";
+			this.state = GameState.Wait;
+			setTimeout(() => {
 				this.state = GameState.Menu;
-			}
-			if (this.rightScore === defaultConfig.game.maxScore) {
-				this.state = GameState.Menu;
-			}
+			}, defaultConfig.game.timeBeforeGameStarts * 1000);
+		}
+	}
 
+	checkServeSide = () => {
+		const ball = this.entities.ball;
+		if (this.state === GameState.Serve) {
 			if (this.isLeftServe) {
 				this.entities.gameStateText.text = "PLAYER SERVES";
 				ball.speed.mul(-1);
@@ -167,7 +147,51 @@ class Pong {
 				}, defaultConfig.game.timeBeforeRoundStarts * 1000);
 			}
 		}
+	}
 
+	updateEntitiesPosition = () => {
+		const ball = this.entities.ball;
+		const playerPaddle = this.entities.playerPaddle;
+		const aiPaddle = this.entities.aiPaddle;
+
+		if (leftToggleMoveUp)
+			playerPaddle.moveUp(dt);
+		if (leftToggleMoveDown)
+			playerPaddle.moveDown(dt);
+		playerPaddle.updatePosition();
+		aiPaddle.checkMovement(dt, ball.pos, defaultConfig.ai.chaseBuffer);
+		ball.move(dt);
+	}
+
+	gameLoop = () => {
+		if (!this.timeLastFrame)
+			this.timeLastFrame = performance.now();
+		const timeNow = performance.now();
+		const dt = (timeNow - this.timeLastFrame) / 1000;
+		this.timeLastFrame = timeNow;
+	
+		const ball = this.entities.ball;
+		const playerPaddle = this.entities.playerPaddle;
+		const aiPaddle = this.entities.aiPaddle;
+
+		if (this.state === GameState.Menu) {			// STATE MENU
+			this.entities.gameStateText.text = "PRESS SPACE TO START";
+			this.leftScore = 0;
+			this.rightScore = 0;
+		} else if (this.state === GameState.Play) {		// STATE PLAY
+			this.entities.gameStateText.text = "";
+			this.updateEntitiesPosition();
+			this.checkCollisions();
+		} else if (this.state === GameState.Serve) {	// STATE SERVE
+			ball.reset(this.isLeftServe);
+			playerPaddle.reset();
+			aiPaddle.reset();
+			toggleMoveResetAll();
+			this.checkGameFinished();
+			this.checkServeSide();
+		}
+		this.entities.rightScoreText.text = this.rightScore.toString();
+		this.entities.leftScoreText.text = this.leftScore.toString();
 		this.render();
 		requestAnimationFrame(this.gameLoop);
 	}
@@ -175,10 +199,10 @@ class Pong {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// set canvas dimensions
+// canvas
 canvas.width = defaultConfig.canvas.width;
 canvas.height = defaultConfig.canvas.height;
-// disable resize
+
 window.addEventListener("resize", () => {
 	canvas.width = defaultConfig.canvas.width;
 	canvas.height = defaultConfig.canvas.height;
@@ -190,6 +214,7 @@ const canvasRect = new Rect2(
 );
 const gameBox = new BoundingBox(canvasRect);
 
+// player movement events
 let leftToggleMoveUp = false;
 let leftToggleMoveDown = false;
 
@@ -222,6 +247,6 @@ document.addEventListener("keyup", event => {
 	}
 });
 
+// game
 const game = new Pong();
-
 window.addEventListener("load", game.load);
