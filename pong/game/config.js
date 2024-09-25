@@ -8,20 +8,26 @@ const defaultConfig = {
 			x: 15,
 			y: 100
 		},
+		sizeAi: {
+			x: 15,
+			y: 100
+		},
 		speed: 400,
+		speedAi: 400,
 		padding: 20,
 		color: "white"
 	},
 	ball: {
 		radius: 8,
 		color: "white",
-		speed: 400
+		speed: 500
 	},
 	game: {
 		maxScore: 3,
 		playerIsLeftSide: true,
 		timeBeforeGameStarts: 3,
 		timeBeforeRoundStarts: 1.25,
+		playerImmortal: false
 	},
 	text: {
 		color: "white",
@@ -35,4 +41,78 @@ const defaultConfig = {
 	}
 };
 
-export default defaultConfig;
+const gameConfig = {
+	canvas: {
+		width: 1280,
+		height: 720
+	},
+	paddle: {
+		size: {
+			x: 15,
+			y: 100
+		},
+		sizeAi: {
+			x: 15,
+			y: 100
+		},
+		speed: 400,
+		speedAi: 400,
+		padding: 20,
+		color: "white"
+	},
+	ball: {
+		radius: 8,
+		color: "white",
+		speed: 500
+	},
+	game: {
+		maxScore: 3,
+		playerIsLeftSide: true,
+		timeBeforeGameStarts: 3,
+		timeBeforeRoundStarts: 1.25,
+		playerImmortal: false
+	},
+	text: {
+		color: "white",
+		fontMain: "48px serif",
+		fontScores: "48px serif",
+		yPaddingMain: 50,
+		yPaddingScores: 100
+	},
+	ai: {
+		chaseBuffer: 10
+	}
+};
+export default gameConfig;
+
+export const togglePlayerSpeedBuff = () => {
+	if (gameConfig.paddle.speed === defaultConfig.paddle.speed) {
+		gameConfig.paddle.speed = 550;
+	} else {
+		gameConfig.paddle.speed = defaultConfig.paddle.speed;
+	}
+}
+
+export const togglePlayerLargerPaddle = () => {
+	if (gameConfig.paddle.size.y === defaultConfig.paddle.size.y) {
+		gameConfig.paddle.size.y = 150;
+	} else {
+		gameConfig.paddle.size.y = defaultConfig.paddle.size.y;
+	}
+}
+
+export const toggleFasterBall = () => {
+	if (gameConfig.ball.speed === defaultConfig.ball.speed) {
+		gameConfig.ball.speed = 800;
+	} else {
+		gameConfig.ball.speed = defaultConfig.ball.speed;
+	}
+}
+
+export const togglePlayerImmortal = () => {
+	if (gameConfig.game.playerImmortal) {
+		gameConfig.game.playerImmortal = false;
+	} else {
+		gameConfig.game.playerImmortal = true;
+	}
+}

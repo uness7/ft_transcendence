@@ -5,12 +5,18 @@ import AiPaddle from "../entities/ai-paddle.js"
 import TextHUD from "../entities/text-hud.js"
 import Vec2 from "../maths/vec2.js";
 import CollisionDetector from "../misc/collision-detector.js";
-import defaultConfig from "./config.js"
+import gameConfig from "./config.js"
+import { togglePlayerImmortal, toggleFasterBall, togglePlayerLargerPaddle, togglePlayerSpeedBuff } from "./config.js"
 import BoundingBox from "../misc/bounding-box.js";
 import Rect2 from "../maths/rect2.js";
 
 
 ////////////////////////////////////////////////////////////////////////////////
+
+togglePlayerImmortal();
+toggleFasterBall();
+togglePlayerLargerPaddle();
+togglePlayerSpeedBuff();
 
 const GameState = {
 	Menu: "menu",
@@ -32,27 +38,27 @@ class Pong {
 			aiPaddle: new AiPaddle(gameBox, false),
 			ball: new Ball(
 				gameBox.getCenter().clone(),
-				defaultConfig.ball.radius,
-				new Vec2(defaultConfig.ball.speed, 0),
-				defaultConfig.ball.color
+				gameConfig.ball.radius,
+				new Vec2(gameConfig.ball.speed, 0),
+				gameConfig.ball.color
 			),
 			gameStateText: new TextHUD(
 				"",
-				new Vec2(gameBox.getHalfWidth(), defaultConfig.text.yPaddingMain),
-				defaultConfig.text.fontMain,
-				defaultConfig.text.color
+				new Vec2(gameBox.getHalfWidth(), gameConfig.text.yPaddingMain),
+				gameConfig.text.fontMain,
+				gameConfig.text.color
 			),
 			leftScoreText: new TextHUD(
 				"0",
-				new Vec2(gameBox.getHalfWidth() / 2, defaultConfig.text.yPaddingScores),
-				defaultConfig.text.fontScores,
-				defaultConfig.text.color
+				new Vec2(gameBox.getHalfWidth() / 2, gameConfig.text.yPaddingScores),
+				gameConfig.text.fontScores,
+				gameConfig.text.color
 			),
 			rightScoreText: new TextHUD(
 				"0",
-				new Vec2(gameBox.getHalfWidth() * 3 / 2, defaultConfig.text.yPaddingScores),
-				defaultConfig.text.fontScores,
-				defaultConfig.text.color
+				new Vec2(gameBox.getHalfWidth() * 3 / 2, gameConfig.text.yPaddingScores),
+				gameConfig.text.fontScores,
+				gameConfig.text.color
 			),
 		};
 	}
@@ -65,7 +71,7 @@ class Pong {
 	gameStartTimer = () => {
 		this.state = GameState.Wait;
 		return new Promise(resolve => {
-			let timeToWait = defaultConfig.game.timeBeforeGameStarts;
+			let timeToWait = gameConfig.game.timeBeforeGameStarts;
 			const timer = setInterval(() => {
 				this.entities.gameStateText.text = `GAME STARTS IN ${timeToWait}...`;
 				this.render();
@@ -91,7 +97,8 @@ class Pong {
 
 		// collision with left bound
 		if (gameBox.isBeyondLeftBound(ball.pos)) {
-			this.rightScore++;
+			if (!gameConfig.game.playerImmortal)
+				this.rightScore++;
 			this.state = GameState.Serve;
 			this.isLeftServe = true;
 		}
@@ -129,17 +136,17 @@ class Pong {
 	}
 
 	checkGameFinished = () => {
-		if (this.leftScore === defaultConfig.game.maxScore
-			|| this.rightScore === defaultConfig.game.maxScore
+		if (this.leftScore === gameConfig.game.maxScore
+			|| this.rightScore === gameConfig.game.maxScore
 		) {
-			if (this.leftScore === defaultConfig.game.maxScore)
+			if (this.leftScore === gameConfig.game.maxScore)
 				this.entities.gameStateText.text = "PLAYER WINS";
 			else
 				this.entities.gameStateText.text = "PLAYER LOST";
 			this.state = GameState.Wait;
 			setTimeout(() => {
 				this.state = GameState.Menu;
-			}, defaultConfig.game.timeBeforeGameStarts * 1000);
+			}, gameConfig.game.timeBeforeGameStarts * 1000);
 		}
 	}
 
@@ -159,7 +166,7 @@ class Pong {
 				this.state = GameState.Wait;
 				setTimeout(() => {
 					this.state = GameState.Play;
-				}, defaultConfig.game.timeBeforeRoundStarts * 1000);
+				}, gameConfig.game.timeBeforeRoundStarts * 1000);
 			}
 		}
 	}
@@ -174,7 +181,7 @@ class Pong {
 		if (leftToggleMoveDown)
 			playerPaddle.moveDown(dt);
 		playerPaddle.updatePosition();
-		aiPaddle.checkMovement(dt, ball.pos, defaultConfig.ai.chaseBuffer);
+		aiPaddle.checkMovement(dt, ball.pos, gameConfig.ai.chaseBuffer);
 		ball.move(dt);
 	}
 
@@ -215,12 +222,12 @@ class Pong {
 ////////////////////////////////////////////////////////////////////////////////
 
 // canvas
-canvas.width = defaultConfig.canvas.width;
-canvas.height = defaultConfig.canvas.height;
+canvas.width = gameConfig.canvas.width;
+canvas.height = gameConfig.canvas.height;
 
 window.addEventListener("resize", () => {
-	canvas.width = defaultConfig.canvas.width;
-	canvas.height = defaultConfig.canvas.height;
+	canvas.width = gameConfig.canvas.width;
+	canvas.height = gameConfig.canvas.height;
 });
 
 const canvasRect = new Rect2(

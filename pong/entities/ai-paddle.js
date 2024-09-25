@@ -1,11 +1,19 @@
 import Paddle from "./paddle.js";
 import Rect2 from "../maths/rect2.js";
 import Vec2 from "../maths/vec2.js";
+import gameConfig from "../game/config.js";
 
 
 export default class AiPaddle extends Paddle {
 	constructor(boundBox, isLeftSide=true) {
 		super();
+		this.size = new Vec2(
+			gameConfig.paddle.sizeAi.x,
+			gameConfig.paddle.sizeAi.y
+		);
+		this.halfHeight = this.size.y / 2;
+		this.resetSpeed = new Vec2(gameConfig.paddle.speedAi, 0);
+		this.speed = this.resetSpeed.clone();
 		this.boundBox = boundBox;
 
 		const x = isLeftSide

@@ -2,19 +2,19 @@ import Vec2 from "../maths/vec2.js";
 import Rect2 from "../maths/rect2.js";
 import { ctx } from "../misc/canvas.js";
 import { clamp } from "../misc/utils.js";
-import defaultConfig from "../game/config.js";
+import gameConfig from "../game/config.js";
 
 
 export default class Paddle {
 	constructor() {
 		this.size = new Vec2(
-			defaultConfig.paddle.size.x,
-			defaultConfig.paddle.size.y
+			gameConfig.paddle.size.x,
+			gameConfig.paddle.size.y
 		);
 		this.halfHeight = this.size.y / 2;
-		this.color = defaultConfig.paddle.color;
-		this.padding = defaultConfig.paddle.padding;
-		this.resetSpeed = new Vec2(0, defaultConfig.paddle.speed);
+		this.color = gameConfig.paddle.color;
+		this.padding = gameConfig.paddle.padding;
+		this.resetSpeed = new Vec2(0, gameConfig.paddle.speed);
 		this.speed = this.resetSpeed.clone();
 		this.rect;
 		this.resetPos;
