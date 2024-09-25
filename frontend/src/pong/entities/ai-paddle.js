@@ -6,8 +6,9 @@ import MyMaths from "../maths/maths.js";
 
 
 export default class AiPaddle extends Paddle {
-	constructor(boundBox, isLeftSide=true) {
+	constructor(ctx, boundBox, isLeftSide=true) {
 		super();
+		this.ctx = ctx;
 		this.size = new Vec2(
 			gameConfig.paddle.sizeAi.x,
 			gameConfig.paddle.sizeAi.y
