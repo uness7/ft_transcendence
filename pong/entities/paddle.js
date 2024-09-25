@@ -1,37 +1,43 @@
 import Vec2 from "../maths/vec2.js";
 import Rect2 from "../maths/rect2.js";
-import { canvas, ctx } from "./canvas.js";
+import { ctx } from "../misc/canvas.js";
+import { clamp } from "../misc/utils.js";
+import defaultConfig from "../game/config.js";
 
 
 export default class Paddle {
-	constructor(size, padding, isLeftSide, color) {
-		this.size = size;
-		this.color = color;
-
-		let x = 0;
-		if (isLeftSide)
-			x = padding;
-		else
-			x = canvas.width - padding - this.size.x;
-		this.startPosition = new Vec2(x, (canvas.height / 2) - (this.size.y / 2));
-		this.position = this.startPosition.clone();
-
-		// TODO: remove/refac
-		this.speed = 600;
-		this.yDirection = 0;
-		this.score = 0;
+	constructor() {
+		this.size = new Vec2(
+			defaultConfig.paddle.size.x,
+			defaultConfig.paddle.size.y
+		);
+		this.halfHeight = this.size.y / 2;
+		this.color = defaultConfig.paddle.color;
+		this.padding = defaultConfig.paddle.padding;
+		this.resetSpeed = new Vec2(0, defaultConfig.paddle.speed);
+		this.speed = this.resetSpeed.clone();
+		this.rect;
+		this.resetPos;
+		this.pos;
+		this.boundBox;
 	}
 
 	reset = () => {
-		this.position.copy(this.startPosition);
+		this.pos.copy(this.resetPos);
+		this.rect = new Rect2(this.pos, this.size);
 	}
 
-	getRect = () => {
-		return new Rect2({...this.position}, {...this.position});
+	updatePosition = () => {
+		this.pos.y = clamp(
+			this.pos.y,
+			this.boundBox.getPosition().y,
+			this.boundBox.getSize().y - this.size.y
+		);
+		this.rect = new Rect2(this.pos, this.size);
 	}
 
 	render = () => {
 		ctx.fillStyle = this.color;
-		ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+		ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
 	}
 }

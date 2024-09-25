@@ -4,8 +4,11 @@ const defaultConfig = {
 		height: 720
 	},
 	paddle: {
-		width: 15,
-		height: 100,
+		size: {
+			x: 15,
+			y: 100
+		},
+		speed: 400,
 		padding: 20,
 		color: "white"
 	},
