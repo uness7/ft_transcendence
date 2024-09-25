@@ -127,6 +127,7 @@ class Pong {
 		if (CollisionDetector.pointToRect(ball.pos, aiPaddle.rect)
 		&& ball.isMovingRight()) {
 			aiPaddle.collideBall(ball);
+			aiPaddle.changePosition();
 		}
 	}
 
