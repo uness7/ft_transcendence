@@ -40,6 +40,13 @@ export default {
 			logout,
 		};
 	},
+	async mounted() {
+		try {
+			await useAuthStore().initTokens();
+		} catch (error) {
+			console.log(error);
+		}
+	}
 };
 </script>
 

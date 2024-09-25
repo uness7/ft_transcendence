@@ -8,6 +8,8 @@ Get                             | /api/user/user_pk             | Lists a specif
 -----------------------------------------------------------------------------------------
 PATCH                           | /api/user/user_pk             | Modifies a specific user
 -----------------------------------------------------------------------------------------
+DELETE                          | /api/user/user_pk             | User can delete his acc
+-----------------------------------------------------------------------------------------
 
 '''
 
@@ -19,7 +21,8 @@ from user.serializers import UserSerializer;
 class   UserViewSet(viewsets.ModelViewSet):
     http_method_names = (
             'patch', 
-            'get'
+            'get',
+            'delete'
     );
     permission_classes = (
             IsAuthenticated,
@@ -39,7 +42,12 @@ class   UserViewSet(viewsets.ModelViewSet):
         # check the permissions for the retrieved object
         self.check_object_permissions(self.request, obj);
         return obj;
-    
+
+    # Add the destroy methoddef
+    def delete(self, request, *args, **kwargs):
+        user = self.get_object()  # Retrieve the user object
+        user.delete()  # Delete the user
+        return Response(status=status.HTTP_204_NO_CONTENT)  # Return a 204 No Content response
 
 
 

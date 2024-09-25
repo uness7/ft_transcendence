@@ -1,10 +1,13 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { encryptToken, decryptToken, generateKey } from './encryptAPI';
+
+const key = await generateKey();
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        accessToken: localStorage.getItem("accessToken") || null,
-        refreshToken: localStorage.getItem("refreshToken") || null,
+        accessToken: null,
+        refreshToken: null,
         user: null,
     }),
     getters: {
@@ -12,11 +15,21 @@ export const useAuthStore = defineStore("auth", {
         getUser: (state) => state.user,
     },
     actions: {
-        setTokens(accessToken, refreshToken) {
+        async initTokens() {
+            const key = await generateKey();
+            this.accessToken = await decryptToken(localStorage.getItem("accessToken"), key) || null;
+            this.refreshToken = await decryptToken(localStorage.getItem("refreshToken"), key) || null;
+        },
+        async setTokens(accessToken, refreshToken) {
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
-            localStorage.setItem("accessToken", accessToken);
-            localStorage.setItem("refreshToken", refreshToken);
+
+            // setting the encrypted tokens        
+            const encryptedAccessToken = await encryptToken(accessToken, key);
+            const encryptedRefreshToken = await encryptToken(refreshToken, key);
+            localStorage.setItem("accessToken", encryptedAccessToken);
+            localStorage.setItem("refreshToken", encryptedRefreshToken);
+
         },
         clearTokens() {
             this.accessToken = null;
@@ -59,7 +72,31 @@ export const useAuthStore = defineStore("auth", {
                 return false;
             }
         },
+        async apiBlacklistToken() {
+            try {
+                const response = await axios.post(
+                    "http://localhost:8000/api/authentication/logout/",
+                    {
+                        refresh: this.refreshToken, // This is the payload
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.accessToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );                
+                if (response.status != 204) {
+                    throw new Error('Failed to blacklist the token');
+                }
+                else
+                    console.log("Loggedout successfully!");
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
         async logout() {
+            await this.apiBlacklistToken();
             this.clearTokens();
             this.setUser(null);
         },
