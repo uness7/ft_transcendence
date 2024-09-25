@@ -2,7 +2,7 @@ import { ctx } from "../misc/canvas.js";
 
 
 export default class TextHUD {
-	constructor(text, position, font="48px serif", color="white") {
+	constructor(text, position, font, color) {
 		this.color = color;
 		this.font = font;
 		this.position = position;

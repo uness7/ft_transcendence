@@ -37,9 +37,22 @@ class Pong {
 			),
 			gameStateText: new TextHUD(
 				"",
-				new Vec2(gameBox.getHalfWidth(), 40)),
-			leftScoreText: new TextHUD('0', new Vec2(gameBox.getHalfWidth() / 2, 100)),
-			rightScoreText: new TextHUD('0', new Vec2(3 * gameBox.getHalfWidth() / 2, 100)),
+				new Vec2(gameBox.getHalfWidth(), defaultConfig.text.yPaddingMain),
+				defaultConfig.text.fontMain,
+				defaultConfig.text.color
+			),
+			leftScoreText: new TextHUD(
+				"0",
+				new Vec2(gameBox.getHalfWidth() / 2, defaultConfig.text.yPaddingScores),
+				defaultConfig.text.fontScores,
+				defaultConfig.text.color
+			),
+			rightScoreText: new TextHUD(
+				"0",
+				new Vec2(gameBox.getHalfWidth() * 3 / 2, defaultConfig.text.yPaddingScores),
+				defaultConfig.text.fontScores,
+				defaultConfig.text.color
+			),
 		};
 	}
 
@@ -120,7 +133,7 @@ class Pong {
 				ball.inverseYSpeed();
 			}
 
-			// left paddle collision
+			// paddles collision
 			if (CollisionDetector.pointToRect(ball.pos, paddleLeft.rect)
 			|| CollisionDetector.pointToRect(ball.pos, paddleRight.rect)) {
 				ball.inverseXSpeed();

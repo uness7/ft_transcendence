@@ -21,9 +21,18 @@ const defaultConfig = {
 		maxScore: 3,
 		playerIsLeftSide: true,
 		timeBeforeGameStarts: 3,
-		timeBeforeRoundStarts: 2,
+		timeBeforeRoundStarts: 1.25,
+	},
+	text: {
+		color: "white",
+		fontMain: "48px serif",
+		fontScores: "48px serif",
+		yPaddingMain: 50,
+		yPaddingScores: 100
+	},
+	ai: {
+		chaseBuffer: 10
 	}
-
 };
 
 export default defaultConfig;
