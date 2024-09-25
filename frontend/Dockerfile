@@ -1,24 +1,25 @@
-# Étape de construction
-FROM node:16 AS build
+FROM node:18
 
 WORKDIR /app
 
-# Copier les fichiers de configuration
-COPY package.json package-lock.json ./
+# Copier les fichiers package.json et package-lock.json
+COPY package*.json ./
+
+# Installer les dépendances
 RUN npm install
 
-# Copier le reste des fichiers de l'application
-COPY . ./
+# Copier le reste des fichiers
+COPY . .
+
+# Construire l'application Vue.js pour la production
 RUN npm run build
 
-## Étape de production
-#FROM nginx:alpine
-#
-## Copier les fichiers construits dans le répertoire de Nginx
-#COPY --from=build /app/dist /usr/share/nginx/html
-#
-## Exposer le port 80
-#EXPOSE 80
-#
-## Démarrer Nginx
-#CMD ["nginx", "-g", "daemon off;"]
+# Installer le serveur HTTP pour servir les fichiers construits
+RUN npm install -g http-server
+
+# Démarrer le serveur http-server sur le port 80
+CMD ["http-server", "dist", "-p", "80"]
+
+# Exposer le port 80 à l'intérieur du conteneur
+EXPOSE 80
+

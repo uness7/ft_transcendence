@@ -18,8 +18,7 @@ export default {
       this.$emit('navigate', view);
     },
     logout() {
-      // Ajoutez ici la logique pour la déconnexion si nécessaire
-      // Exemple : appel API et redirection
+      // logique avec backend pour logout
     }
   },
 };

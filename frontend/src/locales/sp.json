@@ -9,12 +9,7 @@
     "settings": "ajustes",
     "logout": "logout",
     "team": "Nuestro equipo",
-    "ouissem-about": "Ouissem Kazdar es el representante del equipo. Garantiza una comunicacion y coordinacion fluidas dentro del equipo.",
-    "lionel-about": "Lionel Guyon es responsable del desarrollo back-end, el manejo de la logica del lado del servidor y la gestion de bases de datos.",
-    "jules-about": "Jules Norget lidera el desarrollo front-end, centrandose en la experiencia del usuario y el diseno de la interfaz.",
-    "navid-about": "Navid Sadat se especializa en diseno UI/UX, creando interfaces intuitivas y faciles de usar.",
-    "youness-about": "Youness Zioual es responsable del desarrollo back-end, el manejo de la logica del lado del servidor y la gestion de bases de datos.",
-    "ouissem-status": "Representante del equipo",
+    "ouissem-status": "Responsable de docker",
     "lionel-status": "Responsable de back-end",
     "jules-status": "Responsable de front-end",
     "navid-status": "Responsable de front-end",
@@ -31,7 +26,19 @@
     "already-account":"¿Ya tienes una cuenta?",
     "sign-in":"Iniciar sesion",
     "no-account":"¿No tienes una cuenta?",
-    "image-upload":"Sube tu foto de perfil"
+    "image-upload":"Sube tu foto de perfil",
+    "local": "1v1 local",
+    "localDesc": "Modo multijugador local para jugar con amigos en el mismo dispositivo.",
+    "remote": "1v1 remoto",
+    "remoteDesc": "Juega con amigos a distancia a traves de Internet.",
+    "tournament": "Torneo",
+    "tournamentDesc": "Compite en un torneo con multiples rondas y oponentes.",
+    "ia":"1v1 IA",
+    "iaDesc":"Juega contra una inteligencia artificial",
+    "difficulty": "dificultad",
+    "easy": "facil",
+    "medium": "media",
+    "hard": "alta"
 
   }
   
