@@ -37,7 +37,7 @@ class   UserManager(BaseUserManager):
         user = self.create_user(username, email, password, **kwargs);
         user.is_superuser = True;
         user.is_staff = True;
-        user.save(using.self_db);
+        user.save(using=self._db);
         return user;
 
 
