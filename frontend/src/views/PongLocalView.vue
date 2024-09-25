@@ -20,7 +20,6 @@ export default {
 	{
 		this.initGame();
 	},
-
 	methods: {
 		initGame() {
 			const canvas = document.querySelector("#game-canvas");
