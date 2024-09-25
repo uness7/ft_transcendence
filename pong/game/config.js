@@ -6,14 +6,14 @@ const defaultConfig = {
 	paddle: {
 		size: {
 			x: 15,
-			y: 100
+			y: 110
 		},
 		sizeAi: {
 			x: 15,
-			y: 100
+			y: 110
 		},
-		speed: 450,
-		speedAi: 450,
+		speed: 500,
+		speedAi: 500,
 		padding: 20,
 		color: "white"
 	},
@@ -49,14 +49,14 @@ const gameConfig = {
 	paddle: {
 		size: {
 			x: 15,
-			y: 100
+			y: 110
 		},
 		sizeAi: {
 			x: 15,
-			y: 100
+			y: 110
 		},
-		speed: 450,
-		speedAi: 450,
+		speed: 500,
+		speedAi: 500,
 		padding: 20,
 		color: "white"
 	},
@@ -87,7 +87,7 @@ export default gameConfig;
 
 export const togglePlayerSpeedBuff = () => {
 	if (gameConfig.paddle.speed === defaultConfig.paddle.speed) {
-		gameConfig.paddle.speed = 550;
+		gameConfig.paddle.speed = 620;
 	} else {
 		gameConfig.paddle.speed = defaultConfig.paddle.speed;
 	}
@@ -95,7 +95,7 @@ export const togglePlayerSpeedBuff = () => {
 
 export const togglePlayerLargerPaddle = () => {
 	if (gameConfig.paddle.size.y === defaultConfig.paddle.size.y) {
-		gameConfig.paddle.size.y = 150;
+		gameConfig.paddle.size.y = 170;
 	} else {
 		gameConfig.paddle.size.y = defaultConfig.paddle.size.y;
 	}
@@ -103,7 +103,7 @@ export const togglePlayerLargerPaddle = () => {
 
 export const toggleFasterBall = () => {
 	if (gameConfig.ball.speed === defaultConfig.ball.speed) {
-		gameConfig.ball.speed = 800;
+		gameConfig.ball.speed = 700;
 	} else {
 		gameConfig.ball.speed = defaultConfig.ball.speed;
 	}
