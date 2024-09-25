@@ -7,29 +7,53 @@
                     <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
-            <router-link to="/remote" class="left-middle link">
+            <router-link to="/ai" class="left-middle link">
+                <div class="text-container">
+                    <p class="title">{{ $t('ai') }}</p>
+                    <p class="description">{{ $t('aiDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link v-if="isAuthenticated" to="/remote" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('remote') }}</p>
                     <p class="description">{{ $t('remoteDesc') }}</p>
                 </div>
             </router-link>
-            <router-link to="/ai" class="left-bottom link">
+            <router-link v-else to="/remote" class="left-bottom link">
                 <div class="text-container">
-                    <p class="title">{{ $t('ia') }}</p>
-                    <p class="description">{{ $t('iaDesc') }}</p>
+                    <p class="title">{{ $t('remote') }} 🔒</p>
+                    <p class="description">{{ $t('remoteDesc') }}</p>
                 </div>
             </router-link>
         </div>
         <div class="right-side">
-            <router-link to="/tournament" class="link">
+            <router-link v-if="isAuthenticated" to="/tournament" class="link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }}</p>
+                    <p class="description">{{ $t('tournamentDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link v-else class="link" to="/tournament">
+                <div class="text-container">
+                    <p class="title">{{ $t('tournament') }} 🔒</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
         </div>
     </div>
 </template>
+
+<script>
+import { isAuthenticated } from '../router/index.js';
+
+export default {
+    computed: {
+        isAuthenticated() {
+            return isAuthenticated();
+        }
+    }
+}
+</script>
 
 <style scoped>
     .content {

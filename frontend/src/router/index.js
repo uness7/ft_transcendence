@@ -58,7 +58,7 @@ const routes = [
         name: "mode",
         component: ModeView,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     },
     {
@@ -66,7 +66,7 @@ const routes = [
         name: 'ai',
         component: AiView,
         meta: {
-          requiresAuth: true,
+          requiresAuth: false,
         },
     },
     {
@@ -74,7 +74,7 @@ const routes = [
         name: "local",
         component: LocalView,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     },
     {
