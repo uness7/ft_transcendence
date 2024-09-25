@@ -36,7 +36,7 @@ export default class Pong {
 		this.state = GameState.Menu;
 		this.entities = {
 			paddleLeft: new PlayerPaddle(gameBox, true),
-			// paddleRight: new PlayerPaddle(gameBox, false),
+			paddleRight: new PlayerPaddle(gameBox, false),
 			ball: new Ball(
 				gameBox.getCenter().clone(),
 				defaultConfig.ball.radius,
@@ -90,21 +90,29 @@ export default class Pong {
 	
 		const ball = this.entities.ball;
 		const paddleLeft = this.entities.paddleLeft;
-		// const paddleRight = this.entities.paddleRight;
+		const paddleRight = this.entities.paddleRight;
 
 		if (this.state === GameState.Menu) {
 
 		} else if (this.state === GameState.Play) {
 			this.entities.gameStateText.text = "Play";
 	
-			// update positions
+			// update left paddle position
 			if (leftToggleMoveUp)
 				paddleLeft.moveUp(dt);
 			if (leftToggleMoveDown)
 				paddleLeft.moveDown(dt);
 			paddleLeft.updatePosition();
 		
+			// [PvP] update right paddle position
+			if (rightToggleMoveUp)
+				paddleRight.moveUp(dt);
+			if (rightToggleMoveDown)
+				paddleRight.moveDown(dt);
+			paddleRight.updatePosition();
 			ball.move(dt);
+
+
 
 			// collision with left/right
 			if (gameBox.isBeyondLeftBound(ball.pos)) {
@@ -124,16 +132,11 @@ export default class Pong {
 				ball.inverseYSpeed();
 			}
 
-
 			// left paddle collision
-			if (CollisionDetector.pointToRect(ball.pos, paddleLeft.rect)) {
+			if (CollisionDetector.pointToRect(ball.pos, paddleLeft.rect)
+			|| CollisionDetector.pointToRect(ball.pos, paddleRight.rect)) {
 				ball.inverseXSpeed();
 			}
-			
-			// // right paddle collision
-			// if (CollisionDetector.pointToRect(ball.pos, paddleRight.getRect())) {
-			// 	ball.inverseXSpeed();
-			// }
 
 			// naive ai right paddle
 			// if (ball.pos.y > paddleRight.pos.y + (paddleRight.height / 2 + 10))
@@ -147,7 +150,7 @@ export default class Pong {
 		} else if (this.state === GameState.Serve) {
 			ball.reset(this.isLeftServe);
 			paddleLeft.reset();
-			// paddleRight.reset();
+			paddleRight.reset();
 
 			// if (paddleLeft.score === this.maxScore) {
 			// 	this.state = GameState.Menu;
@@ -182,6 +185,8 @@ const game = new Pong();
 
 let leftToggleMoveUp = false;
 let leftToggleMoveDown = false;
+let rightToggleMoveUp = false;
+let rightToggleMoveDown = false;
 
 document.addEventListener("keydown", event => {
 	// w: 		  player left  - move up
@@ -191,6 +196,12 @@ document.addEventListener("keydown", event => {
 	}
 	if (event.key == "s" && !leftToggleMoveDown) {
 		leftToggleMoveDown = true;
+	}
+	if (event.key == "ArrowUp" && !rightToggleMoveUp) {
+		rightToggleMoveUp = true;
+	}
+	if (event.key == "ArrowDown" && !rightToggleMoveDown) {
+		rightToggleMoveDown = true;
 	}
 });
 
@@ -202,6 +213,12 @@ document.addEventListener("keyup", event => {
 	}
 	if (event.key == "s" && leftToggleMoveDown) {
 		leftToggleMoveDown = false;
+	}
+	if (event.key == "ArrowUp" && rightToggleMoveUp) {
+		rightToggleMoveUp = false;
+	}
+	if (event.key == "ArrowDown" && rightToggleMoveDown) {
+		rightToggleMoveDown = false;
 	}
 });
 

@@ -8,9 +8,11 @@ export default class PlayerPaddle extends Paddle {
 		super();
 		this.boundBox = boundBox;
 
-		let x = isLeftSide ? this.padding : this.boundBox.getSize().x - this.padding;
+		const x = isLeftSide
+			? this.padding
+			: boundBox.getSize().x - this.padding - this.size.x;
 		this.resetPos = new Vec2(
-			this.padding,
+			x,
 			this.boundBox.getHalfHeight() - this.halfHeight
 		);
 		this.pos = this.resetPos.clone();
