@@ -1,13 +1,13 @@
 <template>
     <div class="content">
         <div class="left-side">
-            <router-link to="/local" class="left-up link">
+            <router-link to="/pong/local" class="left-up link">
                 <div class="text-container">
                     <p class="title">{{ $t('local') }}</p>
                     <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
-            <router-link to="/ai" class="left-middle link">
+            <router-link to="pong/ai" class="left-middle link">
                 <div class="text-container">
                     <p class="title">{{ $t('ai') }}</p>
                     <p class="description">{{ $t('aiDesc') }}</p>
