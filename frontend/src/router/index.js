@@ -16,6 +16,8 @@ import ListTournaments from '../views/ListTournaments.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
 import AiView from '../views/AiView.vue'
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
+import PongLocalView from "../views/PongLocalView.vue";
+
 
 const routes = [
     {
@@ -136,6 +138,14 @@ const routes = [
         path: "/privacy",
         name: "privacy-policy",
         component: PrivacyPolicyView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/pong/local",
+        name: "pong-local",
+        component: PongLocalView,
         meta: {
             requiresAuth: false,
         },
