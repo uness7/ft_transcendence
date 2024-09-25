@@ -9,8 +9,7 @@ export default class Vec2 {
 		this.y += other.y;
 	}
 
-	// scalar
-	mul = (k) => {
+	scale = (k) => {
 		this.x *= k;
 		this.y *= k;
 	}
@@ -28,7 +27,18 @@ export default class Vec2 {
 		return new Vec2(u.x + v.x, u.y + v.y);
 	}
 
-	static rMul = (v, k) => {
+	static rScale = (v, k) => {
 		return new Vec2(v.x * k, v.y * k);
+	}
+
+	static rRotate = (v, angle) => {
+		const rad = angle * Math.PI / 180;
+		const sine = Math.sin(rad);
+		const cosine = Math.cos(rad);
+		const res = new Vec2(
+			(v.x * cosine) - (v.y * sine),
+			(v.x * sine) + (v.y * cosine)
+		);
+		return res;
 	}
 }

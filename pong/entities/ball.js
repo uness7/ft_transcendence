@@ -17,11 +17,11 @@ export default class Ball {
 		if (leftServe)
 			this.speed.copy(this.resetSpeed);
 		else
-			this.speed.copy(Vec2.rMul(this.resetSpeed, -1));
+			this.speed.copy(Vec2.rScale(this.resetSpeed, -1));
 	}
 
 	move = (dt) => {
-		this.pos = Vec2.rAdd(this.pos, Vec2.rMul(this.speed, dt));
+		this.pos.add(Vec2.rScale(this.speed, dt));
 	}
 
 	inverseXSpeed = () => {
@@ -33,11 +33,11 @@ export default class Ball {
 	}
 
 	getTopPoint = () => {
-		return new Vec2(this.pos.x, this.pos - this.radius);
+		return new Vec2(this.pos.x, this.pos.y - this.radius);
 	}
 
 	getBottomPoint = () => {
-		return new Vec2(this.pos.x, this.pos + this.radius);
+		return new Vec2(this.pos.x, this.pos.y + this.radius);
 	}
 
 	isMovingLeft = () => {
@@ -54,6 +54,19 @@ export default class Ball {
 
 	isMovingDown = () => {
 		return this.speed.y >= 0;
+	}
+
+	changeMagnitude = (k) => {
+		this.speed.scale(k);
+	}
+
+	changeRotationAndDirection = (angle) =>{
+		this.inverseXSpeed();
+		const rotation = Vec2.rRotate(this.resetSpeed, angle);
+		rotation.y *= -1;
+		const orientation = this.isMovingRight() ? 1 : -1;
+		rotation.x *= orientation;
+		this.speed = rotation;
 	}
 
 	render = () => {

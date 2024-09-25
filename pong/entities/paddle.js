@@ -3,6 +3,8 @@ import Rect2 from "../maths/rect2.js";
 import { ctx } from "../misc/canvas.js";
 import { clamp } from "../misc/utils.js";
 import gameConfig from "../game/config.js";
+import MyMaths from "../maths/maths.js";
+import Ball from "./ball.js";
 
 
 export default class Paddle {
@@ -20,6 +22,8 @@ export default class Paddle {
 		this.resetPos;
 		this.pos;
 		this.boundBox;
+		this.maxMagnitude = 3;
+		this.maxRotation = 70;
 	}
 
 	reset = () => {
@@ -39,5 +43,27 @@ export default class Paddle {
 	render = () => {
 		ctx.fillStyle = this.color;
 		ctx.fillRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+	}
+
+	collideBall = (ball) => {
+		let magnitude = MyMaths.pointConversion(
+			ball.pos.y,
+			this.pos.y,
+			this.pos.y + this.size.y,
+			this.maxMagnitude,
+			-this.maxMagnitude
+		);
+		magnitude = Math.abs(magnitude) >= 1 ? Math.abs(magnitude) : 1;
+
+		const angle = MyMaths.pointConversion(
+			ball.pos.y,
+			this.pos.y,
+			this.pos.y + this.size.y,
+			this.maxRotation,
+			-this.maxRotation
+		);
+
+		ball.changeRotationAndDirection(angle);
+		ball.changeMagnitude(magnitude);
 	}
 }

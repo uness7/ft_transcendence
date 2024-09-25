@@ -13,11 +13,6 @@ import Rect2 from "../maths/rect2.js";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-togglePlayerImmortal();
-toggleFasterBall();
-togglePlayerLargerPaddle();
-togglePlayerSpeedBuff();
-
 const GameState = {
 	Menu: "menu",
 	Wait: "wait",
@@ -102,7 +97,7 @@ class Pong {
 			this.state = GameState.Serve;
 			this.isLeftServe = true;
 		}
-
+		
 		// collision with right bound
 		if (gameBox.isBeyondRightBound(ball.pos)) {
 			this.leftScore++;
@@ -125,13 +120,13 @@ class Pong {
 		// collision with left paddle
 		if (CollisionDetector.pointToRect(ball.pos, playerPaddle.rect)
 		&& ball.isMovingLeft()) {
-			ball.inverseXSpeed();
+			playerPaddle.collideBall(ball);
 		}
 
 		// collision with right paddle
 		if (CollisionDetector.pointToRect(ball.pos, aiPaddle.rect)
 		&& ball.isMovingRight()) {
-			ball.inverseXSpeed();
+			aiPaddle.collideBall(ball);
 		}
 	}
 
@@ -155,7 +150,7 @@ class Pong {
 		if (this.state === GameState.Serve) {
 			if (this.isLeftServe) {
 				this.entities.gameStateText.text = "PLAYER SERVES";
-				ball.speed.mul(-1);
+				ball.speed.scale(-1);
 			}
 			else {
 				this.entities.gameStateText.text = "AI SERVES";

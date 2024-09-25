@@ -68,7 +68,7 @@ const gameConfig = {
 	game: {
 		maxScore: 3,
 		playerIsLeftSide: true,
-		timeBeforeGameStarts: 3,
+		timeBeforeGameStarts: 1,
 		timeBeforeRoundStarts: 1.25,
 		playerImmortal: false
 	},
