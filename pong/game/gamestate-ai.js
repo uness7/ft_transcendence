@@ -142,7 +142,7 @@ class Pong {
 			this.state = GameState.Wait;
 			setTimeout(() => {
 				this.state = GameState.Menu;
-			}, gameConfig.game.timeBeforeGameStarts * 1000);
+			}, 3 * 1000);
 		}
 	}
 

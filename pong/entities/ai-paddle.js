@@ -52,9 +52,9 @@ export default class AiPaddle extends Paddle {
 	}
 
 	checkMovement = (dt, ballPos, chaseBuffer) => {
-		if (ballPos.y <= this.pos.y + this.halfHeight - chaseBuffer)
+		if (ballPos.y <= this.pos.y + this.chasePos - chaseBuffer)
 			this.moveUp(dt)
-		else if (ballPos.y >= this.pos.y + this.halfHeight + chaseBuffer)
+		else if (ballPos.y >= this.pos.y + this.chasePos + chaseBuffer)
 			this.moveDown(dt);
 		this.updatePosition();
 	}

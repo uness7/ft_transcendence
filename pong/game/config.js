@@ -6,11 +6,11 @@ const defaultConfig = {
 	paddle: {
 		size: {
 			x: 15,
-			y: 110
+			y: 125
 		},
 		sizeAi: {
 			x: 15,
-			y: 110
+			y: 125
 		},
 		speed: 520,
 		speedAi: 520,
@@ -49,11 +49,11 @@ const gameConfig = {
 	paddle: {
 		size: {
 			x: 15,
-			y: 110
+			y: 125
 		},
 		sizeAi: {
 			x: 15,
-			y: 110
+			y: 125
 		},
 		speed: 520,
 		speedAi: 520,
@@ -68,7 +68,7 @@ const gameConfig = {
 	game: {
 		maxScore: 3,
 		playerIsLeftSide: true,
-		timeBeforeGameStarts: 1,
+		timeBeforeGameStarts: 3,
 		timeBeforeRoundStarts: 1.25,
 		playerImmortal: false
 	},
@@ -80,7 +80,7 @@ const gameConfig = {
 		yPaddingScores: 100
 	},
 	ai: {
-		chaseBuffer: 10
+		chaseBuffer: 18
 	}
 };
 export default gameConfig;
