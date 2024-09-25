@@ -13,307 +13,293 @@ import CollisionDetector from "../pong/misc/collision-detector.js";
 import gameConfig from "../pong/game/config.js"
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
-// import { togglePlayerImmortal, toggleFasterBall, togglePlayerLargerPaddle, togglePlayerSpeedBuff } from "./config.js"
 
 export default {
 	name: 'PongLocalView',
 	mounted()
 	{
-		// togglePlayerImmortal();
-		// toggleFasterBall();
-		// togglePlayerLargerPaddle();
-		// togglePlayerSpeedBuff();
+		this.initGame();
+	},
 
-		const canvas = document.querySelector("#game-canvas");
-		const ctx = canvas.getContext("2d");
+	methods: {
+		initGame() {
+			const canvas = document.querySelector("#game-canvas");
+			const ctx = canvas.getContext("2d");
 
-		const GameState = {
-			Menu: "menu",
-			Wait: "wait",
-			Play: "play",
-			Serve: "serve",
-		}
-
-		class Pong {
-
-			constructor() {
-				this.timeLastFrame = 0;
-				this.isLeftServe = true;
-				this.leftScore = 0;
-				this.rightScore = 0;
-				this.state = GameState.Menu;
-				this.entities = {
-					playerLeftPaddle: new PlayerPaddle(ctx, gameBox, true),
-					playerRightPaddle: new PlayerPaddle(ctx, gameBox, false),
-					ball: new Ball(
-						ctx,
-						gameBox.getCenter().clone(),
-						gameConfig.ball.radius,
-						new Vec2(gameConfig.ball.speed, 0),
-						gameConfig.ball.color
-					),
-					gameStateText: new TextHUD(
-						ctx,
-						"",
-						new Vec2(gameBox.getHalfWidth(), gameConfig.text.yPaddingMain),
-						gameConfig.text.fontMain,
-						gameConfig.text.color
-					),
-					leftScoreText: new TextHUD(
-						ctx,
-						"0",
-						new Vec2(gameBox.getHalfWidth() / 2, gameConfig.text.yPaddingScores),
-						gameConfig.text.fontScores,
-						gameConfig.text.color
-					),
-					rightScoreText: new TextHUD(
-						ctx,
-						"0",
-						new Vec2(gameBox.getHalfWidth() * 3 / 2, gameConfig.text.yPaddingScores),
-						gameConfig.text.fontScores,
-						gameConfig.text.color
-					),
-				};
+			const GameState = {
+				Menu: "menu",
+				Wait: "wait",
+				Play: "play",
+				Serve: "serve",
 			}
 
-			render = () => {
-				ctx.clearRect(0, 0, gameBox.getSize().x, gameBox.getSize().y);
-				Object.values(this.entities).forEach(entity => entity.render());
-			}
-
-			gameStartTimer = () => {
-				this.state = GameState.Wait;
-				return new Promise(resolve => {
-					let timeToWait = gameConfig.game.timeBeforeGameStarts;
-					const timer = setInterval(() => {
-						this.entities.gameStateText.text = `GAME STARTS IN ${timeToWait}...`;
-						this.render();
-						timeToWait--;
-						if (timeToWait < 0)
-						{
-							clearInterval(timer);
-							resolve();
-						}
-					}, 1_000);
-				});
-			}
-
-			load = () => {
-				this.state = GameState.Menu;
-				this.gameLoop();
-			}
-
-			checkCollisions = () => {
-				const ball = this.entities.ball;
-				const playerLeftPaddle = this.entities.playerLeftPaddle;
-				const playerRightPaddle = this.entities.playerRightPaddle;
-
-				// collision with left bound
-				if (gameBox.isBeyondLeftBound(ball.pos)) {
-					if (!gameConfig.game.playerImmortal)
-						this.rightScore++;
-					this.state = GameState.Serve;
+			class Pong {
+				constructor() {
+					this.timeLastFrame = 0;
 					this.isLeftServe = true;
-				}
-
-				// collision with right bound
-				if (gameBox.isBeyondRightBound(ball.pos)) {
-					if (!gameConfig.game.playerImmortal)
-						this.leftScore++;
-					this.state = GameState.Serve;
-					this.isLeftServe = false;
-				}
-
-				// collision with bottom bound
-				if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
-				&& ball.isMovingDown()) {
-					ball.inverseYSpeed();
-				}
-
-				// collision with top bound
-				if (gameBox.isBeyondTopBound(ball.getTopPoint())
-				&& ball.isMovingUp()) {
-					ball.inverseYSpeed();
-				}
-
-				// collision with left paddle
-				if (CollisionDetector.pointToRect(ball.pos, playerLeftPaddle.rect)
-				&& ball.isMovingLeft()) {
-					playerLeftPaddle.collideBall(ball);
-				}
-
-				// collision with right paddle
-				if (CollisionDetector.pointToRect(ball.pos, playerRightPaddle.rect)
-				&& ball.isMovingRight()) {
-					playerRightPaddle.collideBall(ball);
-				}
-			}
-
-			checkGameFinished = () => {
-				if (this.leftScore === gameConfig.game.maxScore
-					|| this.rightScore === gameConfig.game.maxScore
-				) {
-					if (this.leftScore === gameConfig.game.maxScore)
-						this.entities.gameStateText.text = "LEFT WINS";
-					else
-						this.entities.gameStateText.text = "RIGHT WINS";
-					this.state = GameState.Wait;
-					setTimeout(() => {
-						this.state = GameState.Menu;
-					}, 3 * 1000);
-				}
-			}
-
-			checkServeSide = () => {
-				const ball = this.entities.ball;
-				if (this.state === GameState.Serve) {
-					if (this.isLeftServe) {
-						this.entities.gameStateText.text = "LEFT SERVES";
-						ball.speed.scale(-1);
-					}
-					else {
-						this.entities.gameStateText.text = "RIGHT SERVES";
-						ball.speed.copy(ball.resetSpeed);
-					}
-
-					if (this.state === GameState.Serve) {
-						this.state = GameState.Wait;
-						setTimeout(() => {
-							this.state = GameState.Play;
-						}, gameConfig.game.timeBeforeRoundStarts * 1000);
-					}
-				}
-			}
-
-			updateEntitiesPosition = (dt) => {
-				const ball = this.entities.ball;
-				const playerLeftPaddle = this.entities.playerLeftPaddle;
-				const playerRightPaddle = this.entities.playerRightPaddle;
-
-				if (leftToggleMoveUp)
-					playerLeftPaddle.moveUp(dt);
-				if (leftToggleMoveDown)
-					playerLeftPaddle.moveDown(dt);
-				playerLeftPaddle.updatePosition();
-				if (rightToggleMoveUp)
-					playerRightPaddle.moveUp(dt);
-				if (rightToggleMoveDown)
-					playerRightPaddle.moveDown(dt);
-				playerRightPaddle.updatePosition();
-				ball.move(dt);
-			}
-
-			gameLoop = () => {
-				if (!this.timeLastFrame)
-					this.timeLastFrame = performance.now();
-				const timeNow = performance.now();
-				const dt = (timeNow - this.timeLastFrame) / 1000;
-				this.timeLastFrame = timeNow;
-			
-				const ball = this.entities.ball;
-				const playerLeftPaddle = this.entities.playerLeftPaddle;
-				const playerRightPaddle = this.entities.playerRightPaddle;
-
-				if (this.state === GameState.Menu) {			// STATE MENU
-					this.entities.gameStateText.text = "PRESS SPACE TO START";
 					this.leftScore = 0;
 					this.rightScore = 0;
-				} else if (this.state === GameState.Play) {		// STATE PLAY
-					this.entities.gameStateText.text = "";
-					this.updateEntitiesPosition(dt);
-					this.checkCollisions();
-				} else if (this.state === GameState.Serve) {	// STATE SERVE
-					ball.reset(this.isLeftServe);
-					playerLeftPaddle.reset();
-					playerRightPaddle.reset();
-					toggleMoveResetAll();
-					this.checkGameFinished();
-					this.checkServeSide();
+					this.state = GameState.Menu;
+					this.entities = {
+						playerLeftPaddle: new PlayerPaddle(ctx, gameBox, true),
+						playerRightPaddle: new PlayerPaddle(ctx, gameBox, false),
+						ball: new Ball(
+							ctx,
+							gameBox.getCenter().clone(),
+							gameConfig.ball.radius,
+							new Vec2(gameConfig.ball.speed, 0),
+							gameConfig.ball.color
+						),
+						gameStateText: new TextHUD(
+							ctx,
+							"",
+							new Vec2(gameBox.getHalfWidth(), gameConfig.text.yPaddingMain),
+							gameConfig.text.fontMain,
+							gameConfig.text.color
+						),
+						leftScoreText: new TextHUD(
+							ctx,
+							"0",
+							new Vec2(gameBox.getHalfWidth() / 2, gameConfig.text.yPaddingScores),
+							gameConfig.text.fontScores,
+							gameConfig.text.color
+						),
+						rightScoreText: new TextHUD(
+							ctx,
+							"0",
+							new Vec2(gameBox.getHalfWidth() * 3 / 2, gameConfig.text.yPaddingScores),
+							gameConfig.text.fontScores,
+							gameConfig.text.color
+						),
+					};
 				}
-				this.entities.rightScoreText.text = this.rightScore.toString();
-				this.entities.leftScoreText.text = this.leftScore.toString();
-				this.render();
-				requestAnimationFrame(this.gameLoop);
+
+				render = () => {
+					ctx.clearRect(0, 0, gameBox.getSize().x, gameBox.getSize().y);
+					Object.values(this.entities).forEach(entity => entity.render());
+				}
+
+				gameStartTimer = () => {
+					this.state = GameState.Wait;
+					return new Promise(resolve => {
+						let timeToWait = gameConfig.game.timeBeforeGameStarts;
+						const timer = setInterval(() => {
+							this.entities.gameStateText.text = `GAME STARTS IN ${timeToWait}...`;
+							this.render();
+							timeToWait--;
+							if (timeToWait < 0)
+							{
+								clearInterval(timer);
+								resolve();
+							}
+						}, 1_000);
+					});
+				}
+
+				load = () => {
+					this.state = GameState.Menu;
+					this.gameLoop();
+				}
+
+				checkCollisions = () => {
+					const ball = this.entities.ball;
+					const playerLeftPaddle = this.entities.playerLeftPaddle;
+					const playerRightPaddle = this.entities.playerRightPaddle;
+
+					if (gameBox.isBeyondLeftBound(ball.pos)) {
+						if (!gameConfig.game.playerImmortal)
+							this.rightScore++;
+						this.state = GameState.Serve;
+						this.isLeftServe = true;
+					}
+
+					if (gameBox.isBeyondRightBound(ball.pos)) {
+						if (!gameConfig.game.playerImmortal)
+							this.leftScore++;
+						this.state = GameState.Serve;
+						this.isLeftServe = false;
+					}
+
+					if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
+					&& ball.isMovingDown()) {
+						ball.inverseYSpeed();
+					}
+
+					if (gameBox.isBeyondTopBound(ball.getTopPoint())
+					&& ball.isMovingUp()) {
+						ball.inverseYSpeed();
+					}
+
+					if (CollisionDetector.pointToRect(ball.pos, playerLeftPaddle.rect)
+					&& ball.isMovingLeft()) {
+						playerLeftPaddle.collideBall(ball);
+					}
+
+					if (CollisionDetector.pointToRect(ball.pos, playerRightPaddle.rect)
+					&& ball.isMovingRight()) {
+						playerRightPaddle.collideBall(ball);
+					}
+				}
+
+				checkGameFinished = () => {
+					if (this.leftScore === gameConfig.game.maxScore
+						|| this.rightScore === gameConfig.game.maxScore
+					) {
+						if (this.leftScore === gameConfig.game.maxScore)
+							this.entities.gameStateText.text = "LEFT WINS";
+						else
+							this.entities.gameStateText.text = "RIGHT WINS";
+						this.state = GameState.Wait;
+						setTimeout(() => {
+							this.state = GameState.Menu;
+						}, 3 * 1000);
+					}
+				}
+
+				checkServeSide = () => {
+					const ball = this.entities.ball;
+					if (this.state === GameState.Serve) {
+						if (this.isLeftServe) {
+							this.entities.gameStateText.text = "LEFT SERVES";
+							ball.speed.scale(-1);
+						}
+						else {
+							this.entities.gameStateText.text = "RIGHT SERVES";
+							ball.speed.copy(ball.resetSpeed);
+						}
+
+						if (this.state === GameState.Serve) {
+							this.state = GameState.Wait;
+							setTimeout(() => {
+								this.state = GameState.Play;
+							}, gameConfig.game.timeBeforeRoundStarts * 1000);
+						}
+					}
+				}
+
+				updateEntitiesPosition = (dt) => {
+					const playerLeftPaddle = this.entities.playerLeftPaddle;
+					const playerRightPaddle = this.entities.playerRightPaddle;
+
+					if (leftToggleMoveUp)
+						playerLeftPaddle.moveUp(dt);
+					if (leftToggleMoveDown)
+						playerLeftPaddle.moveDown(dt);
+					playerLeftPaddle.updatePosition();
+					if (rightToggleMoveUp)
+						playerRightPaddle.moveUp(dt);
+					if (rightToggleMoveDown)
+						playerRightPaddle.moveDown(dt);
+					playerRightPaddle.updatePosition();
+					this.entities.ball.move(dt);
+				}
+
+				gameLoop = () => {
+					if (!this.timeLastFrame)
+						this.timeLastFrame = performance.now();
+					const timeNow = performance.now();
+					const dt = (timeNow - this.timeLastFrame) / 1000;
+					this.timeLastFrame = timeNow;
+
+					if (this.state === GameState.Menu) {
+						this.entities.gameStateText.text = "PRESS SPACE TO START";
+						this.leftScore = 0;
+						this.rightScore = 0;
+					} else if (this.state === GameState.Play) {
+						this.entities.gameStateText.text = "";
+						this.updateEntitiesPosition(dt);
+						this.checkCollisions();
+					} else if (this.state === GameState.Serve) {
+						this.entities.ball.reset(this.isLeftServe);
+						this.entities.playerLeftPaddle.reset();
+						this.entities.playerRightPaddle.reset();
+						toggleMoveResetAll();
+						this.checkGameFinished();
+						this.checkServeSide();
+					}
+					this.entities.rightScoreText.text = this.rightScore.toString();
+					this.entities.leftScoreText.text = this.leftScore.toString();
+					this.render();
+					requestAnimationFrame(this.gameLoop);
+				}
 			}
-		}
 
-		////////////////////////////////////////////////////////////////////////////////
-
-		// canvas
-		canvas.width = gameConfig.canvas.width;
-		canvas.height = gameConfig.canvas.height;
-
-		window.addEventListener("resize", () => {
 			canvas.width = gameConfig.canvas.width;
 			canvas.height = gameConfig.canvas.height;
-		});
 
-		const canvasRect = new Rect2(
-			new Vec2(0, 0),
-			new Vec2(canvas.width, canvas.height)
-		);
-		const gameBox = new BoundingBox(canvasRect);
+			window.addEventListener("resize", () => {
+				canvas.width = gameConfig.canvas.width;
+				canvas.height = gameConfig.canvas.height;
+			});
 
-		// player movement events
-		let leftToggleMoveUp = false;
-		let leftToggleMoveDown = false;
-		let rightToggleMoveUp = false;
-		let rightToggleMoveDown = false;
+			const canvasRect = new Rect2(
+				new Vec2(0, 0),
+				new Vec2(canvas.width, canvas.height)
+			);
+			const gameBox = new BoundingBox(canvasRect);
 
-		const toggleMoveResetAll = () => {
-			leftToggleMoveUp = false;
-			leftToggleMoveDown = false;
-			rightToggleMoveUp = false;
-			rightToggleMoveDown = false;
-		}
+			let leftToggleMoveUp = false;
+			let leftToggleMoveDown = false;
+			let rightToggleMoveUp = false;
+			let rightToggleMoveDown = false;
 
-		document.addEventListener("keydown", event => {
-			event.preventDefault();
-			if (event.key == "w" && game.state === GameState.Play && !leftToggleMoveUp) {
-				leftToggleMoveUp = true;
-			}
-			if (event.key == "s" && game.state === GameState.Play && !leftToggleMoveDown) {
-				leftToggleMoveDown = true;
-			}
-			if (event.key == "ArrowUp" && game.state === GameState.Play && !rightToggleMoveUp) {
-				rightToggleMoveUp = true;
-			}
-			if (event.key == "ArrowDown" && game.state === GameState.Play && !rightToggleMoveDown) {
-				rightToggleMoveDown = true;
-			}
-		});
-
-		document.addEventListener("keyup", event => {
-			event.preventDefault();
-			if (event.key === "w" && game.state === GameState.Play &&  leftToggleMoveUp) {
+			const toggleMoveResetAll = () => {
 				leftToggleMoveUp = false;
-			}
-			if (event.key === "s" && game.state === GameState.Play &&leftToggleMoveDown) {
 				leftToggleMoveDown = false;
-			}
-			if (event.key === "ArrowUp" && game.state === GameState.Play &&rightToggleMoveUp) {
 				rightToggleMoveUp = false;
-			}
-			if (event.key === "ArrowDown" && game.state === GameState.Play && rightToggleMoveDown) {
 				rightToggleMoveDown = false;
 			}
-			if (event.key === " " && game.state === GameState.Menu) {
-				game.gameStartTimer()
-					.then(() => game.state = GameState.Serve);
-			}
-		});
 
-		// game
-		const game = new Pong();
-		window.addEventListener("load", game.load);
-	},
-};
+			document.addEventListener("keydown", event => {
+				event.preventDefault();
+				if (event.key == "w" && game.state === GameState.Play && !leftToggleMoveUp) {
+					leftToggleMoveUp = true;
+				}
+				if (event.key == "s" && game.state === GameState.Play && !leftToggleMoveDown) {
+					leftToggleMoveDown = true;
+				}
+				if (event.key == "ArrowUp" && game.state === GameState.Play && !rightToggleMoveUp) {
+					rightToggleMoveUp = true;
+				}
+				if (event.key == "ArrowDown" && game.state === GameState.Play && !rightToggleMoveDown) {
+					rightToggleMoveDown = true;
+				}
+			});
+
+			document.addEventListener("keyup", event => {
+				event.preventDefault();
+				if (event.key === "w" && game.state === GameState.Play && leftToggleMoveUp) {
+					leftToggleMoveUp = false;
+				}
+				if (event.key === "s" && game.state === GameState.Play && leftToggleMoveDown) {
+					leftToggleMoveDown = false;
+				}
+				if (event.key === "ArrowUp" && game.state === GameState.Play && rightToggleMoveUp) {
+					rightToggleMoveUp = false;
+				}
+				if (event.key === "ArrowDown" && game.state === GameState.Play && rightToggleMoveDown) {
+					rightToggleMoveDown = false;
+				}
+				if (event.key === " ") {
+					if (game.state === GameState.Menu) {
+						game.gameStartTimer().then(() => {
+							game.state = GameState.Serve;
+						});
+					}
+				}
+			});
+
+			const game = new Pong();
+			game.load();
+		}
+	}
+}
 </script>
 
 <style scoped>
 #game-canvas {
 	display: block;
-	background: black;
+	background: var(--background-color);
 	margin: auto;
 	position: absolute;
 	top: 0;
@@ -323,3 +309,4 @@ export default {
 	border: 2px solid white;
 }
 </style>
+
