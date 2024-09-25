@@ -5,7 +5,7 @@ import RegisterView from "../views/RegisterView.vue";
 import AboutView from "../views/AboutView.vue";
 import ModeView from "../views/ModeView.vue";
 import UserView from "../views/UserView.vue";
-// import RemoteView from "../views/RemoteView.vue";
+import RemoteView from "../views/RemoteView.vue";
 // import LocalView from "../views/LocalView.vue";
 import UserSettings from "../components/UserSettings.vue";
 import TournamentView from "../views/TournamentView.vue";
@@ -86,14 +86,14 @@ const routes = [
     //         requiresAuth: false,
     //     },
     // },
-    // {
-    //     path: "/remote",
-    //     name: "remote",
-    //     component: RemoteView,
-    //     meta: {
-    //         requiresAuth: true,
-    //     },
-    // },
+    {
+        path: "/remote",
+        name: "remote",
+        component: RemoteView,
+        meta: {
+            requiresAuth: true,
+        },
+    },
     {
         path: "/user/:id",
         name: "user",
