@@ -149,7 +149,7 @@ class Pong {
 		}
 	}
 
-	updateEntitiesPosition = () => {
+	updateEntitiesPosition = (dt) => {
 		const ball = this.entities.ball;
 		const playerPaddle = this.entities.playerPaddle;
 		const aiPaddle = this.entities.aiPaddle;
@@ -180,7 +180,7 @@ class Pong {
 			this.rightScore = 0;
 		} else if (this.state === GameState.Play) {		// STATE PLAY
 			this.entities.gameStateText.text = "";
-			this.updateEntitiesPosition();
+			this.updateEntitiesPosition(dt);
 			this.checkCollisions();
 		} else if (this.state === GameState.Serve) {	// STATE SERVE
 			ball.reset(this.isLeftServe);
