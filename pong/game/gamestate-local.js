@@ -13,6 +13,7 @@ import Rect2 from "../maths/rect2.js";
 
 const GameState = {
 	Menu: "menu",
+	Wait: "wait",
 	Play: "play",
 	Serve: "serve",
 }
@@ -47,11 +48,12 @@ class Pong {
 		Object.values(this.entities).forEach(entity => entity.render());
 	}
 
-	#gameStartTimer = () => {
+	gameStartTimer = () => {
+		this.state = GameState.Wait;
 		return new Promise(resolve => {
 			let timeToWait = defaultConfig.game.timeBeforeGameStarts;
 			const timer = setInterval(() => {
-				this.entities.gameStateText.text = `Game starts in ${timeToWait}...`;
+				this.entities.gameStateText.text = `GAME STARTS IN ${timeToWait}...`;
 				this.render();
 				timeToWait--;
 				if (timeToWait < 0)
@@ -82,7 +84,7 @@ class Pong {
 		if (this.state === GameState.Menu) {
 			this.entities.gameStateText.text = "PRESS SPACE TO START";
 		} else if (this.state === GameState.Play) {
-			this.entities.gameStateText.text = "PLAY";
+			this.entities.gameStateText.text = "";
 	
 			// update left paddle position
 			if (leftToggleMoveUp)
@@ -138,16 +140,20 @@ class Pong {
 			}
 
 			if (this.isLeftServe) {
-				this.entities.gameStateText.text = "LEFT SERVE";
+				this.entities.gameStateText.text = "LEFT PLAYER SERVES";
 				ball.speed.mul(-1);
 			}
 			else {
-				this.entities.gameStateText.text = "RIGHT SERVE";
+				this.entities.gameStateText.text = "RIGHT PLAYER SERVES";
 				ball.speed.copy(ball.resetSpeed);
 			}
 
-			if (this.state === GameState.Serve)
-				this.state = GameState.Play;
+			if (this.state === GameState.Serve) {
+				this.state = GameState.Wait;
+				setTimeout(() => {
+					this.state = GameState.Play;
+				}, defaultConfig.game.timeBeforeRoundStarts * 1000);
+			}
 		}
 
 		this.render();
@@ -215,7 +221,8 @@ document.addEventListener("keyup", event => {
 		rightToggleMoveDown = false;
 	}
 	if (event.key === " " && game.state === GameState.Menu) {
-		game.state = GameState.Serve;
+		game.gameStartTimer()
+			.then(() => game.state = GameState.Serve);
 	}
 });
 

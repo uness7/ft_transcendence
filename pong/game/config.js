@@ -20,7 +20,8 @@ const defaultConfig = {
 	game: {
 		maxScore: 3,
 		playerIsLeftSide: true,
-		timeBeforeGameStarts: 1
+		timeBeforeGameStarts: 3,
+		timeBeforeRoundStarts: 2,
 	}
 
 };
