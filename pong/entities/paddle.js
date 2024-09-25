@@ -4,7 +4,6 @@ import { ctx } from "../misc/canvas.js";
 import { clamp } from "../misc/utils.js";
 import gameConfig from "../game/config.js";
 import MyMaths from "../maths/maths.js";
-import Ball from "./ball.js";
 
 
 export default class Paddle {
@@ -22,7 +21,7 @@ export default class Paddle {
 		this.resetPos;
 		this.pos;
 		this.boundBox;
-		this.maxMagnitude = 3;
+		this.maxMagnitude = 2;
 		this.maxRotation = 70;
 	}
 

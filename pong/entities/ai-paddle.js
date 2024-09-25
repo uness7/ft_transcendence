@@ -12,7 +12,7 @@ export default class AiPaddle extends Paddle {
 			gameConfig.paddle.sizeAi.y
 		);
 		this.halfHeight = this.size.y / 2;
-		this.resetSpeed = new Vec2(gameConfig.paddle.speedAi, 0);
+		this.resetSpeed = new Vec2(0, gameConfig.paddle.speedAi);
 		this.speed = this.resetSpeed.clone();
 		this.boundBox = boundBox;
 

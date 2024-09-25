@@ -12,8 +12,8 @@ const defaultConfig = {
 			x: 15,
 			y: 100
 		},
-		speed: 400,
-		speedAi: 400,
+		speed: 450,
+		speedAi: 450,
 		padding: 20,
 		color: "white"
 	},
@@ -55,8 +55,8 @@ const gameConfig = {
 			x: 15,
 			y: 100
 		},
-		speed: 400,
-		speedAi: 400,
+		speed: 450,
+		speedAi: 450,
 		padding: 20,
 		color: "white"
 	},

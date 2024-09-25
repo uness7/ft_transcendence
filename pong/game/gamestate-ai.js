@@ -97,7 +97,7 @@ class Pong {
 			this.state = GameState.Serve;
 			this.isLeftServe = true;
 		}
-		
+
 		// collision with right bound
 		if (gameBox.isBeyondRightBound(ball.pos)) {
 			this.leftScore++;
