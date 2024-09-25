@@ -38,7 +38,6 @@ export default class AiPaddle extends Paddle {
 
 	changePosition = () => {
 		const randomNbr = MyMaths.primitiveRandomDistribution();
-		console.log(randomNbr);
 		const randomMin = 0;
 		const randomMax = 1;
 		const chaseBufferMin = 0;
