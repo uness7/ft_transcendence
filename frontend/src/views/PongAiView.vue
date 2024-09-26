@@ -302,7 +302,7 @@ export default {
 <style scoped>
 #game-canvas {
 	display: block;
-	background: black;
+	background: var(--background-color);
 	margin: auto;
 	position: absolute;
 	top: 0;

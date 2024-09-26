@@ -12,10 +12,12 @@
         </div>
       </div>
     </section>
+    <router-link to="/privacy" class="privacy">{{ $t('read-privacy') }}</router-link>
   </div>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -116,5 +118,15 @@ p {
   font-size: 1rem;
   color: white;
   margin: 0;
+}
+
+.privacy{
+  font-family: '8bit',sans-serif;
+  font-size: 25px;
+  color: rgb(200,200,200);
+  background: var(--background-color);
+  margin-left: 820px;
+  position: relative;
+  top: 60px;
 }
 </style>

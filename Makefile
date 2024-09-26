@@ -14,11 +14,17 @@ dev-down:
 dev-logs-web:
 	$(DOCKER_COMMAND_DEV) logs web
 
+dev-logs-vue:
+	$(DOCKER_COMMAND_DEV) logs vue 
+
 dev-build:
 	$(DOCKER_COMMAND_DEV) up --build -d
 
 dev-ps:
 	$(DOCKER_COMMAND_DEV) ps
+
+dev-pytest:
+	$(DOCKER_COMMAND_DEV) exec web pytest
 
 dev-migrate:
 	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations game
