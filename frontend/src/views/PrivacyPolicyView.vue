@@ -1,122 +1,127 @@
 <template>
 	<div class="content">
-		<h1>Privacy Policy</h1>
-		<p>Effective Date: 2024-09-25</p>
+		<h1>{{$t('privacy.title')}}</h1>
+		<p class="date">{{$t('privacy.effective_date')}}</p>
 
-		<h2>1. Introduction</h2>
+		<h2>1. {{$t('privacy.introduction.title')}}</h2>
 		<p>
-			We are committed to protecting and respecting your privacy. This 
-			Privacy Policy explains how we collect, use, and protect your 
-			personal information when you use our website.<br>
-			This policy complies with the General Data Protection Regulation (GDPR).
+			{{$t('privacy.introduction.text')}}
 		</p>
 
-		<h2>2. Data We Collect</h2>
+		<h2>2. {{$t('privacy.data_we_collect.title')}}</h2>
 		<p>
-			We may collect and process the following personal data from you:<br>
-			Contact Information: Email address, login name, or any other information you provide when creating an account.
+			{{$t('privacy.data_we_collect.text')}}
 		</p>
 
-		<h2>3. How We Use Your Data</h2>
+		<h2>3. {{$t('privacy.how_we_use_your_data.title')}}</h2>
 		<p>
-			We process your personal data for the following purposes:<br>
-			To provide, operate, and maintain our services.<br>
-			To allow you to register and manage an account.<br>
-			To improve our services and personalize your experience.
+			{{$t('privacy.how_we_use_your_data.text')}}
 		</p>
 
-		<h2>4. Legal Basis for Processing</h2>
+		<h2>4. {{$t('privacy.legal_basis_for_processing.title')}}</h2>
 		<p>
-			Under GDPR, we process your personal data based on one or more of the following:<br>
-			Consent: You have provided explicit consent to process your data for one or more specific purposes (e.g., account creation).<br>
-			Performance of a Contract: Data processing is necessary to provide the services you've requested.<br>
+			{{$t('privacy.legal_basis_for_processing.text')}}
 		</p>
 
-		<h2>5. Data Sharing and Third-Party Services</h2>
+		<h2>5. {{$t('privacy.data_sharing.title')}}</h2>
 		<p>
-			We will not share your personal data with third parties, except:<br>
-			If required by law or to comply with legal obligations.<br>
+			{{$t('privacy.data_sharing.text')}}
 		</p>
 
-		<h2>6. Data Security</h2>
+		<h2>6. {{$t('privacy.data_security.title')}}</h2>
 		<p>
-			We use appropriate technical and organizational measures to protect your personal data from unauthorized access, misuse, loss, or destruction. These include:<br>
-			Access control measures for authorized personnel only.
+			{{$t('privacy.data_security.text')}}
 		</p>
 
-		<h2>7. Data Retention</h2>
+		<h2>7. {{$t('privacy.data_retention.title')}}</h2>
 		<p>
-			We retain your personal data only as long as necessary for the purposes outlined in this policy or as required by law.<br>
-			If you delete your account, we will erase your personal data within 30 days, except where retention is required for legal reasons.
-		</p>
-		
-		<h2>8. Your Data Protection Rights</h2>
-		<p>
-			Under GDPR, you have the following rights:<br>
-			Right to Access: You can request a copy of the personal data we hold about you.<br>
-			Right to Rectification: You can request corrections to inaccurate or incomplete data.<br>
-			Right to Erasure: You can request the deletion of your personal data.<br>
-			Right to Data Portability: You can request that we provide your data in a machine-readable format.<br>
-			Right to Restrict Processing: You can request limitations on how your data is processed.<br>
-			Right to Object: You can object to the processing of your data under certain circumstances.<br>
-			Right to Withdraw Consent: If processing is based on consent, you can withdraw it at any time.<br>
-			To exercise any of these rights, contact us at:<br>
-			liguyon@student.42lehavre.fr<br>
-			jnorget@student.42lehavre.fr<br>
-			okazdar@student.42lehavre.fr<br>
-			ssasdat@student.42lehavre.fr<br>
-			yzioual@student.42lehavre.fr
+			{{$t('privacy.data_retention.text')}}
 		</p>
 
-		<h2>9. Cookies and Tracking Technologies</h2>
+		<h2>8. {{$t('privacy.your_rights.title')}}</h2>
 		<p>
-			We don't use cookies.
-		</p>
-		
-		<h2>10. Children’s Privacy</h2>
-		<p>
-			Our services are not intended for users under the age of 13. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such data, please contact us, and we will delete it.
+			{{$t('privacy.your_rights.text')}}
 		</p>
 
-		<h2>11. Data Transfers</h2>
+		<h2>9. {{$t('privacy.cookies.title')}}</h2>
 		<p>
-			We do not transfer your personal data outside the European Economic Area (EEA).
+			{{$t('privacy.cookies.text')}}
 		</p>
 
-		<h2>11. Data Transfers</h2>
+		<h2>10. {{$t('privacy.children_privacy.title')}}</h2>
 		<p>
-			We do not transfer your personal data outside the European Economic Area (EEA).
+			{{$t('privacy.children_privacy.text')}}
 		</p>
 
-		<h2>12. Changes to This Policy</h2>
+		<h2>11. {{$t('privacy.data_transfers.title')}}</h2>
 		<p>
-			We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Effective Date." We encourage you to review this policy periodically for updates.
+			{{$t('privacy.data_transfers.text')}}
 		</p>
-		
-		<h2>13. Contact Us</h2>
+
+		<h2>12. {{$t('privacy.changes_to_policy.title')}}</h2>
 		<p>
-			If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us at:<br>
-			liguyon@student.42lehavre.fr<br>
-			jnorget@student.42lehavre.fr<br>
-			okazdar@student.42lehavre.fr<br>
-			ssasdat@student.42lehavre.fr<br>
-			yzioual@student.42lehavre.fr
+			{{$t('privacy.changes_to_policy.text')}}
+		</p>
+
+		<h2>13. {{$t('privacy.contact_us.title')}}</h2>
+		<p>
+			{{$t('privacy.contact_us.text')}}
 		</p>
 	</div>
 </template>
 
 <style scoped>
+.content {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: var(--background-color);
+	border-radius: 5px;
+}
+
 h1 {
 	color: white;
 	margin-top: 82px;
+	font-size: 2rem;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+}
+
+.date {
+	color: rgb(200,200,200);
+	font-size: 0.9rem;
+	margin-bottom: 20px;
+	display: block;
 }
 
 h2 {
-	color: white;
+	color: rgb(200,200,200);
+	font-size: 1.4rem;
+	margin-top: 20px;
 }
 
 p {
-	color:white;
+	color: rgb(230,230,230);
+	line-height: 1.6;
+	font-size: 1rem;
+	margin-top: 10px;
 }
 
+@media (max-width: 768px) {
+	.content {
+		padding: 10px;
+	}
+
+	h1 {
+		font-size: 1.8rem;
+	}
+
+	h2 {
+		font-size: 1.2rem;
+	}
+
+	p {
+		font-size: 0.9rem;
+	}
+}
 </style>

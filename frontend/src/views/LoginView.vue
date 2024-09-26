@@ -4,8 +4,7 @@
             <div class="inner">
                 <div class="signIn">
                     <div class="top">
-                        <div class="title">{{ $t("sign-in") }}</div>
-                        <router-link to="/register">register</router-link>
+                        <div class="title">{{ $t("sign-in") }} <router-link to="/register" class="rr">{{ $t('register') }} </router-link> </div>
                     </div>
                     <form @submit.prevent="handleSubmit">
                         <div class="form">
@@ -213,6 +212,10 @@ html {
     padding: 25px 55px;
     animation: slideInTop 1s;
     box-shadow: 0px 0px 30px var(--primary-color);
+}
+
+.rr{
+    color: var(--primary-color);
 }
 
 @keyframes slideInTop {

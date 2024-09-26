@@ -1,7 +1,7 @@
 {
     "play": "jugar",
     "about": "info",
-    "login": "login",
+    "login": "ingreso",
     "aiText": "Jugador vs IA",
     "lanText": "Jugador vs Jugador",
     "multiText": "Multijugador",
@@ -38,7 +38,66 @@
     "difficulty": "dificultad",
     "easy": "facil",
     "medium": "media",
-    "hard": "alta"
+    "hard": "alta",
+    "register":"o registrarse",
+    "read-privacy":"read our privacy policy",
+    "privacy": {
+      "title": "Politica de Privacidad",
+      "effective_date": "Fecha de Efecto: 2024-09-25",
+      "introduction": {
+          "title": "Introduccion",
+          "text": "Nos comprometemos a proteger y respetar su privacidad. Esta Politica de Privacidad explica como recopilamos, utilizamos y protegemos su informacion personal cuando utiliza nuestro sitio web. Esta politica cumple con el Reglamento General de Proteccion de Datos (RGPD)."
+      },
+      "data_we_collect": {
+          "title": "Datos Que Recopilamos",
+          "text": "Podemos recopilar y procesar los siguientes datos personales de usted: Informacion de contacto: Direccion de correo electronico, nombre de inicio de sesion u otra informacion que proporcione al crear una cuenta."
+      },
+      "how_we_use_your_data": {
+          "title": "Como Utilizamos Sus Datos",
+          "text": "Procesamos sus datos personales para los siguientes propositos: Para proporcionar, operar y mantener nuestros servicios. Para permitirle registrarse y gestionar una cuenta. Para mejorar nuestros servicios y personalizar su experiencia."
+      },
+      "legal_basis_for_processing": {
+          "title": "Base Legal para el Tratamiento",
+          "text": "Segun el RGPD, procesamos sus datos personales sobre la base de una o mas de las siguientes: Consentimiento: Usted ha dado su consentimiento explicito para procesar sus datos con uno o mas propositos especificos (por ejemplo, creacion de cuenta). Ejecucion de un Contrato: El procesamiento de los datos es necesario para proporcionar los servicios que ha solicitado."
+      },
+      "data_sharing": {
+          "title": "Comparticion de Datos y Servicios de Terceros",
+          "text": "No compartiremos sus datos personales con terceros, excepto: Si la ley lo requiere o para cumplir con obligaciones legales."
+      },
+      "data_security": {
+          "title": "Seguridad de los Datos",
+          "text": "Utilizamos medidas tecnicas y organizativas adecuadas para proteger sus datos personales contra el acceso no autorizado, uso indebido, perdida o destruccion. Estas incluyen: Medidas de control de acceso solo para el personal autorizado."
+      },
+      "data_retention": {
+          "title": "Retencion de Datos",
+          "text": "Retenemos sus datos personales solo mientras sea necesario para los propositos descritos en esta politica o segun lo requiera la ley. Si elimina su cuenta, borraremos sus datos personales en un plazo de 30 dias, excepto cuando la retencion sea necesaria por razones legales."
+      },
+      "your_rights": {
+          "title": "Sus Derechos de Proteccion de Datos",
+          "text": "Segun el RGPD, usted tiene los siguientes derechos: Derecho de Acceso: Puede solicitar una copia de los datos personales que poseemos sobre usted. Derecho de Rectificacion: Puede solicitar correcciones de datos inexactos o incompletos. Derecho de Supresion: Puede solicitar la eliminacion de sus datos personales. Derecho a la Portabilidad de Datos: Puede solicitar que le proporcionemos sus datos en un formato legible por maquina. Derecho a Restringir el Tratamiento: Puede solicitar limitaciones en la forma en que se procesan sus datos. Derecho de Oposicion: Puede oponerse al procesamiento de sus datos en ciertas circunstancias. Derecho a Retirar el Consentimiento: Si el procesamiento se basa en el consentimiento, puede retirarlo en cualquier momento. Para ejercer cualquiera de estos derechos, contactenos en: liguyon@student.42lehavre.fr, jnorget@student.42lehavre.fr, okazdar@student.42lehavre.fr, ssasdat@student.42lehavre.fr, yzioual@student.42lehavre.fr."
+      },
+      "cookies": {
+          "title": "Cookies y Tecnologias de Seguimiento",
+          "text": "No utilizamos cookies."
+      },
+      "children_privacy": {
+          "title": "Privacidad de los Ninos",
+          "text": "Nuestros servicios no estan destinados a usuarios menores de 13 anos. No recopilamos conscientemente informacion personal de ninos. Si cree que hemos recopilado por error dichos datos, contactenos y los eliminaremos."
+      },
+      "data_transfers": {
+          "title": "Transferencias de Datos",
+          "text": "No transferimos sus datos personales fuera del Espacio Economico Europeo (EEE)."
+      },
+      "changes_to_policy": {
+          "title": "Cambios en Esta Politica",
+          "text": "Podemos actualizar esta Politica de Privacidad de vez en cuando. Cualquier cambio se publicara en esta pagina con una 'Fecha de Efecto' actualizada. Le animamos a revisar esta politica periodicamente para conocer las actualizaciones."
+      },
+      "contact_us": {
+          "title": "Contactenos",
+          "text": "Si tiene alguna pregunta o inquietud sobre esta Politica de Privacidad o como manejamos sus datos personales, contactenos en: liguyon@student.42lehavre.fr, jnorget@student.42lehavre.fr, okazdar@student.42lehavre.fr, ssasdat@student.42lehavre.fr, yzioual@student.42lehavre.fr."
+      }
+  }
+
 
   }
   

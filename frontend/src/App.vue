@@ -40,6 +40,7 @@ export default {
 		const router = useRouter();
 		const isLoggedIn = computed(() => authStore.isAuthenticated);
 		const user = computed(() => authStore.user || { username: 'default', id: '' });
+		console.log("is logged in ? ", isLoggedIn);
 		const logout = async () => {
 			await authStore.logout();
 			router.push('/login');
@@ -59,6 +60,14 @@ export default {
 			logout,
 			truncatedUsername,
 		};
+	},
+	async mounted() {
+		this.applyPrimaryColor();
+		try {
+			await useAuthStore().initTokens();
+		} catch (error) {
+			console.log(error);
+		}
 	},
 	computed: {
 		currentFlag() {
@@ -87,9 +96,6 @@ export default {
 	created() {
 		this.loadSavedLanguage();
 	},
-	mounted() {
-		this.applyPrimaryColor();
-	}
 };
 </script>
 
@@ -161,7 +167,7 @@ export default {
 	color: rgb(255, 255, 255);
 	font-size: xx-large;
 	position: absolute;
-	right: 200px;
+	right: 225px;
 	font-family: '8bit', sans-serif;
 	transition: all 0.2s ease;
 }

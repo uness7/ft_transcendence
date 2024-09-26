@@ -60,7 +60,7 @@
 								required
 							/>
 							<label for="consent">
-								I agree to the <router-link to="privacy">privacy policy</router-link>.
+								I agree to the <router-link to="privacy" class="aaa">privacy policy</router-link>.
 							</label>
 						</div>
 						<button
@@ -197,6 +197,10 @@ export default {
 	align-items: center;
 	justify-content: center;
 	color: #fff;
+}
+
+.aaa{
+	color: white;
 }
 
 .w100 {
