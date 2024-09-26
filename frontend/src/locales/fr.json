@@ -9,8 +9,8 @@
     "settings": "parametres",
     "logout": "logout",
     "team": "Notre equipe",
-    "ouissem-status": "Representant docker",
-    "lionel-status": "Responsable back-end",
+    "ouissem-status": "Representant devops",
+    "lionel-status": "Responsable pong",
     "jules-status": "Responsable front-end",
     "navid-status": "Responsable front-end",
     "youness-status": "Responsable back-end",
@@ -78,7 +78,7 @@
         },
         "cookies": {
             "title": "Cookies et Technologies de Suivi",
-            "text": "Nous n'utilisons pas de cookies."
+            "text": "Nous utilisons des cookies et des technologies de suivi similaires pour améliorer l'expérience utilisateur."
         },
         "children_privacy": {
             "title": "Confidentialite des Enfants",
