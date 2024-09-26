@@ -9,6 +9,7 @@
 				<div class="dropdown-content">
 					<router-link to="/profile">{{ $t('profile') }}</router-link>
 					<a href="#" @click.prevent="logout">{{ $t('logout') }}</a>
+					<router-link to="/two-factor-auth">{{ $t('2FA') }}</router-link>
 				</div>
 			</div>
 		</header>

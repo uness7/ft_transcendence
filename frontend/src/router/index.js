@@ -11,6 +11,7 @@ import UserSettings from "../components/UserSettings.vue";
 import TournamentView from "../views/TournamentView.vue";
 import NotFound from "../views/NotFound.vue";
 import { useAuthStore } from "@/store/auth";
+    // import TwoFactorAuth from "@/components/TwoFactorAuth.vue";
 
 const routes = [
     {
@@ -90,6 +91,17 @@ const routes = [
         path: "/user/settings",
         name: "settings",
         component: UserSettings,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/two-factor-auth",
+        name: "2FA",
+        beforeEnter() {
+            // Redirect to Django's 2FA URL
+            window.location.href = 'http://localhost:8000/account/two_factor/setup/';
+        },
         meta: {
             requiresAuth: true,
         },

@@ -9,4 +9,7 @@ typing_extensions==4.12.2
 websockets==12.0
 django-filter==21.1
 Pillow
-pytest-django
+pytest-django # for testing our RESTful API
+# 2FA auth
+django-two-factor-auth 
+phonenumbers
