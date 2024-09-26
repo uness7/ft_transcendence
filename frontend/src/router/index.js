@@ -6,7 +6,6 @@ import AboutView from "../views/AboutView.vue";
 import ModeView from "../views/ModeView.vue";
 import UserView from "../views/UserView.vue";
 import RemoteView from "../views/RemoteView.vue";
-// import LocalView from "../views/LocalView.vue";
 import UserSettings from "../components/UserSettings.vue";
 import TournamentView from "../views/TournamentView.vue";
 import NotFound from "../views/NotFound.vue";
@@ -14,7 +13,6 @@ import { useAuthStore } from "@/store/auth";
 import CreateTournament from '../views/CreateTournament.vue'
 import ListTournaments from '../views/ListTournaments.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
-// import AiView from '../views/AiView.vue'
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
 import PongAiView from "../views/PongAiView.vue";
@@ -70,22 +68,6 @@ const routes = [
             requiresAuth: false,
         },
     },
-    // {
-    //     path: '/ai',
-    //     name: 'ai',
-    //     component: AiView,
-    //     meta: {
-    //       requiresAuth: false,
-    //     },
-    // },
-    // {
-    //     path: "/local",
-    //     name: "local",
-    //     component: LocalView,
-    //     meta: {
-    //         requiresAuth: false,
-    //     },
-    // },
     {
         path: "/remote",
         name: "remote",
