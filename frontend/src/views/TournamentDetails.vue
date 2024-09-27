@@ -1,7 +1,7 @@
 <template>
     <div class="content">
       <h1>Tournament Details</h1>
-      <p>Details for tournament with ID: {{ id }}</p>
+      <p>Details for tournament:</p>
       <p>Number of participants: {{ participants.length }}</p>
   
       <div v-if="!joined">

@@ -27,7 +27,7 @@
     methods: {
       createTournament() {
         if (this.tournamentName) {
-          this.$router.push('/list-tournament');
+          this.$router.push('/tournament-details');
         }
       },
     },

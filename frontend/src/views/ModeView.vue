@@ -27,15 +27,9 @@
             </router-link>
         </div>
         <div class="right-side">
-            <router-link v-if="isAuthenticated" to="/tournament" class="link">
+            <router-link to="/create-tournament" class="link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }}</p>
-                    <p class="description">{{ $t('tournamentDesc') }}</p>
-                </div>
-            </router-link>
-            <router-link v-else class="link" to="/tournament">
-                <div class="text-container">
-                    <p class="title">{{ $t('tournament') }} 🔒</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
