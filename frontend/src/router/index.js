@@ -11,7 +11,6 @@ import TournamentView from "../views/TournamentView.vue";
 import NotFound from "../views/NotFound.vue";
 import { useAuthStore } from "@/store/auth";
 import CreateTournament from '../views/CreateTournament.vue'
-import ListTournaments from '../views/ListTournaments.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
@@ -90,7 +89,7 @@ const routes = [
         name: "tournament",
         component: TournamentView,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     },
     {
@@ -98,24 +97,15 @@ const routes = [
         name: 'create-tournament',
         component: CreateTournament,
         meta: {
-          requiresAuth: true,
+          requiresAuth: false,
         },
     },
     {
-        path: '/list-tournament',
-        name: 'list-tournament',
-        component: ListTournaments,
-        meta: {
-          requiresAuth: true,
-        },
-    },
-    {
-        path: '/tournament-details/:id',
+        path: '/tournament-details/',
         name: 'TournamentDetails',
         component: TournamentDetails,
-        props: true,
         meta: {
-          requiresAuth: true,
+          requiresAuth: false,
         },
     },
     {
