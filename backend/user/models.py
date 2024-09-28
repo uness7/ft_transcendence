@@ -74,3 +74,17 @@ class   User(AbstractBaseUser, PermissionsMixin):
     @property
     def name(self):
         return f"{self.first_name} {self.last_name}"
+
+class UserQRCode(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE);
+    qr_code_key = models.CharField(max_length=40);
+    created_at = models.DateTimeField(auto_now_add=True);
+    updated_at = models.DateTimeField(auto_now=True);
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.qr_code_key = str(uuid.uuid4());
+        super().save(*args, **kwargs);
+
+    def __str__(self):
+        return f"QR Code for {self.user.email}"

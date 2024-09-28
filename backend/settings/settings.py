@@ -31,15 +31,12 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist", # used to logout nd blacklist used tokens
     "corsheaders",
+
     # 2FA
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_email',  # <- if you want email capability.
-    'two_factor',
-    'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
-    'two_factor.plugins.email',  # <- if you want email capability.
-    #'two_factor.plugins.yubikey',  # <- for yubikey capability.
+    'qrcode',
 
     # local_apps
     'user',
@@ -153,12 +150,8 @@ WSGI_APPLICATION = "settings.wsgi.application"
 import os
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'ENGINE': "django.db.backends.sqlite3",
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -215,6 +208,4 @@ REST_FRAMEWORK = {
     ]
 };
 
-LOGIN_URL = 'two_factor:login';
-LOGIN_REDIRECT_URL = 'admin/'
 
