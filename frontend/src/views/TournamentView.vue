@@ -7,8 +7,8 @@
         <router-link to="/create-tournament" class="btn">
           Create Tournament
         </router-link>
-        <router-link to="/list-tournament" class="btn">
-          List Tournaments
+        <router-link to="/tournament-details" class="btn">
+          Continue Tournament
         </router-link>
       </div>
     </div>

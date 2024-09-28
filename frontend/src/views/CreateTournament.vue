@@ -27,6 +27,14 @@
     methods: {
       createTournament() {
         if (this.tournamentName) {
+          const tournament = {
+            name: this.tournamentName,
+            isFinished: false
+          };
+          if (localStorage.getItem("pongTournament")) {
+            localStorage.removeItem("pongTournament");
+          }
+          localStorage.setItem("pongTournament", JSON.stringify(tournament));
           this.$router.push('/tournament-details');
         }
       },

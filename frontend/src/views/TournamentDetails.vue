@@ -1,28 +1,36 @@
 <template>
     <div class="content">
-      <h1>Tournament Details</h1>
+      <h1>{{ tournament ? `${tournament.name} Tournament` : "Error: no tournament"}} </h1>
       <p>Details for tournament:</p>
-      <p>Number of participants: {{ participants.length }}</p>
+      <!-- <p>Number of participants: {{ participants.length }}</p> -->
   
       <div v-if="!joined">
-        <button class="btn join-btn" @click="promptAlias">Join Tournament</button>
+        <!-- <button class="btn join-btn" @click="promptAlias">Join Tournament</button> -->
       </div>
       <div v-else>
-        <p>Welcome, {{ alias }}!</p>
-        <button class="btn leave-btn" @click="leaveTournament">Leave Tournament</button>
+        <!-- <p>Welcome, {{ alias }}!</p> -->
+        <p>Welcome</p>
+        <!-- <button class="btn leave-btn" @click="leaveTournament">Leave Tournament</button> -->
       </div>
     </div>
   </template>
   
   <script>
   export default {
-    props: ['id'],
+    // props: ['id'],
     data() {
       return {
-        participants: [], // need backend to display participants
+        // participants: [], // need backend to display participants
         joined: false,
-        alias: '',
+        // alias: '',
+        tournament: null,
       };
+    },
+    mounted() {
+      const tournamentData = localStorage.getItem("pongTournament");
+      if (tournamentData) {
+        this.tournament = JSON.parse(tournamentData);
+      }
     },
     methods: {
       promptAlias() {
@@ -40,11 +48,12 @@
           // backend to send tournament name
         }
       },
-      leaveTournament() {
-        this.joined = false;
-        this.alias = '';
-        // backend to leave tournament
-      },
+      // leaveTournament() {
+      //   this.joined = false;
+      //   this.alias = '';
+      //   // backend to leave tournament
+      // },
+
     },
   };
   </script>
