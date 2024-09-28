@@ -18,29 +18,29 @@
     "error": "Error",
     "error-text": "The page you are looking for does not exist",
     "games-played": "Games Played",
-    "wins":"Wins",
-    "losses":"Losses",
-    "total-score":"Total Score",
-    "friends":"friends",
-    "create-account":"Create an Account",
-    "already-account":"Already have an account?",
-    "sign-in":"Sign in",
-    "no-account":"Don't have an account?",
-    "image-upload":"Upload your profile picture",
+    "wins": "Wins",
+    "losses": "Losses",
+    "total-score": "Total Score",
+    "friends": "friends",
+    "create-account": "Create an Account",
+    "already-account": "Already have an account?",
+    "sign-in": "Sign in",
+    "no-account": "Don't have an account?",
+    "image-upload": "Upload your profile picture",
     "local": "1v1 local",
     "localDesc": "Local multiplayer mode for playing with friends on the same device.",
     "remote": "1v1 remote",
     "remoteDesc": "Play with friends remotely over the internet.",
     "tournament": "Tournament",
     "tournamentDesc": "Compete in a tournament with multiple rounds and opponents.",
-    "ai":"1v1 AI",
-    "aiDesc":"Play against an artificial intelligence",
-    "difficulty":"difficulty",
-    "easy":"easy",
-    "medium":"medium",
-    "hard":"hard",
-    "read-privacy":"read our privacy policy",
-    "register":"or register",
+    "ai": "1v1 AI",
+    "aiDesc": "Play against an artificial intelligence",
+    "difficulty": "difficulty",
+    "easy": "easy",
+    "medium": "medium",
+    "hard": "hard",
+    "read-privacy": "read our privacy policy",
+    "register": "or register",
     "privacy": {
         "title": "Privacy Policy",
         "effective_date": "Effective Date: 2024-09-25",
@@ -74,14 +74,14 @@
         },
         "your_rights": {
             "title": "Your Data Protection Rights",
-            "text": "Under GDPR, you have the following rights: Right to Access: You can request a copy of the personal data we hold about you. Right to Rectification: You can request corrections to inaccurate or incomplete data. Right to Erasure: You can request the deletion of your personal data. Right to Data Portability: You can request that we provide your data in a machine-readable format. Right to Restrict Processing: You can request limitations on how your data is processed. Right to Object: You can object to the processing of your data under certain circumstances. Right to Withdraw Consent: If processing is based on consent, you can withdraw it at any time. To exercise any of these rights, contact us at: liguyon@student.42lehavre.fr, jnorget@student.42lehavre.fr, okazdar@student.42lehavre.fr, ssasdat@student.42lehavre.fr, yzioual@student.42lehavre.fr."
+            "text": "Under GDPR, you have the following rights: Right to Access: You can request a copy of the personal data we hold about you. Right to Rectification: You can request corrections to inaccurate or incomplete data. Right to Erasure: You can request the deletion of your personal data. Right to Data Portability: You can request that we provide your data in a machine-readable format. Right to Restrict Processing: You can request limitations on how your data is processed. Right to Object: You can object to the processing of your data under certain circumstances. Right to Withdraw Consent: If processing is based on consent, you can withdraw it at any time. To exercise any of these rights, contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
         },
         "cookies": {
             "title": "Cookies and Tracking Technologies",
             "text": "We use cookies and similar tracking technologies to enhance user experience"
         },
         "children_privacy": {
-            "title": "Children’s Privacy",
+            "title": "Children's Privacy",
             "text": "Our services are not intended for users under the age of 13. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such data, please contact us, and we will delete it."
         },
         "data_transfers": {
@@ -94,8 +94,7 @@
         },
         "contact_us": {
             "title": "Contact Us",
-            "text": "If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us at: liguyon@student.42lehavre.fr, jnorget@student.42lehavre.fr, okazdar@student.42lehavre.fr, ssasdat@student.42lehavre.fr, yzioual@student.42lehavre.fr."
+            "text": "If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
         }
     }
-    
 }

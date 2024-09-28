@@ -14,19 +14,19 @@
     "jules-status": "Responsable front-end",
     "navid-status": "Responsable front-end",
     "youness-status": "Responsable back-end",
-    "color-theme" : "Theme de couleur",
+    "color-theme": "Theme de couleur",
     "error": "Erreur",
     "error-text": "La page que vous recherchez n'existe pas",
     "games-played": "Parties jouees",
-    "wins":"victoires",
-    "losses":"defaites",
-    "total-score":"Score total",
-    "friends":"amis",
-    "create-account":"Creer un compte",
-    "already-account":"Vous avez deja un compte ?",
-    "sign-in":"Se connecter",
-    "no-account":"Vous n'avez pas de compte ?",
-    "image-upload":"Telechargez votre photo de profil",
+    "wins": "victoires",
+    "losses": "defaites",
+    "total-score": "Score total",
+    "friends": "amis",
+    "create-account": "Creer un compte",
+    "already-account": "Vous avez deja un compte ?",
+    "sign-in": "Se connecter",
+    "no-account": "Vous n'avez pas de compte ?",
+    "image-upload": "Telechargez votre photo de profil",
     "local": "1v1 local",
     "localDesc": "Mode multijoueur local pour jouer avec des amis sur le meme appareil.",
     "remote": "1v1 distant",
@@ -35,12 +35,12 @@
     "tournamentDesc": "Participez a un tournoi avec plusieurs manches et adversaires.",
     "ai": "1v1 IA",
     "aiDesc": "Jouez contre une intelligence artificielle",
-    "difficulty":"difficulte",
-    "easy":"facile",
-    "medium":"moyenne",
-    "hard":"elevee",
-    "register":"ou s'inscrire",
-    "read-privacy":"read our privacy policy",
+    "difficulty": "difficulte",
+    "easy": "facile",
+    "medium": "moyenne",
+    "hard": "elevee",
+    "register": "ou s'inscrire",
+    "read-privacy": "lire notre politique de confidentialite",
     "privacy": {
         "title": "Politique de Confidentialite",
         "effective_date": "Date d'effet : 2024-09-25",
@@ -74,7 +74,7 @@
         },
         "your_rights": {
             "title": "Vos Droits en Matiere de Protection des Donnees",
-            "text": "En vertu du RGPD, vous disposez des droits suivants : Droit d'acces : Vous pouvez demander une copie des donnees personnelles que nous detenons a votre sujet. Droit de rectification : Vous pouvez demander des corrections pour des donnees inexactes ou incompletes. Droit a l'effacement : Vous pouvez demander la suppression de vos donnees personnelles. Droit a la portabilite des donnees : Vous pouvez demander que nous fournissions vos donnees dans un format lisible par machine. Droit de limiter le traitement : Vous pouvez demander des limitations sur la facon dont vos donnees sont traitees. Droit d'opposition : Vous pouvez vous opposer au traitement de vos donnees dans certaines circonstances. Droit de retirer votre consentement : Si le traitement est base sur le consentement, vous pouvez le retirer a tout moment. Pour exercer l'un de ces droits, contactez-nous a : liguyon@student.42lehavre.fr, jnorget@student.42lehavre.fr, okazdar@student.42lehavre.fr, ssasdat@student.42lehavre.fr, yzioual@student.42lehavre.fr."
+            "text": "En vertu du RGPD, vous disposez des droits suivants : Droit d'acces : Vous pouvez demander une copie des donnees personnelles que nous detenons a votre sujet. Droit de rectification : Vous pouvez demander des corrections pour des donnees inexactes ou incompletes. Droit a l'effacement : Vous pouvez demander la suppression de vos donnees personnelles. Droit a la portabilite des donnees : Vous pouvez demander que nous fournissions vos donnees dans un format lisible par machine. Droit de limiter le traitement : Vous pouvez demander des limitations sur la facon dont vos donnees sont traitees. Droit d'opposition : Vous pouvez vous opposer au traitement de vos donnees dans certaines circonstances. Droit de retirer votre consentement : Si le traitement est base sur le consentement, vous pouvez le retirer a tout moment. Pour exercer l'un de ces droits, contactez-nous a : {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
         },
         "cookies": {
             "title": "Cookies et Technologies de Suivi",
@@ -94,8 +94,7 @@
         },
         "contact_us": {
             "title": "Contactez-nous",
-            "text": "Si vous avez des questions ou des preoccupations concernant cette politique de confidentialite ou la facon dont nous traitons vos donnees personnelles, veuillez nous contacter a : liguyon@student.42lehavre.fr, jnorget@student.42lehavre.fr, okazdar@student.42lehavre.fr, ssasdat@student.42lehavre.fr, yzioual@student.42lehavre.fr."
+            "text": "Si vous avez des questions ou des preoccupations concernant cette politique de confidentialite ou la facon dont nous traitons vos donnees personnelles, veuillez nous contacter a : {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
         }
-}
-
+    }
 }
