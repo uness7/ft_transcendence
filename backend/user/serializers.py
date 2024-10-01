@@ -1,5 +1,6 @@
 from rest_framework import serializers;
 from user.models import User;
+import re;
 
 '''
 NOTES: 
@@ -14,17 +15,27 @@ class   UserSerializer(serializers.ModelSerializer):
 
     class   Meta:
         model = User;
-        fields = [
-                    'id',
-                    'username', 
-                    'first_name', 
-                    'last_name', 
-                    'is_active', 
-#                    'bio',
-#                    'avatar',
-                    'created', 
-                    'updated'
-                ];
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_active',
+                #'bio', 
+                  'avatar', 'created', 'updated' ]; 
         read_only_field = ['is_active'];
 
+    def validate_username(self, value):
+        if not value.isalnum():
+            raise serializers.ValidationError("Username must only contain alphanumeric character");
+        return value;
 
+    def validate_first_name(self, value):
+        if not re.match("^[A-Za-z'-]+$", value):
+            raise serializers.ValidationError("No digits or special characters are allowed!");
+        return value;
+
+    def validate_last_name(self, value):
+        if not re.match("^[A-Za-z'-]+$", value):
+            raise serializers.ValidationError("No digits or special characters are allowed!");
+        return value;
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("This email is already in use!");
+        return value;

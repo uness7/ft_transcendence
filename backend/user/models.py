@@ -5,9 +5,10 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.core.exceptions import ObjectDoesNotExist;
 from django.db import models;
 from django.http import Http404;
+from django_otp.plugins.otp_totp.models import TOTPDevice;
+
 
 class   UserManager(BaseUserManager):
-
     def get_object_by_public_id(self, public_id):
         try:
             instance = self.get(public_id=public_id);
@@ -23,6 +24,7 @@ class   UserManager(BaseUserManager):
         if password is None:
             raise TypeError('User must have a valid password');
         user = self.model(username=username, email=self.normalize_email(email), **kwargs);
+        #TOTPDevice.objects.create(user=user);
         user.set_password(password);
         user.save(using=self._db);
         return user;
@@ -57,6 +59,18 @@ class   User(AbstractBaseUser, PermissionsMixin):
     games_won = models.IntegerField(default=0);
     games_lost = models.IntegerField(default=0);
 
+    # Data validation
+    def clean(self):
+        super.clean(); # keeping default data validation
+        if self.games_won + self.games_lost > self.games_played:
+            raise ValidationError("Games won and lost cannot exceed games played.");
+
+        if not self.first_name or not self.last_name:
+            raise ValidationError("First name and last name cannot be empty.");
+        
+        if not self.username.isalnum():
+            raise ValidationError("Username should contain only alphanumeric characters.");
+
     @property
     def win_rate(self):
         if self.games_played == 0:
@@ -74,17 +88,3 @@ class   User(AbstractBaseUser, PermissionsMixin):
     @property
     def name(self):
         return f"{self.first_name} {self.last_name}"
-
-class UserQRCode(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE);
-    qr_code_key = models.CharField(max_length=40);
-    created_at = models.DateTimeField(auto_now_add=True);
-    updated_at = models.DateTimeField(auto_now=True);
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.qr_code_key = str(uuid.uuid4());
-        super().save(*args, **kwargs);
-
-    def __str__(self):
-        return f"QR Code for {self.user.email}"

@@ -55,6 +55,9 @@ dev-startapp:
 	fi
 	$(DOCKER_COMMAND_DEV) exec web python3 manage.py startapp $(name_app)
 
+dev-shell:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py shell
+
 .PHONY: dev dev-down dev-migrate
 
 
