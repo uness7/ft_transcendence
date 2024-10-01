@@ -1,6 +1,12 @@
 <template>
 	<div class="content">
 		<canvas id="game-canvas"></canvas>
+		<div class="power-up-buttons">
+			<button :class="{ active: isSpeedBuffActive }" @click="togglePlayerSpeed">Speed Buff</button>
+			<button :class="{ active: isLargerPaddleActive }" @click="toggleLargerPaddle">Larger Paddle</button>
+			<button :class="{ active: isFasterBallActive }" @click="toggleFasterBall">Faster Ball</button>
+			<button :class="{ active: isImmortalActive }" @click="togglePlayerImmortal">Immortal</button>
+		</div>
 	</div>
 </template>
 
@@ -10,17 +16,46 @@ import PlayerPaddle from "../pong/entities/player-paddle.js"
 import TextHUD from "../pong/entities/text-hud.js"
 import Vec2 from "../pong/maths/vec2.js";
 import CollisionDetector from "../pong/misc/collision-detector.js";
-import gameConfig from "../pong/game/config.js"
+import gameConfig, { 
+	togglePlayerSpeedBuff, 
+	togglePlayerLargerPaddle, 
+	toggleFasterBall, 
+	togglePlayerImmortal 
+} from "../pong/game/config.js"; 
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
 
 export default {
 	name: 'PongLocalView',
+	data() {
+	return {
+		isSpeedBuffActive: false,
+		isLargerPaddleActive: false,
+		isFasterBallActive: false,
+		isImmortalActive: false,
+	};
+	},
 	mounted()
 	{
 		this.initGame();
 	},
 	methods: {
+		togglePlayerSpeed() {
+			this.isSpeedBuffActive = !this.isSpeedBuffActive;
+			togglePlayerSpeedBuff();
+		},
+		toggleLargerPaddle() {
+			this.isLargerPaddleActive = !this.isLargerPaddleActive;
+			togglePlayerLargerPaddle();
+		},
+		toggleFasterBall() {
+			this.isFasterBallActive = !this.isFasterBallActive;
+			toggleFasterBall();
+		},
+		togglePlayerImmortal() {
+			this.isImmortalActive = !this.isImmortalActive;
+			togglePlayerImmortal();
+		},
 		initGame() {
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
@@ -307,5 +342,30 @@ export default {
 	right: 0;
 	border: 2px solid white;
 }
+
+.power-up-buttons {
+	position: absolute;
+	top: 50%;
+	left: 20px;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+button {
+	width: 150px;
+	padding: 10px;
+	background-color: rgb(30,30,30);
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+button.active {
+	background-color: rgb(44, 116, 44);
+}
+
 </style>
 

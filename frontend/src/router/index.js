@@ -141,7 +141,7 @@ const routes = [
         name: "settings",
         component: UserSettings,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     },
     {

@@ -87,26 +87,30 @@ export default gameConfig;
 
 export const togglePlayerSpeedBuff = () => {
 	if (gameConfig.paddle.speed === defaultConfig.paddle.speed) {
-		gameConfig.paddle.speed = 620;
+		gameConfig.paddle.speed = 0;
 	} else {
 		gameConfig.paddle.speed = defaultConfig.paddle.speed;
 	}
 }
 
 export const togglePlayerLargerPaddle = () => {
+	console.log('Before:', gameConfig.paddle.size.y);
 	if (gameConfig.paddle.size.y === defaultConfig.paddle.size.y) {
-		gameConfig.paddle.size.y = 170;
+		gameConfig.paddle.size.y = 570;
 	} else {
 		gameConfig.paddle.size.y = defaultConfig.paddle.size.y;
 	}
+	console.log('After:', gameConfig.paddle.size.y);
 }
 
 export const toggleFasterBall = () => {
+	console.log('ballspeed Before:', gameConfig.ball.speed);
 	if (gameConfig.ball.speed === defaultConfig.ball.speed) {
-		gameConfig.ball.speed = 700;
+		gameConfig.ball.speed = 0;
 	} else {
 		gameConfig.ball.speed = defaultConfig.ball.speed;
 	}
+	console.log('ballspeed After:', gameConfig.ball.speed);
 }
 
 export const togglePlayerImmortal = () => {
