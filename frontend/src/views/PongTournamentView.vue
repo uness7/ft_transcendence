@@ -202,7 +202,8 @@ export default {
                                 winner: null,
                             });
                         }
-                        tournament.isFinished = true;
+                        else if (tournament.nextMatch === 3)
+                            tournament.isFinished = true;
                         localStorage.setItem("pongTournament", JSON.stringify(tournament));
                     }
                 }
