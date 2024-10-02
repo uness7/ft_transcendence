@@ -14,6 +14,7 @@ import CreateTournament from '../views/CreateTournament.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
+import PongTournamentView from "../views/PongTournamentView.vue";
 import PongAiView from "../views/PongAiView.vue";
 import TwoFacView from "../views/TwoFacView.vue";
 
@@ -128,6 +129,14 @@ const routes = [
         path: "/pong/local",
         name: "pong-local",
         component: PongLocalView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/pong/tournament",
+        name: "pong-tournament",
+        component: PongTournamentView,
         meta: {
             requiresAuth: false,
         },

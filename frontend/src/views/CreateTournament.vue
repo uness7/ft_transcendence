@@ -29,7 +29,15 @@
         if (this.tournamentName) {
           const tournament = {
             name: this.tournamentName,
-            isFinished: false
+            isFinished: false,
+            currentPlayers: {
+              left: {
+                name: "Jean"
+              },
+              right: {
+                name: "Pierre"
+              }
+            }
           };
           if (localStorage.getItem("pongTournament")) {
             localStorage.removeItem("pongTournament");
