@@ -19,6 +19,8 @@ import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
 import PongAiView from "../views/PongAiView.vue";
 import TwoFacView from "../views/TwoFacView.vue";
+// import UserDashboard from "../views/UserDashboard.vue";
+// import PerformanceChart from "../views/PerformanceChart.vue";
 
 
 const routes = [
@@ -30,6 +32,14 @@ const routes = [
             requiresAuth: false,
         },
     },
+    // {
+    //     path: "/d",
+    //     name: "d",
+    //     component: UserDashboard,
+    //     meta: {
+    //         requiresAuth: false,
+    //     },
+    // },
     {
         path: "/about",
         name: "about",
@@ -95,11 +105,11 @@ const routes = [
         },
     },
     {
-        path: "/user/:id",
+        path: "/user/1",
         name: "user",
         component: UserView,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
         props: true,
     },

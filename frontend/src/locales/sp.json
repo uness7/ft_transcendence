@@ -96,5 +96,10 @@
           "title": "{'Contactenos'}",
           "text": "{'Si tiene alguna pregunta o inquietud sobre esta Politica de Privacidad o como manejamos sus datos personales, contactenos en: liguyon@student.42lehavre.fr, jnorget@student.42lehavre.fr, okazdar@student.42lehavre.fr, ssasdat@student.42lehavre.fr, yzioual@student.42lehavre.fr.'}"
       }
-  }
+  },
+  "power-up": "poderes",
+  "games-won": "Partidas ganadas",
+  "games-lost": "Partidas perdidas",
+  "win-rate": "Tasa de victoria",
+  "tournaments-won": "Torneos ganados"
 }

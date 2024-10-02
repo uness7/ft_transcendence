@@ -25,7 +25,7 @@ export default {
   props: ['id'],
   data() {
     return {
-      currentView: 'UserProfile', // Vue par defaut
+      currentView: 'UserProfile',
     };
   },
 };

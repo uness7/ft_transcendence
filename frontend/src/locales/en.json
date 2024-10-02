@@ -96,5 +96,10 @@
             "title": "Contact Us",
             "text": "If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
         }
-    }
+    },
+    "power-up":"power-up",
+    "games-won": "Games won",
+    "games-lost": "Games lost",
+    "win-rate": "Win rate",
+    "tournaments-won": "Tournaments won"
 }
