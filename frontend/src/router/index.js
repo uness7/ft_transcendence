@@ -94,7 +94,7 @@ const routes = [
         },
     },
     {
-        path: '/create-tournament',
+        path: '/tournament/create',
         name: 'create-tournament',
         component: CreateTournament,
         meta: {
@@ -102,8 +102,16 @@ const routes = [
         },
     },
     {
-        path: '/tournament-details/',
+        path: '/tournament/details/',
         name: 'TournamentDetails',
+        component: TournamentDetails,
+        meta: {
+          requiresAuth: false,
+        },
+    },
+    {
+        path: '/tournament/brackets/',
+        name: 'TournamentBrackets',
         component: TournamentDetails,
         meta: {
           requiresAuth: false,

@@ -4,10 +4,10 @@
       <p>Welcome to the tournament page. Please choose an action below:</p>
   
       <div class="button-container">
-        <router-link to="/create-tournament" class="btn">
+        <router-link to="/tournament/create" class="btn">
           Create Tournament
         </router-link>
-        <router-link to="/tournament-details" class="btn">
+        <router-link to="/tournament/details" class="btn">
           Continue Tournament
         </router-link>
       </div>
