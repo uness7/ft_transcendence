@@ -12,6 +12,7 @@ import NotFound from "../views/NotFound.vue";
 import { useAuthStore } from "@/store/auth";
 import CreateTournament from '../views/CreateTournament.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
+import TournamentBrackets from '../views/TournamentBracketsView.vue'
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
 import PongTournamentView from "../views/PongTournamentView.vue";
@@ -112,7 +113,7 @@ const routes = [
     {
         path: '/tournament/brackets/',
         name: 'TournamentBrackets',
-        component: TournamentDetails,
+        component: TournamentBrackets,
         meta: {
           requiresAuth: false,
         },

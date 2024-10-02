@@ -57,6 +57,38 @@ export default {
         },
 
         startTournament() {
+            if (!this.tournament.isStarted) {
+                const diceRoll = Math.floor(Math.random() * 3) + 1;
+                let matchRolls = [0, diceRoll];
+                const remaining = [1, 2, 3];
+                remaining.forEach(elem => {
+                    // if elem not in rolls: push elem to rolls
+                    if (!matchRolls.includes(elem))
+                        matchRolls.push(elem);
+                });
+                console.log(diceRoll, matchRolls);
+
+                this.tournament.matches = [];
+                this.tournament.matches.push({
+                    playerLeft: this.tournament.participants[matchRolls[0]],
+                    playerRight: this.tournament.participants[matchRolls[1]],
+                    playerLeftScore: 0,
+                    playerRightScore: 0,
+                    state: "pending",
+                    winner: null,
+                });
+                this.tournament.matches.push({
+                    playerLeft: this.tournament.participants[matchRolls[2]],
+                    playerRight: this.tournament.participants[matchRolls[3]],
+                    playerLeftScore: 0,
+                    playerRightScore: 0,
+                    state: "pending",
+                    winner: null,
+                });
+
+                this.tournament.isStarted = true;
+                this.updateStoredTournament();
+            }
             this.$router.push("/tournament/brackets")
         },
     },
