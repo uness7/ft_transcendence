@@ -51,7 +51,7 @@ export default {
             if (aliasInput) {
                 if (!this.tournament.participants)
                 this.tournament.participants = [];
-                this.tournament.participants.push(aliasInput);
+                this.tournament.participants.push(aliasInput.toUpperCase());
                 this.updateStoredTournament();
             }
         },
@@ -65,7 +65,6 @@ export default {
                     if (!matchRolls.includes(elem))
                         matchRolls.push(elem);
                 });
-                console.log(diceRoll, matchRolls);
 
                 this.tournament.matches = [];
                 this.tournament.matches.push({

@@ -24,6 +24,7 @@ export default {
                 const tournament = {
                     name: this.tournamentName,
                     isStarted: false,
+                    isFinished: false,
                     participants: [],
                 };
                 if (localStorage.getItem("pongTournament")) {
