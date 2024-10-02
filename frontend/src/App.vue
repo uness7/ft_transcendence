@@ -8,9 +8,9 @@
 			<div v-else class="dropdown">
 				<button class="dropbtn">{{ truncatedUsername }}</button>
 				<div class="dropdown-content">
-					<router-link to="/profile">{{ $t('profile') }}</router-link>
+					<router-link to="/user/1">{{ $t('profile') }}</router-link>
 					<router-link to="/user/settings">{{ $t('settings') }}</router-link>
-					<a href="#" @click.prevent="logout">{{ $t('logout') }}</a>
+					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
 				</div>
 			</div>
 		</header>
