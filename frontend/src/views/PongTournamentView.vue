@@ -2,6 +2,9 @@
 	<div class="content">
 		<canvas id="game-canvas"></canvas>
 	</div>
+	<div id="button-container">
+		<button v-on:click="navigateToTournament()" id="return-button">BACK</button>
+	</div>
 </template>
 
 <script>
@@ -15,15 +18,21 @@ import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
 
 export default {
-	name: 'PongLocalView',
+	// name: 'PongLocalView',
 	mounted()
 	{
 		this.initGame();
 	},
 	methods: {
+		navigateToTournament() {
+			console.log("hello ???");
+			this.$router.push('/tournament-details');
+		},
 		initGame() {
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
+
+			const returnBtn = document.querySelector("#return-button");
 
 			const tournamentData = JSON.parse(localStorage.getItem("pongTournament"));
 			const currentPlayers = {
@@ -169,9 +178,7 @@ export default {
 						else
 							this.entities.gameStateText.text = `${currentPlayers.right.name.toUpperCase()} WINS`;
 						this.state = GameState.Wait;
-						setTimeout(() => {
-							this.state = GameState.Menu;
-						}, 3 * 1000);
+						setTimeout(() => returnBtn.style.visibility = "visible", 2 * 1_000);
 					}
 				}
 
@@ -327,5 +334,24 @@ export default {
 	right: 0;
 	border: 2px solid white;
 }
+
+#return-button {
+	width: 50px;
+	height: 50px;
+	background-color: white;
+	border: none;
+	cursor: pointer;
+	transition: transform 0.3s ease;
+	/* visibility: hidden; */
+}
+
+#button-container {
+	position: fixed;
+	top: 80%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 9999;
+}
+
 </style>
 
