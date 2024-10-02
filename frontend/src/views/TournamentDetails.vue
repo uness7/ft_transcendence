@@ -62,7 +62,6 @@ export default {
                 let matchRolls = [0, diceRoll];
                 const remaining = [1, 2, 3];
                 remaining.forEach(elem => {
-                    // if elem not in rolls: push elem to rolls
                     if (!matchRolls.includes(elem))
                         matchRolls.push(elem);
                 });
@@ -85,7 +84,7 @@ export default {
                     state: "pending",
                     winner: null,
                 });
-
+                this.tournament.nextMatch = 0;
                 this.tournament.isStarted = true;
                 this.updateStoredTournament();
             }

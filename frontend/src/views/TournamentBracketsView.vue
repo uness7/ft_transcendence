@@ -1,6 +1,25 @@
 <template>
 	<div class="content">
-		
+        <h1>{{ tournament ? `${tournament.name} Tournament` : "Error: no tournament" }}</h1>
+		<h2>Match 1 - {{ tournament?.matches?.[0].playerLeft }} vs {{ tournament?.matches?.[0].playerRight }}</h2>
+		<p>{{ tournament?.matches?.[0].state }}</p>
+		<div v-if="tournament?.matches?.[0].state === 'pending'">
+            <button class="btn join-btn" @click="startMatch">Start Match</button>
+		</div>
+		<div v-else>
+			<p>Winner:{{ tournament?.matches?.[0].winner }}</p>
+			<p>Score: </p>
+		</div>
+
+		<h2>Match 2 - {{ tournament?.matches?.[1].playerLeft }} vs {{ tournament?.matches?.[1].playerRight }}</h2>
+		<p>{{ tournament?.matches?.[1].state }}</p>
+		<div v-if=" tournament?.matches?.[0].state === 'finished' && tournament?.matches?.[1].state === 'pending'">
+            <button class="btn join-btn" @click="join">Start Match</button>
+		</div>
+
+		<div v-if="tournament?.matches?.[0].state === 'finished' && tournament?.matches?.[1].state === 'finished'">
+			<h2>Match 3 - {{ tournament?.matches?.[2].playerLeft }} vs {{ tournament?.matches?.[2].playerRight }}</h2>
+		</div>
 	</div>
 </template>
 
@@ -17,6 +36,11 @@ export default {
             this.tournament = JSON.parse(tournamentData);
         }
     },
+	methods: {
+		startMatch() {
+			this.$router.push("/pong/tournament");
+		},
+	},
 };
 </script>
 
@@ -38,6 +62,11 @@ export default {
 h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
+    color: #f0f0f0;
+}
+
+h2 {
+    font-size: 1.7rem;
     color: #f0f0f0;
 }
 
