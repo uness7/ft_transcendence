@@ -9,8 +9,8 @@
     "settings": "settings",
     "logout": "logout",
     "team": "Our team",
-    "ouissem-status": "Docker responsible",
-    "lionel-status": "Back-end responsible",
+    "ouissem-status": "Devops responsible",
+    "lionel-status": "Pong responsible",
     "jules-status": "Front-end responsible",
     "navid-status": "Front-end responsible",
     "youness-status": "Back-end responsible",
@@ -78,7 +78,7 @@
         },
         "cookies": {
             "title": "Cookies and Tracking Technologies",
-            "text": "We don't use cookies."
+            "text": "We use cookies and similar tracking technologies to enhance user experience"
         },
         "children_privacy": {
             "title": "Children’s Privacy",

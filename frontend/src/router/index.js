@@ -6,17 +6,16 @@ import AboutView from "../views/AboutView.vue";
 import ModeView from "../views/ModeView.vue";
 import UserView from "../views/UserView.vue";
 import RemoteView from "../views/RemoteView.vue";
-// import LocalView from "../views/LocalView.vue";
 import UserSettings from "../components/UserSettings.vue";
 import TournamentView from "../views/TournamentView.vue";
 import NotFound from "../views/NotFound.vue";
 import { useAuthStore } from "@/store/auth";
 import CreateTournament from '../views/CreateTournament.vue'
-import ListTournaments from '../views/ListTournaments.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
-// import AiView from '../views/AiView.vue'
+import TournamentBrackets from '../views/TournamentBracketsView.vue'
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
+import PongTournamentView from "../views/PongTournamentView.vue";
 import PongAiView from "../views/PongAiView.vue";
 import TwoFacView from "../views/TwoFacView.vue";
 
@@ -70,22 +69,6 @@ const routes = [
             requiresAuth: false,
         },
     },
-    // {
-    //     path: '/ai',
-    //     name: 'ai',
-    //     component: AiView,
-    //     meta: {
-    //       requiresAuth: false,
-    //     },
-    // },
-    // {
-    //     path: "/local",
-    //     name: "local",
-    //     component: LocalView,
-    //     meta: {
-    //         requiresAuth: false,
-    //     },
-    // },
     {
         path: "/remote",
         name: "remote",
@@ -108,32 +91,31 @@ const routes = [
         name: "tournament",
         component: TournamentView,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     },
     {
-        path: '/create-tournament',
+        path: '/tournament/create',
         name: 'create-tournament',
         component: CreateTournament,
         meta: {
-          requiresAuth: true,
+          requiresAuth: false,
         },
     },
     {
-        path: '/list-tournament',
-        name: 'list-tournament',
-        component: ListTournaments,
-        meta: {
-          requiresAuth: true,
-        },
-    },
-    {
-        path: '/tournament-details/:id',
+        path: '/tournament/details/',
         name: 'TournamentDetails',
         component: TournamentDetails,
-        props: true,
         meta: {
-          requiresAuth: true,
+          requiresAuth: false,
+        },
+    },
+    {
+        path: '/tournament/brackets/',
+        name: 'TournamentBrackets',
+        component: TournamentBrackets,
+        meta: {
+          requiresAuth: false,
         },
     },
     {
@@ -156,6 +138,14 @@ const routes = [
         path: "/pong/local",
         name: "pong-local",
         component: PongLocalView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/pong/tournament",
+        name: "pong-tournament",
+        component: PongTournamentView,
         meta: {
             requiresAuth: false,
         },
