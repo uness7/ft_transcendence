@@ -4,47 +4,21 @@
             <div class="inner">
                 <div class="signIn">
                     <div class="top">
-<!-- <<<<<<< HEAD -->
-                        <!-- <div class="title">{{ $t("sign-in") }}</div> -->
-<!-- ======= -->
-                        <div class="title">{{ $t("sign-in") }} <router-link to="/register" class="rr">{{ $t('register') }} </router-link> </div>
-<!-- >>>>>>> jules -->
+                        <div class="title">{{ $t("sign-in") }} <router-link to="/register" class="rr">{{ $t('register')
+                                }} </router-link> </div>
                     </div>
                     <form @submit.prevent="handleSubmit">
                         <div class="form">
-                            <input
-                                required
-                                aria-required="true"
-                                aria-invalid="false"
-                                aria-label="E-mail"
-                                type="email"
-                                pattern="^[\w.-]+@[\w.-]+\.\w+$"
-                                class="w100"
-                                :class="{ invalid: emailError }"
-                                placeholder="Email"
-                                autofocus
-                                @blur="validateEmail"
-                                @keydown="validateEmail"
-                                v-model="email"
-                            />
-                            <input
-                                required
-                                aria-required="true"
-                                type="password"
-                                class="w100"
-                                :class="{ invalid: passwordError }"
-                                placeholder="Password"
-                                v-model="password"
-                                @blur="validatePassword"
-                                @keydown="validatePassword"
-                            />
+                            <input required aria-required="true" aria-invalid="false" aria-label="E-mail" type="email"
+                                pattern="^[\w.-]+@[\w.-]+\.\w+$" class="w100" :class="{ invalid: emailError }"
+                                placeholder="Email" autofocus @blur="validateEmail" @keydown="validateEmail"
+                                v-model="email" />
+                            <input required aria-required="true" type="password" class="w100"
+                                :class="{ invalid: passwordError }" placeholder="Password" v-model="password"
+                                @blur="validatePassword" @keydown="validatePassword" />
                         </div>
-                        <input
-                            type="submit"
-                            :value="$t('sign-in')"
-                            class="action"
-                            :class="{ 'action-disabled': !loginValid }"
-                        />
+                        <input type="submit" :value="$t('sign-in')" class="action"
+                            :class="{ 'action-disabled': !loginValid }" />
                     </form>
                 </div>
             </div>
@@ -58,55 +32,55 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/auth';
 
 export default {
-  setup() {
-    const router = useRouter();
-    const authStore = useAuthStore();
+    setup() {
+        const router = useRouter();
+        const authStore = useAuthStore();
 
-    const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
-    const email = ref('');
-    const password = ref('');
-    const emailError = ref(false);
-    const passwordError = ref(false);
+        const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
+        const email = ref('');
+        const password = ref('');
+        const emailError = ref(false);
+        const passwordError = ref(false);
 
-    const validateEmail = () => {
-      emailError.value = !emailRegex.test(email.value);
-    };
+        const validateEmail = () => {
+            emailError.value = !emailRegex.test(email.value);
+        };
 
-    const validatePassword = () => {
-      passwordError.value = password.value === '';
-    };
+        const validatePassword = () => {
+            passwordError.value = password.value === '';
+        };
 
-    const handleSubmit = async () => {
-      const formData = {
-        email: email.value,
-        password: password.value
-      };
-      const success = await authStore.login(formData);
-      if (success) {
-        router.push('/');
-      } else {
-        router.push('/login');
-        console.log("Login failed");
-      }
-    };
+        const handleSubmit = async () => {
+            const formData = {
+                email: email.value,
+                password: password.value
+            };
+            const success = await authStore.login(formData);
+            if (success) {                
+                router.push('/two-factor-auth');
+            } else {
+                router.push('/login');
+                console.log("Login failed");
+            }
+        };
 
-    const emailValid = computed(() => emailRegex.test(email.value));
-    const passwordValid = computed(() => password.value.length > 0);
-    const loginValid = computed(() => emailValid.value && passwordValid.value);
+        const emailValid = computed(() => emailRegex.test(email.value));
+        const passwordValid = computed(() => password.value.length > 0);
+        const loginValid = computed(() => emailValid.value && passwordValid.value);
 
-    return {
-      email,
-      password,
-      emailError,
-      passwordError,
-      validateEmail,
-      validatePassword,
-      handleSubmit,
-      emailValid,
-      passwordValid,
-      loginValid
-    };
-  }
+        return {
+            email,
+            password,
+            emailError,
+            passwordError,
+            validateEmail,
+            validatePassword,
+            handleSubmit,
+            emailValid,
+            passwordValid,
+            loginValid
+        };
+    }
 };
 </script>
 
@@ -196,11 +170,9 @@ input[type="password"] {
 
 html {
     background-repeat: no-repeat;
-    background: linear-gradient(
-        to bottom,
-        rgba(96, 108, 136, 1) 0%,
-        rgba(63, 76, 107, 1) 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(96, 108, 136, 1) 0%,
+            rgba(63, 76, 107, 1) 100%);
     background-size: cover;
     display: flex;
     align-items: center;
@@ -216,13 +188,10 @@ html {
     padding: 25px 55px;
     animation: slideInTop 1s;
     box-shadow: 0px 0px 30px var(--primary-color);
-/* <<<<<<< HEAD */
-/* ======= */
 }
 
-.rr{
+.rr {
     color: var(--primary-color);
-/* >>>>>>> jules */
 }
 
 @keyframes slideInTop {
@@ -230,6 +199,7 @@ html {
         opacity: 0;
         transform: translateY(-30%);
     }
+
     to {
         opacity: 100;
         transform: translateY(0%);
@@ -248,6 +218,7 @@ html {
         align-items: start;
         justify-content: start;
     }
+
     .loginBox {
         padding: 25px 25px;
         max-width: 100vw;

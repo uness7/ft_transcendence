@@ -13,197 +13,197 @@ import NotFound from "../views/NotFound.vue";
 import { useAuthStore } from "@/store/auth";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 import OTPSetupView from "@/views/OTPSetupView.vue";
-import CreateTournament from '../views/CreateTournament.vue';
-import ListTournaments from '../views/ListTournaments.vue';
-import TournamentDetails from '../views/TournamentDetails.vue';
+import CreateTournament from "../views/CreateTournament.vue";
+import ListTournaments from "../views/ListTournaments.vue";
+import TournamentDetails from "../views/TournamentDetails.vue";
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
 import PongAiView from "../views/PongAiView.vue";
 import TwoFacView from "../views/TwoFacView.vue";
 
 const routes = [
-	{
-		path: "/",
-		name: "home",
-		component: HomeView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/about",
-		name: "about",
-		component: AboutView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/login",
-		name: "login",
-		component: LoginView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/register",
-		name: "register",
-		component: RegisterView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/2fa",
-		name: "2fa",
-		component: TwoFacView,
-		meta: {
-			requiresAuth: true,
-		},
-	},
-	{
-		path: "/mode",
-		name: "mode",
-		component: ModeView,
-		meta: {
-			requiresAuth: true,
-		},
-	},
-	{
-		path: "/local",
-		name: "local",
-		component: LocalView,
-		meta: {
-			requiresAuth: true,
-		},
-	},
-	{
-		path: "/remote",
-		name: "remote",
-		component: RemoteView,
-		meta: {
-			requiresAuth: true,
-		},
-	},
-	{
-		path: "/user/:id",
-		name: "user",
-		component: UserView,
-		meta: {
-			requiresAuth: true,
-		},
-		props: true,
-	},
-	{
-		path: "/tournament",
-		name: "tournament",
-		component: TournamentView,
-		meta: {
-			requiresAuth: true,
-		},
-	},
-	{
-		path: '/create-tournament',
-		name: 'create-tournament',
-		component: CreateTournament,
-		meta: {
-		  requiresAuth: true,
-		},
-	},
-	{
-		path: '/list-tournament',
-		name: 'list-tournament',
-		component: ListTournaments,
-		meta: {
-		  requiresAuth: true,
-		},
-	},
-	{
-		path: '/tournament-details/:id',
-		name: 'TournamentDetails',
-		component: TournamentDetails,
-		props: true,
-		meta: {
-		  requiresAuth: true,
-		},
-	},
-	{
-		path: "/user/settings",
-		name: "settings",
-		component: UserSettings,
-		meta: {
-			requiresAuth: true,
-		},
-	},
-	{
-		path: "/two-factor-auth",
-		name: "2FA",
-		component: EnableOrDisableOTPView,  
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/two-factor-auth/setup",
-		name: "2FASetup",
-		component: OTPSetupView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/privacy",
-		name: "privacy-policy",
-		component: PrivacyPolicyView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/pong/local",
-		name: "pong-local",
-		component: PongLocalView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/pong/ai",
-		name: "pong-ai",
-		component: PongAiView,
-		meta: {
-			requiresAuth: false,
-		},
-	},
-	{
-		path: "/:pathMatch(.*)*",
-		name: "NotFound",
-		component: NotFound,
-	},
+    {
+        path: "/",
+        name: "home",
+        component: HomeView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/about",
+        name: "about",
+        component: AboutView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: LoginView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: RegisterView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/2fa",
+        name: "2fa",
+        component: TwoFacView,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/mode",
+        name: "mode",
+        component: ModeView,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/local",
+        name: "local",
+        component: LocalView,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/remote",
+        name: "remote",
+        component: RemoteView,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/user/:id",
+        name: "user",
+        component: UserView,
+        meta: {
+            requiresAuth: true,
+        },
+        props: true,
+    },
+    {
+        path: "/tournament",
+        name: "tournament",
+        component: TournamentView,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/create-tournament",
+        name: "create-tournament",
+        component: CreateTournament,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/list-tournament",
+        name: "list-tournament",
+        component: ListTournaments,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/tournament-details/:id",
+        name: "TournamentDetails",
+        component: TournamentDetails,
+        props: true,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/user/settings",
+        name: "settings",
+        component: UserSettings,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/two-factor-auth",
+        name: "2FA",
+        component: EnableOrDisableOTPView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/two-factor-auth/setup",
+        name: "2FASetup",
+        component: OTPSetupView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/privacy",
+        name: "privacy-policy",
+        component: PrivacyPolicyView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/pong/local",
+        name: "pong-local",
+        component: PongLocalView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/pong/ai",
+        name: "pong-ai",
+        component: PongAiView,
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        name: "NotFound",
+        component: NotFound,
+    },
 ];
 
 const router = createRouter({
-	history: createWebHistory(process.env.BASE_URL),
-	routes,
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
 });
 
 export function isAuthenticated() {
-	return !!localStorage.getItem("accessToken");
+    return !!localStorage.getItem("accessToken");
 }
 
 router.beforeEach((to, from, next) => {
-	const authStore = useAuthStore();
+    const authStore = useAuthStore();
 
-	if (to.matched.some((record) => record.meta.requiresAuth)) {
-		if (!authStore.isAuthenticated) {
-			next("/login");
-		} else {
-			next();
-		}
-	} else {
-		next();
-	}
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (!authStore.isAuthenticated) {
+            next("/login");
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 export default router;

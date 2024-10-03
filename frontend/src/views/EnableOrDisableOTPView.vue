@@ -1,92 +1,169 @@
 <template>
-  <div class="two-fa-settings">
-    <h2>Two-Factor Authentication Settings</h2>
+  <div class="otp-verification">
+    <transition name="fade" mode="out-in">
+      <div v-if="isFirstTime" key="qr-code-view" class="qr-code-container">
+        <h2>Scan QR Code for 2FA Setup</h2>
+        <p>To secure your account, please scan the QR code with your authentication app (Google Authenticator, etc.)</p>
+        <img :src="`data:image/svg+xml;base64,${qrCode}`" alt="QR Code" v-if="qrCode" />
+        <button @click="handleNext">Next</button>
+      </div>
 
-    <p class="status-message">
-      Two-Factor Authentication is currently <strong>disabled</strong> for your account.
-    </p>
-
-    <p>
-      In today’s digital landscape, securing your online accounts is more crucial than ever. With increasing reports of data breaches and account takeovers, relying solely on passwords for protection is no longer sufficient. This is where <strong>Two-Factor Authentication (2FA)</strong> comes into play.
-    </p>
-
-    <p>
-      By enabling 2FA, you add an additional layer of security, making it significantly harder for unauthorized users to access your account. Protect your sensitive information and enjoy peace of mind with this vital security feature.
-    </p>
-    <RouterLink to="/two-factor-auth/setup">Enable two factor auth</RouterLink>
-    <br>  
-    <RouterLink to="/">Go back to Homepage</RouterLink>    
-  </div>  
+      <div v-else key="otp-input-view" class="otp-container">
+        <h2>Enter OTP Code</h2>
+        <p>Please enter the 6-digit code from your authentication app.</p>
+        <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input" />
+        <button @click="verifyOTP">Verify</button>
+      </div>
+    </transition>
+  </div>
 </template>
 
-
 <script>
+
+import { computed, onMounted, ref } from 'vue';
+import { useAuthStore } from '@/store/auth';
+import { useRouter } from 'vue-router';
+import axios from "axios";
+
 export default {
-  data() {
-    return {
-      // All dynamic properties are removed for now
+  name: 'QRCodeViewer',
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const isLoggedIn = computed(() => authStore.isAuthenticated);
+    const user = computed(() => authStore.user || { username: '', id: '' });
+    const username = computed(() => user.value.username);
+    const userId = computed(() => user.value.id);
+    
+    const isFirstTime = ref(); // Initially, we assume it is the first time
+    const qrCode = ref(""); // Use ref to make this reactive
+    const sharedKey = ref(""); // Reactive shared key
+    const otpCode = ref(""); // To capture user OTP input
+
+
+    const verifyOTP = async () => {
+      console.log("otp code: ", otpCode);
+      try {
+        const response = await axios.post(`http://localhost:8000/api/v1/verify_otp_code/${userId.value}/`, {
+          otp_code: otpCode.value,
+        });
+        console.log(response);
+        if (response.request.status === 200)
+        {
+          router.push('/');
+        } else {
+          console.log("otp verification has failed!");
+        }
+      } catch (error) {
+        throw new Error("Error occurred: ", error);
+      }
     };
+
+    const generateQRCode = async () => {
+      if (isLoggedIn.value) {
+        try {
+          const response = await axios.get(`http://localhost:8000/api/v1/get_qr_code/${userId.value}/`);
+
+          qrCode.value = response.data.qr_code;
+          sharedKey.value = response.data.key;
+
+          console.log("qr code : ", qrCode); // success
+          console.log("shared secret: ", sharedKey); // success
+          
+
+          // save qr code in db
+          try {
+            const response = await axios.post(`http://localhost:8000/api/v1/save_qr_code/${userId.value}/`, {
+              key: sharedKey.value,
+            });
+            console.log("save_qr_code res: ", response);
+            if (response.request.status === 201) {
+              console.log("the qr code was saved successfully!");
+              isFirstTime.value = true;    
+            }
+            else {
+              console.log("failure is here!");
+              isFirstTime.value = false;
+            }
+          } catch (error) {
+            throw new Error("Error occured", error);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        console.log("nope");
+      }
+    };
+
+    const handleNext = () => {
+      isFirstTime.value = false;
+    };
+
+    onMounted(() => {
+      generateQRCode();
+    });
+
+    return {
+      generateQRCode,
+      isFirstTime,
+      handleNext,
+      verifyOTP,
+      userId,
+      username,
+      qrCode,
+      otpCode,
+    }
   },
-  created() {
-    // Removed async calls for now
-  },
-  methods: {
-  },
-};
+}
 </script>
 
 
 <style scoped>
-.two-fa-settings {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+.otp-verification {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   text-align: center;
-  background-color: #f9f9f9; /* Light background for contrast */
-  border-radius: 8px; /* Slightly rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
-h2 {
-  color: #333; /* Dark color for headers */
+.qr-code-container,
+.otp-container {
+  max-width: 400px;
+  margin: auto;
 }
 
-.status-message {
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: #ff5722; /* Attention-grabbing color for status */
+.qr-code-container img {
+  width: 200px;
+  height: 200px;
+  margin: 20px 0;
 }
 
-p {
-  margin: 10px 0;
-  line-height: 1.5; /* Improved readability */
-  color: #555; /* Softer color for text */
+.otp-input {
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
 }
 
 button {
-  padding: 10px 20px;
-  margin: 10px 0;
-  font-size: 16px;
-  background-color: #007bff; /* Primary button color */
-  color: white;
-  border: none;
-  border-radius: 5px; /* Slightly rounded corners */
-  cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition for hover */
-}
-
-button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
-}
-
-.hello-world {
-  text-align: center;
-  color: #007bff; /* Matching the button color */
   margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
