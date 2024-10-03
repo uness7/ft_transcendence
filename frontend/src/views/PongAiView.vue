@@ -1,6 +1,12 @@
 <template>
 	<div class="content">
 		<canvas id="game-canvas"></canvas>
+		<div class="power-up-buttons">
+			<button :class="{ active: pongConfig?.isSpeedBuffActive ?? false }" @click="togglePlayerSpeed">Speed Buff</button>
+			<button :class="{ active: pongConfig?.isLargerPaddleActive ?? false }" @click="toggleLargerPaddle">Larger Paddle</button>
+			<button :class="{ active: pongConfig?.isFasterBallActive ?? false }" @click="toggleFasterBall">Faster Ball</button>
+			<button :class="{ active: pongConfig?.isImmortalActive ?? false }" @click="togglePlayerImmortal">Immortal</button>
+		</div>
 	</div>
 </template>
 
@@ -11,22 +17,73 @@ import AiPaddle from "../pong/entities/ai-paddle.js"
 import TextHUD from "../pong/entities/text-hud.js"
 import Vec2 from "../pong/maths/vec2.js";
 import CollisionDetector from "../pong/misc/collision-detector.js";
-import gameConfig from "../pong/game/config.js"
+import gameConfig, { 
+	togglePlayerSpeedBuff,
+	togglePlayerLargerPaddleBuff, 
+	toggleFasterBallBuff,
+	togglePlayerImmortalBuff 
+} from "../pong/game/config.js";
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
-// import { togglePlayerImmortal, toggleFasterBall, togglePlayerLargerPaddle, togglePlayerSpeedBuff } from "./config.js"
 
 export default {
 	name: 'PongAiView',
+	data() {
+	return {
+		pongConfig: null,
+	};
+	},
 	mounted()
 	{
+		this.pongConfigData = localStorage.getItem("pongAiConfig");
+		if (!this.pongConfigData) {
+			this.pongConfig = {
+				isSpeedBuffActive: false,
+				isLargerPaddleActive: false,
+				isFasterBallActive: false,
+				isImmortalActive: false,
+			};
+			localStorage.setItem("pongAiConfig", JSON.stringify(this.pongConfig));
+		} else {
+			this.pongConfig = JSON.parse(this.pongConfigData);
+		}
 		this.initGame();
 	},
-	methods:
-	{
+	methods: {
+		updatePongConfig() {
+			localStorage.setItem("pongAiConfig", JSON.stringify(this.pongConfig));
+			this.$router.go(0);
+		},
+		togglePlayerSpeed() {
+			this.pongConfig.isSpeedBuffActive = !this.pongConfig.isSpeedBuffActive;
+			this.updatePongConfig();
+		},
+		toggleLargerPaddle() {
+			this.pongConfig.isLargerPaddleActive = !this.pongConfig.isLargerPaddleActive;
+			this.updatePongConfig();
+		},
+		toggleFasterBall() {
+			this.pongConfig.isFasterBallActive = !this.pongConfig.isFasterBallActive;
+			this.updatePongConfig();
+		},
+		togglePlayerImmortal() {
+			this.pongConfig.isImmortalActive = !this.pongConfig.isImmortalActive;
+			this.updatePongConfig();
+		},
 		initGame(){
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
+
+			const pongConfig = this.pongConfig;
+			if (pongConfig.isSpeedBuffActive)
+				togglePlayerSpeedBuff();
+			if (pongConfig.isLargerPaddleActive)
+				togglePlayerLargerPaddleBuff();
+			if (pongConfig.isFasterBallActive)
+				toggleFasterBallBuff();
+			if (pongConfig.isImmortalActive)
+				togglePlayerImmortalBuff();
+
 			const GameState = {
 				Menu: "menu",
 				Wait: "wait",
@@ -111,8 +168,7 @@ export default {
 
 					// collision with left bound
 					if (gameBox.isBeyondLeftBound(ball.pos)) {
-						if (!gameConfig.game.playerImmortal)
-							this.rightScore++;
+						this.rightScore++;
 						this.state = GameState.Serve;
 						this.isLeftServe = true;
 					}
@@ -151,6 +207,8 @@ export default {
 				}
 
 				checkGameFinished = () => {
+					if (gameConfig.game.playerImmortal)
+						return;
 					if (this.leftScore === gameConfig.game.maxScore
 						|| this.rightScore === gameConfig.game.maxScore
 					) {
@@ -309,4 +367,29 @@ export default {
 	right: 0;
 	border: 2px solid white;
 }
+
+.power-up-buttons {
+	position: absolute;
+	top: 50%;
+	left: 20px;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+button {
+	width: 150px;
+	padding: 10px;
+	background-color: rgb(30,30,30);
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+button.active {
+	background-color: rgb(44, 116, 44);
+}
+
 </style>
