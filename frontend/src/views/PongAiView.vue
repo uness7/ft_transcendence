@@ -74,8 +74,7 @@ export default {
 							gameConfig.text.color
 						),
 					};
-					// this.timeAccumulator = 0;
-					// this.oldBallPos = this.entities.ball.pos.clone();
+					this.timeAccumulator = 0;
 				}
 
 				render = () => {
@@ -197,12 +196,12 @@ export default {
 					if (leftToggleMoveDown)
 						playerPaddle.moveDown(dt);
 					playerPaddle.updatePosition();
-					// if (this.timeAccumulator >= 1000) {
-					// 	this.timeAccumulator = 0;
-					// 	this.oldBallPos = ball.position.clone();
-					// }
-					// aiPaddle.checkMovement(dt, this.oldBallPos, gameConfig.ai.chaseBuffer);
-					aiPaddle.checkMovement(dt, ball.pos, gameConfig.ai.chaseBuffer);
+					if (this.timeAccumulator >= 1000) {
+						this.timeAccumulator = 0;
+						aiPaddle.predictImpact(ball.pos, ball.speed);
+						console.log("AI perception window");
+					}
+					aiPaddle.checkMovement(dt, aiPaddle.impactPos, gameConfig.ai.chaseBuffer);
 					ball.move(dt);
 				}
 

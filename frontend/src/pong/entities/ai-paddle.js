@@ -27,6 +27,7 @@ export default class AiPaddle extends Paddle {
 		this.pos = this.resetPos.clone();
 		this.rect = new Rect2(this.pos, this.size);
 		this.chasePos = this.halfHeight;
+		this.impactPos = new Vec2(this.pos.x, this.boundBox.getHalfHeight());
 	}
 
 	moveUp = (dt) => {
@@ -60,4 +61,21 @@ export default class AiPaddle extends Paddle {
 		this.updatePosition();
 	}
 
+	predictImpact = (ballPos, ballSpeed) => {
+		if (ballSpeed.x <= 0)
+			return;
+		const k = (this.pos.x - ballPos.x) / ballSpeed.x;
+		const impact = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, k));
+		this.impactPos = impact;
+		if (this.boundBox.isBeyondTopBound(impact) || this.boundBox.isBeyondBottomBound(impact)) {
+			const kI = this.boundBox.isBeyondBottomBound(impact) ?
+				(this.boundBox.bottomBound - ballPos.y) / ballSpeed.y
+				: (this.boundBox.topBound - ballPos.y) / ballSpeed.y;
+			const pI = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, kI));
+			const newSpeed = new Vec2(ballSpeed.x, -ballSpeed.y);
+			const kF = (this.pos.x - pI.x) / newSpeed.x;
+			const pF = Vec2.rAdd(pI, Vec2.rScale(newSpeed, kF));
+			this.impactPos = pF;
+		}
+	}
 }

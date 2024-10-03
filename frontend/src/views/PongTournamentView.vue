@@ -92,14 +92,14 @@ export default {
                         leftPlayerText: new TextHUD(
                             ctx,
                             playerLeft,
-                            new Vec2(100, 50),
+                            new Vec2(130, 50),
                             gameConfig.text.fontScores,
                             gameConfig.text.color
                         ),
                         rightPlayerText: new TextHUD(
                             ctx,
                             playerRight,
-                            new Vec2(gameBox.getSize().x - 100, 50),
+                            new Vec2(gameBox.getSize().x - 130, 50),
                             gameConfig.text.fontScores,
                             gameConfig.text.color
                         ),
