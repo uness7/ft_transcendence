@@ -110,9 +110,11 @@ export const toggleFasterBall = () => {
 }
 
 export const togglePlayerImmortal = () => {
+	console.log('immortal Before:', gameConfig.game.playerImmortal);
 	if (gameConfig.game.playerImmortal) {
 		gameConfig.game.playerImmortal = false;
 	} else {
 		gameConfig.game.playerImmortal = true;
 	}
+	console.log('immortal After:', gameConfig.game.playerImmortal);
 }
