@@ -50,7 +50,7 @@ export default {
 	},
 	methods: {
 		updatePongConfig() {
-			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
+			localStorage.setItem("pongLocalConfig", JSON.stringify(this.pongConfig));
 			this.$router.go(0);
 		},
 		togglePlayerSpeed() {
