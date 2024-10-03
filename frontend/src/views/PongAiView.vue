@@ -7,6 +7,9 @@
 			<button :class="{ active: pongConfig?.isFasterBallActive ?? false }" @click="toggleFasterBall">Faster Ball</button>
 			<button :class="{ active: pongConfig?.isImmortalActive ?? false }" @click="togglePlayerImmortal">Immortal</button>
 		</div>
+		<div class="ai-power-up-buttons">
+			<button :class="{ active: pongConfig?.isAISpeedBuffActive ?? false }" @click="toggleAISpeed">AI Speed Buff</button>
+		</div>
 	</div>
 </template>
 
@@ -21,7 +24,8 @@ import gameConfig, {
 	togglePlayerSpeedBuff,
 	togglePlayerLargerPaddleBuff, 
 	toggleFasterBallBuff,
-	togglePlayerImmortalBuff 
+	togglePlayerImmortalBuff,
+	toggleAISpeedBuff,
 } from "../pong/game/config.js";
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
@@ -42,6 +46,7 @@ export default {
 				isLargerPaddleActive: false,
 				isFasterBallActive: false,
 				isImmortalActive: false,
+				isAISpeedBuffActive: false,
 			};
 			localStorage.setItem("pongAiConfig", JSON.stringify(this.pongConfig));
 		} else {
@@ -70,6 +75,10 @@ export default {
 			this.pongConfig.isImmortalActive = !this.pongConfig.isImmortalActive;
 			this.updatePongConfig();
 		},
+		toggleAISpeed() {
+			this.pongConfig.isAISpeedBuffActive = !this.pongConfig.isAISpeedBuffActive;
+			this.updatePongConfig();
+		},
 		initGame(){
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
@@ -83,6 +92,8 @@ export default {
 				toggleFasterBallBuff();
 			if (pongConfig.isImmortalActive)
 				togglePlayerImmortalBuff();
+			if (pongConfig.isAISpeedBuffActive)
+				toggleAISpeedBuff();
 
 			const GameState = {
 				Menu: "menu",
@@ -207,7 +218,7 @@ export default {
 				}
 
 				checkGameFinished = () => {
-					if (gameConfig.game.playerImmortal)
+					if (gameConfig.game.playerImmortal && this.leftScore < gameConfig.game.maxScore)
 						return;
 					if (this.leftScore === gameConfig.game.maxScore
 						|| this.rightScore === gameConfig.game.maxScore
@@ -372,6 +383,16 @@ export default {
 	position: absolute;
 	top: 50%;
 	left: 20px;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.ai-power-up-buttons {
+	position: absolute;
+	top: 50%;
+	right: 20px;
 	transform: translateY(-50%);
 	display: flex;
 	flex-direction: column;
