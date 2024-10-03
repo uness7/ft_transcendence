@@ -90,7 +90,7 @@ export const useAuthStore = defineStore("auth", {
                     throw new Error('Failed to blacklist the token');
                 }
                 else
-                    console.log("Loggedout successfully!");
+                    console.log("Logged out successfully!");
             } catch (error) {
                 throw new Error(error);
             }

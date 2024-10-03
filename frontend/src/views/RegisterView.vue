@@ -53,6 +53,18 @@
 								required
 								@blur="validateConfirmPassword"
 							/>
+<!-- <<<<<<< HEAD -->
+<!-- ======= -->
+							<input
+								type="checkbox"
+								id="consent"
+								name="consent"
+								required
+							/>
+							<label for="consent">
+								I agree to the <router-link to="privacy" class="aaa">privacy policy</router-link>.
+							</label>
+<!-- >>>>>>> jules -->
 						</div>
 						<button
 							type="submit"
@@ -190,6 +202,13 @@ export default {
 	color: #fff;
 }
 
+/* <<<<<<< HEAD */
+/* ======= */
+.aaa{
+	color: white;
+}
+
+/* >>>>>>> jules */
 .w100 {
 	width: 100%;
 }

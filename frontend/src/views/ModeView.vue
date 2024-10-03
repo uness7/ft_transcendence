@@ -1,29 +1,59 @@
 <template>
     <div class="content">
         <div class="left-side">
-            <router-link to="/local" class="left-up link">
+            <router-link to="/pong/local" class="left-up link">
                 <div class="text-container">
                     <p class="title">{{ $t('local') }}</p>
                     <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
-            <router-link to="/remote" class="left-bottom link">
+            <router-link to="pong/ai" class="left-middle link">
+                <div class="text-container">
+                    <p class="title">{{ $t('ai') }}</p>
+                    <p class="description">{{ $t('aiDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link v-if="isAuthenticated" to="/remote" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('remote') }}</p>
                     <p class="description">{{ $t('remoteDesc') }}</p>
                 </div>
             </router-link>
+            <router-link v-else to="/remote" class="left-bottom link">
+                <div class="text-container">
+                    <p class="title">{{ $t('remote') }} 🔒</p>
+                    <p class="description">{{ $t('remoteDesc') }}</p>
+                </div>
+            </router-link>
         </div>
         <div class="right-side">
-            <router-link to="/tournament" class="link">
+            <router-link v-if="isAuthenticated" to="/tournament" class="link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }}</p>
+                    <p class="description">{{ $t('tournamentDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link v-else class="link" to="/tournament">
+                <div class="text-container">
+                    <p class="title">{{ $t('tournament') }} 🔒</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
         </div>
     </div>
 </template>
+
+<script>
+import { isAuthenticated } from '../router/index.js';
+
+export default {
+    computed: {
+        isAuthenticated() {
+            return isAuthenticated();
+        }
+    }
+}
+</script>
 
 <style scoped>
     .content {
@@ -44,7 +74,7 @@
         border-right: 1px solid rgb(25,25,25);
     }
 
-    .left-up, .left-bottom {
+    .left-up, .left-middle, .left-bottom {
         flex: 1;
         display: flex;
         justify-content: center;
@@ -53,6 +83,10 @@
         position: relative;
         overflow: hidden;
         transition: background-color 0.3s ease;
+    }
+
+    .left-middle {
+        border-top: 1px solid rgb(25,25,25);
     }
 
     .left-bottom {

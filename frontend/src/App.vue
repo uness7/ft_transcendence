@@ -12,34 +12,69 @@
 					<router-link to="/two-factor-auth">{{ $t('2FA') }}</router-link>
 				</div>
 			</div>
+			<img :src="currentFlag" alt="flag" id="language-flag" @click="toggleLanguage">
 		</header>
 	</div>
 	<router-view />
 </template>
 
-
-<!-- Javascript Code -->
 <script>
 import { computed } from 'vue';
 import { useAuthStore } from '@/store/auth';
 import { useRouter } from 'vue-router';
 
 export default {
+	data() {
+		return {
+			languages: ['en', 'fr', 'es'],
+			flags: {
+				en: require('./assets/img/flags/english.png'),
+				fr: require('./assets/img/flags/french.png'),
+				es: require('./assets/img/flags/spanish.png'),
+			},
+			currentLanguageIndex: 0,
+		};
+	},
 	setup() {
 		const authStore = useAuthStore();
 		const router = useRouter();
 		const isLoggedIn = computed(() => authStore.isAuthenticated);
-		console.log("is logged in ? ", isLoggedIn)
 		const user = computed(() => authStore.user || { username: '', id: '' });
+
 		const logout = async () => {
 			await authStore.logout();
 			router.push('/login');
 		};
+
 		return {
 			isLoggedIn,
 			user,
 			logout,
 		};
+	},
+	computed: {
+		currentFlag() {
+			return this.flags[this.languages[this.currentLanguageIndex]];
+		},
+	},
+	methods: {
+		toggleLanguage() {
+			this.currentLanguageIndex = (this.currentLanguageIndex + 1) % this.languages.length;
+			const selectedLanguage = this.languages[this.currentLanguageIndex];
+			this.$i18n.locale = selectedLanguage;
+			localStorage.setItem('selectedLanguage', selectedLanguage);
+		},
+		applyPrimaryColor() {
+			const color = localStorage.getItem('primaryColor') || '#FFFFFF';
+			document.documentElement.style.setProperty('--primary-color', color);
+		},
+		loadSavedLanguage() {
+			const savedLanguage = localStorage.getItem('selectedLanguage');
+			if (savedLanguage) {
+				this.currentLanguageIndex = this.languages.indexOf(savedLanguage);
+				this.$i18n.locale = savedLanguage;
+			}
+		},
 	},
 	async mounted() {
 		try {
@@ -47,136 +82,139 @@ export default {
 		} catch (error) {
 			console.log(error);
 		}
-	}
+		this.applyPrimaryColor();
+	},
+	created() {
+		this.loadSavedLanguage();
+	},
 };
 </script>
 
-<style scoped>
-/*  ##### GLOBAL  ##### */
 
+
+<style>
 @font-face {
-	font-family: '8bit';
-	src: url('./assets/font/8bit.ttf') format('truetype');
+  font-family: '8bit';
+  src: url('./assets/font/8bit.ttf') format('truetype');
 }
 
 :global(body) {
-	background-color: var(--background-color);
+  background-color: var(--background-color);
 }
 
-/*  ##### HEADER  ##### */
+/* ##### HEADER ##### */
 
 .top-bar {
-	width: 100%;
-	background-color: var(--background-color);
-	position: fixed;
-	top: 0;
-	left: 0;
-	display: flex;
-	align-items: center;
-	border-bottom: 1px solid rgb(70, 70, 70);
+  width: 100%;
+  background-color: var(--background-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(70, 70, 70);
 }
 
 #top-bar-content {
-	margin-top: 20px;
-	font-family: '8bit', sans-serif;
-	color: white;
-	margin-bottom: 20px;
+  margin-top: 20px;
+  font-family: '8bit', sans-serif;
+  color: white;
+  margin-bottom: 20px;
 }
 
 #logo-text {
-	font-family: '8bit', sans-serif;
-	font-size: 40px;
-	text-decoration: none;
-	background-color: rgb(25, 25, 25);
-	color: var(--primary-color);
-	height: 100%;
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-top: 30px;
-	padding-bottom: 29px;
-	box-sizing: border-box;
-	border-bottom: 1px solid rgb(70, 70, 70);
-	border-right: 1px solid rgb(70, 70, 70);
+  font-family: '8bit', sans-serif;
+  font-size: 40px;
+  text-decoration: none;
+  background-color: rgb(25, 25, 25);
+  color: var(--primary-color);
+  height: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 30px;
+  padding-bottom: 29px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgb(70, 70, 70);
+  border-right: 1px solid rgb(70, 70, 70);
 }
 
 #language-flag {
-	width: 3%;
-	position: absolute;
-	right: 350px;
-	cursor: pointer;
-	transition: transform 0.3s ease;
+  width: 3%;
+  position: absolute;
+  right: 350px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 #language-flag:hover {
-	transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 #about-button {
-	background-color: rgb(10, 10, 10);
-	border: none;
-	text-decoration: none;
-	color: rgb(255, 255, 255);
-	font-size: xx-large;
-	position: absolute;
-	right: 200px;
-	font-family: '8bit', sans-serif;
-	transition: all 0.2s ease;
+  background-color: rgb(10, 10, 10);
+  border: none;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-size: xx-large;
+  position: absolute;
+  right: 225px; /* Resolved conflict: chosen right: 225px */
+  font-family: '8bit', sans-serif;
+  transition: all 0.2s ease;
 }
 
 #about-button:hover {
-	transform: scale(1.05);
-	color: var(--primary-color);
+  transform: scale(1.05);
+  color: var(--primary-color);
 }
 
 #login-button {
-	margin-right: 10px;
-	background-color: rgb(10, 10, 10);
-	border: none;
-	text-decoration: none;
-	color: rgb(255, 255, 255);
-	font-size: xx-large;
-	position: absolute;
-	right: 50px;
-	font-family: '8bit', sans-serif;
-	transition: all 0.2s ease;
+  margin-right: 10px;
+  background-color: rgb(10, 10, 10);
+  border: none;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-size: xx-large;
+  position: absolute;
+  right: 50px;
+  font-family: '8bit', sans-serif;
+  transition: all 0.2s ease;
 }
 
 #login-button:hover {
-	transform: scale(1.05);
-	color: var(--primary-color);
+  transform: scale(1.05);
+  color: var(--primary-color);
 }
 
 #logout-button {
-	background-color: darkred;
+  background-color: darkred;
 }
 
 #logout-button:hover {
-	background-color: rgb(200, 0, 0);
+  background-color: rgb(200, 0, 0);
 }
 
 .dropbtn {
-	background-color: var(--background-color);
-	color: rgb(255, 255, 255);
-	font-size: xx-large;
-	border: none;
-	cursor: pointer;
-	font-family: '8bit', sans-serif;
-	transition: all 0.2s ease;
-	padding-bottom: 15px;
+  background-color: var(--background-color);
+  color: rgb(255, 255, 255);
+  font-size: xx-large;
+  border: none;
+  cursor: pointer;
+  font-family: '8bit', sans-serif;
+  transition: all 0.2s ease;
+  padding-bottom: 15px;
 }
 
 .dropbtn:hover {
-	color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .dropdown {
   position: absolute;
-  right: 150px; /* Adjusted from 50px to 150px to move it left */
+  right: 150px; /* Adjusted from conflicting values */
   top: 20px;
   font-family: '8bit', sans-serif;
 }
 
-/* Adjust the dropdown content position */
 .dropdown-content {
   font-size: 20px;
   padding-top: 10px;
@@ -191,24 +229,23 @@ export default {
 }
 
 .dropdown-content a {
-	color: rgb(255, 255, 255);
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
+  color: rgb(255, 255, 255);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
 .dropdown-content a:hover {
-	background-color: rgb(20, 20, 20);
-	color: white;
+  background-color: rgb(20, 20, 20);
+  color: white;
 }
 
 .dropdown:hover .dropdown-content {
-	display: block;
+  display: block;
 }
 
 .dropdown:hover .dropbtn {
-	background-color: var(--background-color);
-	color: var(--primary-color);
+  background-color: var(--background-color);
+  color: var(--primary-color);
 }
-
 </style>

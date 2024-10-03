@@ -10,6 +10,7 @@
   "dependencies": {
     "assert": "^2.1.0",
     "axios": "^1.7.3",
+    "chart.js": "^4.4.4",
     "cli": "^1.0.1",
     "core-js": "^3.8.3",
     "crypto-js": "^4.2.0",

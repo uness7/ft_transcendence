@@ -36,15 +36,12 @@ export default {
       countdown: 0,
       countdownActive: false,
 
-      // Nouveau état pour l'animation d'explosion
       explosionActive: false,
       explosionX: 0,
       explosionY: 0,
       explosionRadius: 0,
       explosionMaxRadius: 100,
       explosionFade: 1,
-
-      // Pour gérer l'annulation de requestAnimationFrame
       animationFrameId: null,
     };
   },
@@ -52,9 +49,8 @@ export default {
     this.setupGame();
   },
   beforeUnmount() {
-    // Arrêtez la boucle de jeu en définissant gameOver à true
     this.gameOver = true;
-    cancelAnimationFrame(this.animationFrameId); // Annuler la boucle d'animation
+    cancelAnimationFrame(this.animationFrameId);
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('keyup', this.handleKeyUp);
   },
@@ -96,6 +92,7 @@ export default {
 
       const ctx = this.canvasContext;
       const canvas = this.$refs.gameCanvas;
+      if (!canvas) return;
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
 
@@ -137,20 +134,20 @@ export default {
         ctx.fillText('winner!', winnerX, canvasHeight / 2 + 40);
       }
 
-      // Draw Countdown
+      // draw Countdown
       if (this.countdownActive) {
         ctx.font = '50px 8bit';
         ctx.fillStyle = 'grey';
         ctx.fillText(this.countdown, canvasWidth / 2, canvasHeight / 2);
       }
 
-      // Draw explosion effect
+      // draw explosion effect
       if (this.explosionActive) {
         this.drawExplosion(ctx);
       }
     },
     drawExplosion(ctx) {
-      // Dessiner l'animation de l'explosion
+      // drqw explosion animation
       ctx.beginPath();
       const gradient = ctx.createRadialGradient(
         this.explosionX, this.explosionY, 0,
@@ -162,18 +159,13 @@ export default {
       ctx.fillStyle = gradient;
       ctx.arc(this.explosionX, this.explosionY, this.explosionRadius, 0, Math.PI * 2);
       ctx.fill();
-
-      // Mise à jour de l'état de l'animation
       this.explosionRadius += 5;
       this.explosionFade -= 0.05;
-
-      // Si l'explosion atteint sa taille maximale, on l'arrête
       if (this.explosionRadius >= this.explosionMaxRadius) {
         this.explosionActive = false;
       }
     },
     triggerExplosion(x, y) {
-      // Activer l'animation d'explosion
       this.explosionActive = true;
       this.explosionX = x;
       this.explosionY = y;
@@ -201,7 +193,7 @@ export default {
           this.ballSpeedX = -this.ballSpeedX;
         } else if (this.ballX < 0) {
           this.player2Score++;
-          this.triggerExplosion(0, this.ballY); // Explosion à gauche
+          this.triggerExplosion(0, this.ballY);
           this.checkGameOver();
           this.startCountdown();
         }
@@ -212,8 +204,7 @@ export default {
           this.ballSpeedX = -this.ballSpeedX;
         } else if (this.ballX > canvasWidth) {
           this.player1Score++;
-          this.triggerExplosion(canvasWidth, this.ballY); // Explosion à droite
-          this.checkGameOver();
+          this.triggerExplosion(canvasWidth, this.ballY);
           this.startCountdown();
         }
       }
@@ -297,7 +288,7 @@ button:hover {
 
 .play-again-button {
   position: absolute;
-  bottom: 20px; /* Ajustez selon vos besoins */
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
 }

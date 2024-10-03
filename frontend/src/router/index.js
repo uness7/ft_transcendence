@@ -6,13 +6,20 @@ import AboutView from "../views/AboutView.vue";
 import ModeView from "../views/ModeView.vue";
 import UserView from "../views/UserView.vue";
 import RemoteView from "../views/RemoteView.vue";
-import LocalView from "../views/LocalView.vue";
+import LocalView from "../views/LocalView.vue"; // uncommented from 'HEAD'
 import UserSettings from "../components/UserSettings.vue";
 import TournamentView from "../views/TournamentView.vue";
 import NotFound from "../views/NotFound.vue";
 import { useAuthStore } from "@/store/auth";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 import OTPSetupView from "@/views/OTPSetupView.vue";
+import CreateTournament from '../views/CreateTournament.vue';
+import ListTournaments from '../views/ListTournaments.vue';
+import TournamentDetails from '../views/TournamentDetails.vue';
+import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
+import PongLocalView from "../views/PongLocalView.vue";
+import PongAiView from "../views/PongAiView.vue";
+import TwoFacView from "../views/TwoFacView.vue";
 
 const routes = [
 	{
@@ -45,6 +52,14 @@ const routes = [
 		component: RegisterView,
 		meta: {
 			requiresAuth: false,
+		},
+	},
+	{
+		path: "/2fa",
+		name: "2fa",
+		component: TwoFacView,
+		meta: {
+			requiresAuth: true,
 		},
 	},
 	{
@@ -89,6 +104,31 @@ const routes = [
 		},
 	},
 	{
+		path: '/create-tournament',
+		name: 'create-tournament',
+		component: CreateTournament,
+		meta: {
+		  requiresAuth: true,
+		},
+	},
+	{
+		path: '/list-tournament',
+		name: 'list-tournament',
+		component: ListTournaments,
+		meta: {
+		  requiresAuth: true,
+		},
+	},
+	{
+		path: '/tournament-details/:id',
+		name: 'TournamentDetails',
+		component: TournamentDetails,
+		props: true,
+		meta: {
+		  requiresAuth: true,
+		},
+	},
+	{
 		path: "/user/settings",
 		name: "settings",
 		component: UserSettings,
@@ -108,6 +148,30 @@ const routes = [
 		path: "/two-factor-auth/setup",
 		name: "2FASetup",
 		component: OTPSetupView,
+		meta: {
+			requiresAuth: false,
+		},
+	},
+	{
+		path: "/privacy",
+		name: "privacy-policy",
+		component: PrivacyPolicyView,
+		meta: {
+			requiresAuth: false,
+		},
+	},
+	{
+		path: "/pong/local",
+		name: "pong-local",
+		component: PongLocalView,
+		meta: {
+			requiresAuth: false,
+		},
+	},
+	{
+		path: "/pong/ai",
+		name: "pong-ai",
+		component: PongAiView,
 		meta: {
 			requiresAuth: false,
 		},

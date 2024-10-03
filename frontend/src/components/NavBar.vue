@@ -15,11 +15,15 @@ import { useAuthStore } from '@/store/auth';
 
 export default {
   methods: {
+
     async logout() {
       const authStore = useAuthStore();
       await authStore.logout();
       this.$router.push('/login');
-    }
+    },
+    navigate(view) {
+      this.$emit('navigate', view);
+    },
   }
 };
 
