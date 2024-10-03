@@ -74,7 +74,7 @@ export default {
 							gameConfig.text.color
 						),
 					};
-					// this.timeAccumulator = 0;
+					this.timeAccumulator = 0;
 					// this.oldBallPos = this.entities.ball.pos.clone();
 				}
 
@@ -197,12 +197,13 @@ export default {
 					if (leftToggleMoveDown)
 						playerPaddle.moveDown(dt);
 					playerPaddle.updatePosition();
-					// if (this.timeAccumulator >= 1000) {
-					// 	this.timeAccumulator = 0;
-					// 	this.oldBallPos = ball.position.clone();
-					// }
+					if (this.timeAccumulator >= 1000) {
+						this.timeAccumulator = 0;
+						// this.oldBallPos = ball.position.clone();
+						aiPaddle.predictImpact(ball.pos, ball.speed)
+					}
 					// aiPaddle.checkMovement(dt, this.oldBallPos, gameConfig.ai.chaseBuffer);
-					aiPaddle.checkMovement(dt, ball.pos, gameConfig.ai.chaseBuffer);
+					aiPaddle.checkMovement(dt, aiPaddle.impactPos, gameConfig.ai.chaseBuffer);
 					ball.move(dt);
 				}
 
