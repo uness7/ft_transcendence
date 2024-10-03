@@ -199,7 +199,6 @@ export default {
 					if (this.timeAccumulator >= 1000) {
 						this.timeAccumulator = 0;
 						aiPaddle.predictImpact(ball.pos, ball.speed);
-						console.log("AI perception window");
 					}
 					aiPaddle.checkMovement(dt, aiPaddle.impactPos, gameConfig.ai.chaseBuffer);
 					ball.move(dt);
