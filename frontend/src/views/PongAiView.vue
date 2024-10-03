@@ -75,7 +75,6 @@ export default {
 						),
 					};
 					this.timeAccumulator = 0;
-					// this.oldBallPos = this.entities.ball.pos.clone();
 				}
 
 				render = () => {
@@ -199,10 +198,9 @@ export default {
 					playerPaddle.updatePosition();
 					if (this.timeAccumulator >= 1000) {
 						this.timeAccumulator = 0;
-						// this.oldBallPos = ball.position.clone();
-						aiPaddle.predictImpact(ball.pos, ball.speed)
+						aiPaddle.predictImpact(ball.pos, ball.speed);
+						console.log("AI perception window");
 					}
-					// aiPaddle.checkMovement(dt, this.oldBallPos, gameConfig.ai.chaseBuffer);
 					aiPaddle.checkMovement(dt, aiPaddle.impactPos, gameConfig.ai.chaseBuffer);
 					ball.move(dt);
 				}
