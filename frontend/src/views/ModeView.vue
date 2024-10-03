@@ -27,7 +27,7 @@
             </router-link>
         </div>
         <div class="right-side">
-            <router-link v-if="isTournamentFinished" to="/create-tournament" class="link">
+            <router-link v-if="isTournamentFinished" to="/tournament/create" class="link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }}</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
