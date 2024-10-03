@@ -68,8 +68,9 @@ export default class AiPaddle extends Paddle {
 		const impact = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, k));
 		this.impactPos = impact;
 		if (this.boundBox.isBeyondTopBound(impact) || this.boundBox.isBeyondBottomBound(impact)) {
-			console.log("ricochet");
-			const kI = (this.boundBox.bottomBound - ballPos.y) / ballSpeed.y;
+			const kI = this.boundBox.isBeyondBottomBound(impact) ?
+				(this.boundBox.bottomBound - ballPos.y) / ballSpeed.y
+				: (this.boundBox.topBound - ballPos.y) / ballSpeed.y;
 			const pI = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, kI));
 			const newSpeed = new Vec2(ballSpeed.x, -ballSpeed.y);
 			const kF = (this.pos.x - pI.x) / newSpeed.x;
