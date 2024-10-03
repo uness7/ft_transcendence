@@ -1,17 +1,17 @@
 <template>
   <div class="content">
-    <GameView/>
+    <!-- <GameView/> -->
     <!-- <ChatVue/> -->
   </div>
 </template>
 
 <script>
 // import ChatVue from '@/components/ChatVue.vue';
-import GameView from './GameView.vue';
+// import GameView from './GameView.vue';
 
 export default{
   components:{
-    GameView,
+    // GameView,
     // ChatVue
   }
 }
