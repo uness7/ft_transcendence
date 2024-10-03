@@ -39,7 +39,7 @@ export default {
 	},
 	mounted()
 	{
-		this.pongConfigData = localStorage.getItem("pongAiConfig");
+		this.pongConfigData = localStorage.getItem("pongConfig");
 		if (!this.pongConfigData) {
 			this.pongConfig = {
 				isSpeedBuffActive: false,
@@ -48,7 +48,7 @@ export default {
 				isImmortalActive: false,
 				isAISpeedBuffActive: false,
 			};
-			localStorage.setItem("pongAiConfig", JSON.stringify(this.pongConfig));
+			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
 		} else {
 			this.pongConfig = JSON.parse(this.pongConfigData);
 		}
@@ -56,7 +56,7 @@ export default {
 	},
 	methods: {
 		updatePongConfig() {
-			localStorage.setItem("pongAiConfig", JSON.stringify(this.pongConfig));
+			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
 			this.$router.go(0);
 		},
 		togglePlayerSpeed() {
