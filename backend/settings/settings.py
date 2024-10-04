@@ -29,8 +29,14 @@ INSTALLED_APPS = [
     # third-party packages
     "rest_framework",
     "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
+    "rest_framework_simplejwt.token_blacklist", # used to logout nd blacklist used tokens
     "corsheaders",
+
+    # 2FA
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'qrcode',
 
     # local_apps
     'user',
@@ -46,6 +52,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ];
@@ -121,7 +128,9 @@ ROOT_URLCONF = "settings.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+                os.path.expanduser("~/Desktop/ft_pong/backend/templates/"),
+            ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -140,15 +149,15 @@ WSGI_APPLICATION = "settings.wsgi.application"
 # Database
 import os
 DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-    }
-}
+        'default': {
+            'ENGINE': os.getenv('DB_ENGINE'),
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': os.getenv('DB_PORT'),
+            }
+};
 
 
 

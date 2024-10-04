@@ -4,6 +4,14 @@ const webpack = require('webpack');
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
+    resolve: {
+      fallback: {
+        fs: false,
+        path: require.resolve("path-browserify"),
+        assert: require.resolve("assert/"),
+        util: require.resolve("util/")
+      }
+    },
     plugins: [
       new webpack.DefinePlugin({
         // Define Vue feature flags here

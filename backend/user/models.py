@@ -5,9 +5,10 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.core.exceptions import ObjectDoesNotExist;
 from django.db import models;
 from django.http import Http404;
+from django_otp.plugins.otp_totp.models import TOTPDevice;
+
 
 class   UserManager(BaseUserManager):
-
     def get_object_by_public_id(self, public_id):
         try:
             instance = self.get(public_id=public_id);
@@ -23,6 +24,7 @@ class   UserManager(BaseUserManager):
         if password is None:
             raise TypeError('User must have a valid password');
         user = self.model(username=username, email=self.normalize_email(email), **kwargs);
+        #TOTPDevice.objects.create(user=user);
         user.set_password(password);
         user.save(using=self._db);
         return user;
@@ -49,12 +51,25 @@ class   User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True);
     is_active = models.BooleanField(default=True);
     is_superuser = models.BooleanField(default=False);
+    is_staff = models.BooleanField(default=False);
     created = models.DateTimeField(auto_now=True);
     updated = models.DateTimeField(auto_now_add=True);
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True); # optional
     games_played = models.IntegerField(default=0);
     games_won = models.IntegerField(default=0);
     games_lost = models.IntegerField(default=0);
+
+    # Data validation
+    def clean(self):
+        super.clean(); # keeping default data validation
+        if self.games_won + self.games_lost > self.games_played:
+            raise ValidationError("Games won and lost cannot exceed games played.");
+
+        if not self.first_name or not self.last_name:
+            raise ValidationError("First name and last name cannot be empty.");
+        
+        if not self.username.isalnum():
+            raise ValidationError("Username should contain only alphanumeric characters.");
 
     @property
     def win_rate(self):

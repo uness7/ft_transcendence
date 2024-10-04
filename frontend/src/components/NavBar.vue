@@ -1,27 +1,32 @@
 <template>
   <div class="sidebar">
     <ul class="nav-list">
-      <li class="nav-item" ><router-link to="/user/1" id="profile-button">{{ $t('profile') }}</router-link></li>
-      <li class="nav-item" ><router-link to="/user/settings" id="settings-button">{{ $t('settings') }}</router-link></li>
+      <li class="nav-item"><router-link to="/user/1" id="profile-button">{{ $t('profile') }}</router-link></li>
+      <li class="nav-item"><router-link to="/user/settings" id="settings-button">{{ $t('settings') }}</router-link></li>
     </ul>
     <div class="logout-box" @click="logout">
-      <router-link to="/" id="logout-button">{{ $t('logout') }}</router-link>
+      <button id="logout-button" @click="logout">{{ $t('logout') }}</button>
     </div>
   </div>
 </template>
 
 <script>
+import { useAuthStore } from '@/store/auth';
+
 export default {
-  name: 'NavBar',
   methods: {
+
+    async logout() {
+      const authStore = useAuthStore();
+      await authStore.logout();
+      this.$router.push('/login');
+    },
     navigate(view) {
       this.$emit('navigate', view);
     },
-    logout() {
-      // logique avec backend pour logout
-    }
-  },
+  }
 };
+
 </script>
 
 <style scoped>
@@ -32,7 +37,8 @@ export default {
 
 .sidebar {
   color: white;
-  margin-top: 82px;   /* <--- ne pas trop changer */
+  margin-top: 82px;
+  /* <--- ne pas trop changer */
   margin-left: 140px;
   position: fixed;
   top: 0;
@@ -59,7 +65,7 @@ export default {
   font-size: 25px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: '8bit',sans-serif;
+  font-family: '8bit', sans-serif;
 }
 
 .nav-item:hover {
@@ -74,23 +80,23 @@ export default {
   box-sizing: border-box;
 }
 
-#profile-button{
+#profile-button {
   text-decoration: none;
   color: white;
   transition: all 0.2s ease;
 }
 
-#profile-button:hover{
+#profile-button:hover {
   color: var(--primary-color);
 }
 
-#settings-button{
+#settings-button {
   text-decoration: none;
   color: white;
   transition: all 0.2s ease;
 }
 
-#settings-button:hover{
+#settings-button:hover {
   color: var(--primary-color);
 }
 
