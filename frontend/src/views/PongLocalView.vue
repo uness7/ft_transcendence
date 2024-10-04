@@ -2,10 +2,10 @@
 	<div class="content">
 		<canvas id="game-canvas"></canvas>
 		<div class="power-up-buttons">
-			<button :class="{ active: isSpeedBuffActive }" @click="togglePlayerSpeed">Speed Buff</button>
-			<button :class="{ active: isLargerPaddleActive }" @click="toggleLargerPaddle">Larger Paddle</button>
-			<button :class="{ active: isFasterBallActive }" @click="toggleFasterBall">Faster Ball</button>
-			<button :class="{ active: isImmortalActive }" @click="togglePlayerImmortal">Immortal</button>
+			<button :class="{ active: pongConfig?.isSpeedBuffActive ?? false }" @click="togglePlayerSpeed">Speed Buff</button>
+			<button :class="{ active: pongConfig?.isLargerPaddleActive ?? false }" @click="toggleLargerPaddle">Larger Paddle</button>
+			<button :class="{ active: pongConfig?.isFasterBallActive ?? false }" @click="toggleFasterBall">Faster Ball</button>
+			<button :class="{ active: pongConfig?.isImmortalActive ?? false }" @click="togglePlayerImmortal">Immortal</button>
 		</div>
 	</div>
 </template>
@@ -17,10 +17,10 @@ import TextHUD from "../pong/entities/text-hud.js"
 import Vec2 from "../pong/maths/vec2.js";
 import CollisionDetector from "../pong/misc/collision-detector.js";
 import gameConfig, { 
-	togglePlayerSpeedBuff, 
-	togglePlayerLargerPaddle, 
-	toggleFasterBall, 
-	togglePlayerImmortal 
+	togglePlayerSpeedBuff,
+	togglePlayerLargerPaddleBuff, 
+	toggleFasterBallBuff,
+	togglePlayerImmortalBuff 
 } from "../pong/game/config.js"; 
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
@@ -29,36 +29,59 @@ export default {
 	name: 'PongLocalView',
 	data() {
 	return {
-		isSpeedBuffActive: false,
-		isLargerPaddleActive: false,
-		isFasterBallActive: false,
-		isImmortalActive: false,
+		pongConfig: null,
 	};
 	},
 	mounted()
 	{
+		this.pongConfigData = localStorage.getItem("pongConfig");
+		if (!this.pongConfigData) {
+			this.pongConfig = {
+				isSpeedBuffActive: false,
+				isLargerPaddleActive: false,
+				isFasterBallActive: false,
+				isImmortalActive: false,
+			};
+			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
+		} else {
+			this.pongConfig = JSON.parse(this.pongConfigData);
+		}
 		this.initGame();
 	},
 	methods: {
+		updatePongConfig() {
+			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
+			this.$router.go(0);
+		},
 		togglePlayerSpeed() {
-			this.isSpeedBuffActive = !this.isSpeedBuffActive;
-			togglePlayerSpeedBuff();
+			this.pongConfig.isSpeedBuffActive = !this.pongConfig.isSpeedBuffActive;
+			this.updatePongConfig();
 		},
 		toggleLargerPaddle() {
-			this.isLargerPaddleActive = !this.isLargerPaddleActive;
-			togglePlayerLargerPaddle();
+			this.pongConfig.isLargerPaddleActive = !this.pongConfig.isLargerPaddleActive;
+			this.updatePongConfig();
 		},
 		toggleFasterBall() {
-			this.isFasterBallActive = !this.isFasterBallActive;
-			toggleFasterBall();
+			this.pongConfig.isFasterBallActive = !this.pongConfig.isFasterBallActive;
+			this.updatePongConfig();
 		},
 		togglePlayerImmortal() {
-			this.isImmortalActive = !this.isImmortalActive;
-			togglePlayerImmortal();
+			this.pongConfig.isImmortalActive = !this.pongConfig.isImmortalActive;
+			this.updatePongConfig();
 		},
 		initGame() {
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
+
+			const pongConfig = this.pongConfig;
+			if (pongConfig.isSpeedBuffActive)
+				togglePlayerSpeedBuff();
+			if (pongConfig.isLargerPaddleActive)
+				togglePlayerLargerPaddleBuff();
+			if (pongConfig.isFasterBallActive)
+				toggleFasterBallBuff();
+			if (pongConfig.isImmortalActive)
+				togglePlayerImmortalBuff();
 
 			const GameState = {
 				Menu: "menu",
@@ -141,15 +164,13 @@ export default {
 					const playerRightPaddle = this.entities.playerRightPaddle;
 
 					if (gameBox.isBeyondLeftBound(ball.pos)) {
-						if (!gameConfig.game.playerImmortal)
-							this.rightScore++;
+						this.rightScore++;
 						this.state = GameState.Serve;
 						this.isLeftServe = true;
 					}
 
 					if (gameBox.isBeyondRightBound(ball.pos)) {
-						if (!gameConfig.game.playerImmortal)
-							this.leftScore++;
+						this.leftScore++;
 						this.state = GameState.Serve;
 						this.isLeftServe = false;
 					}
@@ -176,6 +197,8 @@ export default {
 				}
 
 				checkGameFinished = () => {
+					if (gameConfig.game.playerImmortal)
+						return;
 					if (this.leftScore === gameConfig.game.maxScore
 						|| this.rightScore === gameConfig.game.maxScore
 					) {

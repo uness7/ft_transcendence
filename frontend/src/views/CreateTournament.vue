@@ -1,83 +1,86 @@
 <template>
     <div class="content">
-      <h1>Create a Tournament</h1>
-      <p>Enter the name of your tournament below:</p>
-  
-      <form @submit.prevent="createTournament" class="form-container">
-        <input
-          type="text"
-          v-model="tournamentName"
-          placeholder="Tournament Name (10char max)"
-          required
-          class="input-field"
-          maxlength="10"
-        />
-        <button type="submit" class="btn">Create Tournament</button>
-      </form>
+        <h1>Create a Tournament</h1>
+        <p>Enter the name of your tournament below:</p>
+
+        <form @submit.prevent="createTournament" class="form-container">
+            <input type="text" v-model="tournamentName" placeholder="Tournament Name (10char max)" required
+                class="input-field" maxlength="10" />
+            <button type="submit" class="btn">Create Tournament</button>
+        </form>
     </div>
-  </template>
-  
-  <script>
-  export default {
+</template>
+
+<script>
+export default {
     data() {
-      return {
-        tournamentName: '',
-      };
+        return {
+            tournamentName: '',
+        };
     },
     methods: {
-      createTournament() {
-        if (this.tournamentName) {
-          this.$router.push('/list-tournament');
-        }
-      },
+        createTournament() {
+            if (this.tournamentName) {
+                const tournament = {
+                    name: this.tournamentName,
+                    isStarted: false,
+                    isFinished: false,
+                    participants: [],
+                };
+                if (localStorage.getItem("pongTournament")) {
+                    localStorage.removeItem("pongTournament");
+                }
+                localStorage.setItem("pongTournament", JSON.stringify(tournament));
+                this.$router.push('/tournament/details');
+            }
+        },
     },
-  };
-  </script>
-  
-  <style scoped>
+};
+</script>
 
-    @font-face {
-			font-family: '8bit';
-			src: url('../assets/font/8bit.ttf') format('truetype');
-		}
+<style scoped>
+@font-face {
+    font-family: '8bit';
+    src: url('../assets/font/8bit.ttf') format('truetype');
+}
 
-  .content {
+.content {
     color: white;
     background-color: var(--background-color);
     margin-top: 200px;
     text-align: center;
     padding: 20px;
-    font-family: '8bit',sans-serif;
-  }
-  
-  h1 {
+    font-family: '8bit', sans-serif;
+}
+
+h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
     color: #f0f0f0;
-  }
-  
-  p {
+}
+
+p {
     font-size: 1.2rem;
     margin-bottom: 40px;
     color: #b3b3b3;
-  }
-  
-  .form-container {
+}
+
+.form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .input-field {
+}
+
+.input-field {
     width: 300px;
     padding: 10px;
     font-size: 1rem;
     margin-bottom: 20px;
     border-radius: 5px;
     border: 1px solid #ccc;
-  }
-  
-  .btn {
+}
+
+.btn {
     padding: 15px 30px;
     font-size: 1rem;
     color: white;
@@ -87,14 +90,13 @@
     cursor: pointer;
     outline: none;
     border: none;
-  }
-  
-  .btn:hover {
+}
+
+.btn:hover {
     background-color: rgb(30, 30, 30);
-  }
-  
-  .btn:active {
+}
+
+.btn:active {
     background-color: rgb(30, 30, 30);
-  }
-  </style>
-  
+}
+</style>

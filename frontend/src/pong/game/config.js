@@ -1,4 +1,4 @@
-const defaultConfig = {
+export const defaultConfig = {
 	canvas: {
 		width: 1280,
 		height: 720
@@ -87,24 +87,22 @@ export default gameConfig;
 
 export const togglePlayerSpeedBuff = () => {
 	if (gameConfig.paddle.speed === defaultConfig.paddle.speed) {
-		gameConfig.paddle.speed = 1;
+		gameConfig.paddle.speed = 820;
 	} else {
 		gameConfig.paddle.speed = defaultConfig.paddle.speed;
 	}
 }
 
-export const togglePlayerLargerPaddle = () => {
-	console.log('paddle Before:', gameConfig.paddle.size.y);
+export const togglePlayerLargerPaddleBuff = () => {
 	if (gameConfig.paddle.size.y === defaultConfig.paddle.size.y) {
-		gameConfig.paddle.size.y = 570;
+		gameConfig.paddle.size.y = 190;
 	} else {
 		gameConfig.paddle.size.y = defaultConfig.paddle.size.y;
 	}
 	console.log('paddle After:', gameConfig.paddle.size.y);
 }
 
-export const toggleFasterBall = () => {
-	console.log('ballspeed Before:', gameConfig.ball.speed);
+export const toggleFasterBallBuff = () => {
 	if (gameConfig.ball.speed === defaultConfig.ball.speed) {
 		gameConfig.ball.speed = 1;
 	} else {
@@ -113,8 +111,7 @@ export const toggleFasterBall = () => {
 	console.log('ballspeed After:', gameConfig.ball.speed);
 }
 
-export const togglePlayerImmortal = () => {
-	console.log('immortal Before:', gameConfig.game.playerImmortal);
+export const togglePlayerImmortalBuff = () => {
 	if (gameConfig.game.playerImmortal) {
 		gameConfig.game.playerImmortal = false;
 	} else {

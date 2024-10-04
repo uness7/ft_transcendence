@@ -27,15 +27,15 @@
             </router-link>
         </div>
         <div class="right-side">
-            <router-link v-if="isAuthenticated" to="/tournament" class="link">
+            <router-link v-if="isTournamentFinished" to="/tournament/create" class="link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }}</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-else class="link" to="/tournament">
+            <router-link v-else to="/tournament" class="link">
                 <div class="text-container">
-                    <p class="title">{{ $t('tournament') }} 🔒</p>
+                    <p class="title">{{ $t('tournament') }}</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
@@ -47,11 +47,28 @@
 import { isAuthenticated } from '../router/index.js';
 
 export default {
+    data() {
+        return {
+            isTournamentFinished: true,
+        }
+    },
+    mounted() {
+        this.checkTournamentFinished();
+    },
     computed: {
         isAuthenticated() {
             return isAuthenticated();
+        },
+    },
+    methods: {
+        checkTournamentFinished() {
+            const data = localStorage.getItem("pongTournament");
+            if (data) {
+                const tournament = JSON.parse(data);
+                this.isTournamentFinished = tournament.isFinished;
+            }
         }
-    }
+    },
 }
 </script>
 
