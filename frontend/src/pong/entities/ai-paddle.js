@@ -64,18 +64,22 @@ export default class AiPaddle extends Paddle {
 	predictImpact = (ballPos, ballSpeed) => {
 		if (ballSpeed.x <= 0)
 			return;
-		const k = (this.pos.x - ballPos.x) / ballSpeed.x;
-		const impact = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, k));
-		this.impactPos = impact;
-		if (this.boundBox.isBeyondTopBound(impact) || this.boundBox.isBeyondBottomBound(impact)) {
-			const kI = this.boundBox.isBeyondBottomBound(impact) ?
+
+		const impactScalingFactor = (this.pos.x - ballPos.x) / ballSpeed.x;
+		const impactPoint = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, impactScalingFactor));
+		this.impactPos = impactPoint;
+
+		if (this.boundBox.isBeyondTopBound(impactPoint) || this.boundBox.isBeyondBottomBound(impactPoint)) {
+			
+			const ricochetScalingFactor = this.boundBox.isBeyondBottomBound(impactPoint) ?
 				(this.boundBox.bottomBound - ballPos.y) / ballSpeed.y
 				: (this.boundBox.topBound - ballPos.y) / ballSpeed.y;
-			const pI = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, kI));
-			const newSpeed = new Vec2(ballSpeed.x, -ballSpeed.y);
-			const kF = (this.pos.x - pI.x) / newSpeed.x;
-			const pF = Vec2.rAdd(pI, Vec2.rScale(newSpeed, kF));
-			this.impactPos = pF;
+			const ricochetImpactPoint = Vec2.rAdd(ballPos, Vec2.rScale(ballSpeed, ricochetScalingFactor));
+
+			const finalBallSpeed = new Vec2(ballSpeed.x, -ballSpeed.y);
+			const finalScalingFactor = (this.pos.x - ricochetImpactPoint.x) / finalBallSpeed.x;
+			const finalImpactPoint = Vec2.rAdd(ricochetImpactPoint, Vec2.rScale(finalBallSpeed, finalScalingFactor));
+			this.impactPos = finalImpactPoint;
 		}
 	}
 }

@@ -99,16 +99,14 @@ export const togglePlayerLargerPaddleBuff = () => {
 	} else {
 		gameConfig.paddle.size.y = defaultConfig.paddle.size.y;
 	}
-	console.log('paddle After:', gameConfig.paddle.size.y);
 }
 
 export const toggleFasterBallBuff = () => {
 	if (gameConfig.ball.speed === defaultConfig.ball.speed) {
-		gameConfig.ball.speed = 1;
+		gameConfig.ball.speed = 750;
 	} else {
 		gameConfig.ball.speed = defaultConfig.ball.speed;
 	}
-	console.log('ballspeed After:', gameConfig.ball.speed);
 }
 
 export const togglePlayerImmortalBuff = () => {
@@ -117,5 +115,12 @@ export const togglePlayerImmortalBuff = () => {
 	} else {
 		gameConfig.game.playerImmortal = true;
 	}
-	console.log('immortal After:', gameConfig.game.playerImmortal);
+}
+
+export const toggleAISpeedBuff = () => {
+	if (gameConfig.paddle.speedAi === defaultConfig.paddle.speedAi) {
+		gameConfig.paddle.speedAi = 820;
+	} else {
+		gameConfig.paddle.speedAi = defaultConfig.paddle.speedAi;
+	}
 }
