@@ -160,6 +160,8 @@ class VerifyOTPCode(View):
 
         # Verify the OTP code
         if devices.verify_token(user_otp_code):
+            user.is_otp_verified = True;
+            user.save();
             return JsonResponse({'message': 'Access was granted'}, status=200);
         else:
             return JsonResponse({'error': 'Access was not granted'}, status=400);
