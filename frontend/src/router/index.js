@@ -13,15 +13,15 @@ import { useAuthStore } from "@/store/auth";
 import CreateTournament from '../views/CreateTournament.vue'
 import TournamentDetails from '../views/TournamentDetails.vue'
 import TournamentBrackets from '../views/TournamentBracketsView.vue'
-import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
-import OTPSetupView from "@/views/OTPSetupView.vue";
 import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
 import PongTournamentView from "../views/PongTournamentView.vue";
 import PongAiView from "../views/PongAiView.vue";
-import TwoFacView from "../views/TwoFacView.vue";
+import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
+
 // import UserDashboard from "../views/UserDashboard.vue";
 // import PerformanceChart from "../views/PerformanceChart.vue";
+
 
 const routes = [
     {
@@ -65,27 +65,11 @@ const routes = [
         },
     },
     {
-        path: "/2fa",
-        name: "2fa",
-        component: TwoFacView,
-        meta: {
-            requiresAuth: true,
-        },
-    },
-    {
         path: "/mode",
         name: "mode",
         component: ModeView,
         meta: {
-            requiresAuth: true,
-        },
-    },
-    {
-        path: "/local",
-        name: "local",
-        component: LocalView,
-        meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     },
     {
@@ -146,22 +130,6 @@ const routes = [
         },
     },
     {
-        path: "/two-factor-auth",
-        name: "2FA",
-        component: EnableOrDisableOTPView,
-        meta: {
-            requiresAuth: false,
-        },
-    },
-    {
-        path: "/two-factor-auth/setup",
-        name: "2FASetup",
-        component: OTPSetupView,
-        meta: {
-            requiresAuth: false,
-        },
-    },
-    {
         path: "/privacy",
         name: "privacy-policy",
         component: PrivacyPolicyView,
@@ -197,6 +165,14 @@ const routes = [
         path: "/:pathMatch(.*)*",
         name: "NotFound",
         component: NotFound,
+    },
+    {
+        path: "/two-factor-auth",
+        name: "2fa",
+        component: EnableOrDisableOTPView,
+        meta: {
+            requiresAuth: true,
+        },
     },
 ];
 
