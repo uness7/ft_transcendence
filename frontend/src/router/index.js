@@ -75,7 +75,7 @@ const routes = [
         name: "user",
         component: UserView,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
             // requiresOTP: true,
         },
     },
@@ -120,7 +120,7 @@ const routes = [
         name: "settings",
         component: UserSettings,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
             // requiresOTP: true,
         },
     },

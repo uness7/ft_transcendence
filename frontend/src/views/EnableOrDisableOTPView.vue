@@ -61,6 +61,7 @@ export default {
         {
           router.push('/');
         } else {
+          // ???
         }
       } catch (error) {
         throw new Error("Error occurred: ", error);
@@ -93,6 +94,7 @@ export default {
           console.error(error);
         }
       } else {
+          // ???
       }
     };
 

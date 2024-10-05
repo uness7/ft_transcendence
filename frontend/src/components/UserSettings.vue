@@ -26,6 +26,35 @@
           </label>
         </div>
       </div>
+
+      <!-- modify account -->
+      <div class="modify-account">
+        <h2>{{ $t('modify-account') }}</h2>
+        <form @submit.prevent="submitForm">
+          <div class="form-group">
+            <label for="newUsername">{{ $t('new-username') }}</label>
+            <input v-model="form.newUsername" id="newUsername" type="text" class="input" placeholder="new username">
+          </div>
+          <div class="form-group">
+            <label for="firstName">{{ $t('first-name') }}</label>
+            <input v-model="form.firstName" id="firstName" type="text" class="input" placeholder="first name">
+          </div>
+          <div class="form-group">
+            <label for="lastName">{{ $t('last-name') }}</label>
+            <input v-model="form.lastName" id="lastName" type="text" class="input" placeholder="last name">
+          </div>
+          <div class="form-group">
+            <label for="email">{{ $t('email') }}</label>
+            <input v-model="form.email" id="email" type="email" class="input" placeholder="email">
+          </div>
+          <div class="form-group">
+            <label for="password">{{ $t('password') }}</label>
+            <input v-model="form.password" id="password" type="password" class="input" placeholder="new password">
+          </div>
+          <!-- maybe some other infos? -->
+          <button type="submit" class="submit-btn">{{ $t('save-changes') }}</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +74,13 @@
         selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
         selectedMapColor: localStorage.getItem('mapBackground') || '#0a0a0a',
         powerUp: localStorage.getItem('PowerUp') === 'true',
+        form: {
+          newUsername: '',
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: ''
+        }
       };
     },
     methods: {
@@ -71,6 +107,10 @@
       togglePowerUp() {
         localStorage.setItem('PowerUp', this.powerUp);
       },
+      submitForm() {
+        console.log("Form submitted:", this.form);
+        // Here you can integrate the backend later to send the updated data.
+      }
     },
     mounted() {
       this.updateCssVariables('--primary-color', this.selectedColor);
@@ -81,6 +121,8 @@
 
 <style scoped>
 .content {
+  display: flex;
+  justify-content: space-between;
   color: white;
   margin-top: 80px; /* <--- ne pas trop changer */
   margin-left: 400px;
@@ -88,8 +130,46 @@
 }
 
 .settings {
+  width: 45%;
   padding: 20px;
   font-size: 40px;
+}
+
+.modify-account {
+  width: 35%;
+  padding: 20px;
+  margin-right: 100px;
+  margin-top: 20px;
+  font-size: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  border: 2px solid rgb(150, 150, 150);
+  background-color: var(--background-color);
+  color: white;
+  outline: none;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #49a078;
 }
 
 .color-options {
