@@ -90,6 +90,7 @@ export default {
             throw new Error("Error occured", error);
           }
         } catch (error) {
+          console.error(error);
         }
       } else {
       }

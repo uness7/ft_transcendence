@@ -3,12 +3,21 @@
     <NavBar/>
     <div class="content">
       <div class="settings">
+
         <h2>{{ $t('color-theme') }}</h2>
         <div class="color-options">
-          <button v-for="color in colors" :key="color" :style="buttonStyle(color)" class="color-button" @click="changeColor(color)">
+          <button v-for="color in themeColors" :key="color" :style="buttonStyle(color, selectedColor)" class="color-button" @click="changeColor(color)">
             <span class="visually-hidden">{{ color }}</span>
           </button>
         </div>
+
+        <h2>{{ $t('map-background') }}</h2>
+        <div class="color-options">
+          <button v-for="color in mapBackgroundColors" :key="color" :style="buttonStyle(color, selectedMapColor)" class="color-button" @click="changeMapColor(color)">
+            <span class="visually-hidden">{{ color }}</span>
+          </button>
+        </div>
+
         <div class="powerup-section">
           <h3>{{ $t('power-up') }}</h3>
           <label class="switch">
@@ -21,7 +30,6 @@
   </div>
 </template>
 
-
 <script>
   import NavBar from '../components/NavBar.vue';
 
@@ -32,8 +40,10 @@
     },
     data() {
       return {
-        colors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
+        themeColors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
+        mapBackgroundColors: ['#0a0a0a', '#3b3200', '#332000', '#1a331a', '#162b2b', '#261a33', '#3b0000'],
         selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
+        selectedMapColor: localStorage.getItem('mapBackground') || '#0a0a0a',
         powerUp: localStorage.getItem('PowerUp') === 'true',
       };
     },
@@ -41,15 +51,20 @@
       changeColor(color) {
         this.selectedColor = color;
         localStorage.setItem('primaryColor', color);
-        this.updateCssVariables(color);
+        this.updateCssVariables('--primary-color', color);
       },
-      updateCssVariables(color) {
-        document.documentElement.style.setProperty('--primary-color', color);
+      changeMapColor(color) {
+        this.selectedMapColor = color;
+        localStorage.setItem('mapBackground', color);
+        this.updateCssVariables('--map-background', color);
       },
-      buttonStyle(color) {
+      updateCssVariables(variable, value) {
+        document.documentElement.style.setProperty(variable, value);
+      },
+      buttonStyle(color, selectedColor) {
         return {
           backgroundColor: color,
-          border: this.selectedColor === color ? '5px solid white' : 'none',
+          border: selectedColor === color ? '5px solid white' : 'none',
           borderRadius: '10px',
         };
       },
@@ -58,11 +73,11 @@
       },
     },
     mounted() {
-      this.updateCssVariables(this.selectedColor);
+      this.updateCssVariables('--primary-color', this.selectedColor);
+      this.updateCssVariables('--map-background', this.selectedMapColor);
     },
   };
 </script>
-
 
 <style scoped>
 .content {
@@ -88,7 +103,8 @@
   border-radius: 10px;
   cursor: pointer;
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 2px rgba(255, 255, 255);
+  border: 3px solid white;
   position: relative;
   transition: transform 0.3s, border 0.3s;
 }
@@ -157,4 +173,3 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 </style>
-

@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <ul class="nav-list">
-      <li class="nav-item"><router-link to="/user/1" id="profile-button">{{ $t('profile') }}</router-link></li>
+      <li class="nav-item"><router-link to="/user" id="profile-button">{{ $t('profile') }}</router-link></li>
       <li class="nav-item"><router-link to="/user/settings" id="settings-button">{{ $t('settings') }}</router-link></li>
     </ul>
     <div class="logout-box" @click="logout">
