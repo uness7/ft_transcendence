@@ -8,7 +8,8 @@
 			<div v-else class="dropdown">
 				<button class="dropbtn">{{ truncatedUsername }}</button>
 				<div class="dropdown-content">
-					<router-link to="/user/1">{{ $t('profile') }}</router-link>
+					<!-- <router-link :to="{ name: 'user', params: { id: user.id}}">{{ $t('profile') }}</router-link> -->
+					<router-link to="/user">{{ $t('profile') }}</router-link>
 					<router-link to="/user/settings">{{ $t('settings') }}</router-link>
 					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
 				</div>
@@ -40,7 +41,6 @@ export default {
 		const router = useRouter();
 		const isLoggedIn = computed(() => authStore.isAuthenticated);
 		const user = computed(() => authStore.user || { username: 'default', id: '' });
-		console.log("is logged in ? ", isLoggedIn);
 		const logout = async () => {
 			await authStore.logout();
 			router.push('/login');

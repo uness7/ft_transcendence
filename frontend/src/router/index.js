@@ -71,14 +71,13 @@ const routes = [
         },
     },
     {
-        path: "/user/1", // TODO: fetch
+        path: "/user",
         name: "user",
         component: UserView,
         meta: {
             requiresAuth: true,
-            requiresOTP: true,
+            // requiresOTP: true,
         },
-        props: true,
     },
     {
         path: "/tournament",
@@ -122,7 +121,7 @@ const routes = [
         component: UserSettings,
         meta: {
             requiresAuth: true,
-            requiresOTP: true,
+            // requiresOTP: true,
         },
     },
     {
