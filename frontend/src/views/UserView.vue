@@ -22,7 +22,6 @@ export default {
     UserProfile,
     UserSettings,
   },
-  props: ['id'],
   data() {
     return {
       currentView: 'UserProfile',
@@ -47,3 +46,5 @@ export default {
     padding: 20px;
   }
 </style>
+
+

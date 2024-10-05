@@ -4,7 +4,7 @@
       <div v-if="isFirstTime" key="qr-code-view" class="qr-code-container">
         <h2>Scan QR Code for 2FA Setup</h2>
         <p>To secure your account, please scan the QR code with your authentication app (Google Authenticator, etc.)</p>
-        <img :src="`data:image/svg+xml;base64,${qrCode}`" alt="QR Code" v-if="qrCode" />
+        <img :src="`data:image/svg+xml;base64,${qrCode}`" alt="QR Code" v-if="qrCode" class="qr-code-img"/>
         <button @click="handleNext">Next</button>
       </div>
 
@@ -13,6 +13,8 @@
         <p>Please enter the 6-digit code from your authentication app.</p>
         <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input" />
         <button @click="verifyOTP">Verify</button>
+        <button @click="displayQR">Display QR Code</button>
+        <img :src="`data:image/svg+xml;base64,${qrCodeAgain}`" alt="QR Code" v-if="qrCodeAgain" class="qr-code-img" />
       </div>
     </transition>
   </div>
@@ -40,20 +42,25 @@ export default {
     const qrCode = ref(""); // Use ref to make this reactive
     const sharedKey = ref(""); // Reactive shared key
     const otpCode = ref(""); // To capture user OTP input
+    const qrCodeAgain = ref("");
 
+    const displayQR = () => {
+      axios.get(`http://localhost:8000/api/v1/display_qr_code/${userId.value}/`)
+        .then(response => {
+          qrCodeAgain.value = response.data.qr_code;
+        })
+        .catch(e => {console.error(e)});
+    }
 
     const verifyOTP = async () => {
-      console.log("otp code: ", otpCode);
       try {
         const response = await axios.post(`http://localhost:8000/api/v1/verify_otp_code/${userId.value}/`, {
           otp_code: otpCode.value,
         });
-        console.log(response);
         if (response.request.status === 200)
         {
           router.push('/');
         } else {
-          console.log("otp verification has failed!");
         }
       } catch (error) {
         throw new Error("Error occurred: ", error);
@@ -68,32 +75,23 @@ export default {
           qrCode.value = response.data.qr_code;
           sharedKey.value = response.data.key;
 
-          console.log("qr code : ", qrCode); // success
-          console.log("shared secret: ", sharedKey); // success
-          
-
           // save qr code in db
           try {
             const response = await axios.post(`http://localhost:8000/api/v1/save_qr_code/${userId.value}/`, {
               key: sharedKey.value,
             });
-            console.log("save_qr_code res: ", response);
             if (response.request.status === 201) {
-              console.log("the qr code was saved successfully!");
               isFirstTime.value = true;    
             }
             else {
-              console.log("failure is here!");
               isFirstTime.value = false;
             }
           } catch (error) {
             throw new Error("Error occured", error);
           }
         } catch (error) {
-          console.log(error);
         }
       } else {
-        console.log("nope");
       }
     };
 
@@ -114,6 +112,8 @@ export default {
       username,
       qrCode,
       otpCode,
+      displayQR,
+      qrCodeAgain
     }
   },
 }
@@ -130,16 +130,26 @@ export default {
   text-align: center;
 }
 
+p, h2, img {
+  color: white;
+}
+
 .qr-code-container,
 .otp-container {
   max-width: 400px;
   margin: auto;
 }
 
+.qr-code-img {
+  color: white;
+  background-color: white;
+}
+
 .qr-code-container img {
   width: 200px;
   height: 200px;
   margin: 20px 0;
+  color: white;
 }
 
 .otp-input {

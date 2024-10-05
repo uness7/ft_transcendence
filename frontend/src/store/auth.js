@@ -10,6 +10,7 @@ export const useAuthStore = defineStore("auth", {
         refreshToken: null,
         user: null,
         user_id: '',
+        isOTPVerified: false,
     }),
     getters: {
         isAuthenticated: (state) => !!state.accessToken,
@@ -48,10 +49,14 @@ export const useAuthStore = defineStore("auth", {
                     "http://localhost:8000/api/authentication/login/",
                     credentials
                 );
-                // console.log("user id: ", response.data.user.id);
+                // console.log("RAW RESPONSE: ", response);
+                // console.log("RESPONSE PARSED: ", response.data);
                 this.setTokens(response.data.access, response.data.refresh);
                 this.setUser(response.data.user);
                 this.user_id = response.data.user.user_id;
+                this.isOTPVerified = response.data.user.is_otp_verified;
+
+                console.log("ISOTP", this.isOTPVerified);
                 await this.fetchUser(response.data.user.id);
                 return true;
             } catch (error) {
