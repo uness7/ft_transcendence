@@ -129,6 +129,30 @@ class QRSetup(View):
 # Methods: ['POST', 'GET']
 @method_decorator(csrf_exempt, name='dispatch')
 class VerifyOTPCode(View):
+    # Method: GET
+    # Endpoint: /display_qr_code/<std:user_id>
+
+    def get(self, request, user_id):
+        default_qr_factory = "qrcode.image.svg.SvgPathImage";
+        try:
+            user = User.objects.get(public_id=user_id);
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User was not found!'}, status=404);
+        try:
+            device = TOTPDevice.objects.get(user=user);
+            image_factory = import_string(default_qr_factory);
+            qr_code_url = device.config_url;
+            img = qrcode.make(qr_code_url, image_factory=image_factory);
+
+            buffer = BytesIO();
+            img.save(buffer);
+
+            import base64;
+            qr_code_data = base64.b64encode(buffer.getvalue()).decode();
+            return JsonResponse({'qr_code': qr_code_data}, status=200);
+        except TOTPDevice.DoesNotExist:
+            return JsonResponse({'message': 'QR Code was retrieved successfully!'}, status=200);
+
     # Method: POST
     # Endpoint: /verify_otp_code/<std:user_id>
     # Body: the top code provided by the auth application
