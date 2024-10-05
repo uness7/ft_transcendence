@@ -1,13 +1,15 @@
 <template>
     <div class="content">
         <div class="left-side">
+
+            <!-- LOCAL -->
             <router-link v-if="!isAuthenticated" to="/login" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('local') }} 🔒</p>
                     <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
+            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('local') }} 🔒</p>
                     <p class="description">{{ $t('localDesc') }}</p>
@@ -20,13 +22,14 @@
                 </div>
             </router-link>
 
+            <!-- AI -->
             <router-link v-if="!isAuthenticated" to="/login" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('ai') }} 🔒</p>
                     <p class="description">{{ $t('aiDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
+            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('ai') }} 🔒</p>
                     <p class="description">{{ $t('aiDesc') }}</p>
@@ -38,29 +41,17 @@
                     <p class="description">{{ $t('aiDesc') }}</p>
                 </div>
             </router-link>
-
-            <router-link v-if="isAuthenticated && isOTPVerified" to="pong/ai" class="left-middle link">
-                <div class="text-container">
-                    <p class="title">{{ $t('ai') }}</p>
-                    <p class="description">{{ $t('aiDesc') }}</p>
-                </div>
-            </router-link>
-            <router-link v-else to="/login" class="left-bottom link">
-                <div class="text-container">
-                    <p class="title">{{ $t('ai') }} 🔒</p>
-                    <p class="description">{{ $t('aiDesc') }}</p>
-                </div>
-            </router-link>
         </div>
 
         <div class="right-side">
+            <!-- TOURNAMENT -->
             <router-link v-if="!isAuthenticated" to="/login" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }} 🔒</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
+            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }} 🔒</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
