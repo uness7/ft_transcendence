@@ -3,6 +3,9 @@
     <div class="profile-section">
       <img :src="`${response?.data?.avatar}`" alt="Profile Image" class="profile-img">
       <h1 class="username">{{ response?.data?.username ?? "default"}}</h1>
+      <h1>{{ response?.data?.first_name ?? "default"}}</h1>
+      <h1>{{ response?.data?.last_name ?? "default"}}</h1>
+      <h1>{{ response?.data?.email ?? "default"}}</h1>
     </div>
     <div class="main-section">
       <div class="left-section">
@@ -44,7 +47,6 @@ export default {
   async mounted() {
     const authStore = useAuthStore();
     const user = computed(() => authStore.user || { username: 'default', id: '' });
-    let response = null;
     try
     {
       this.response = await axios.get(
@@ -56,7 +58,6 @@ export default {
             }
           }
       );
-      console.log(this.response.data.avatar);
     } catch (e) {
       console.error(e);
     }

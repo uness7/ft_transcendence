@@ -1,4 +1,6 @@
 {
+    "anonymize-user": "anonimizar datos del usuario",
+    "delete": "eliminar cuenta",
     "play": "{'jugar'}",
     "about": "{'info'}",
     "login": "{'ingreso'}",

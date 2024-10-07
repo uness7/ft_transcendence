@@ -1,4 +1,6 @@
 {
+    "anonymize-user": "anonymize user data",
+    "delete": "delete account",
     "play": "play",
     "about": "about",
     "login": "login",
