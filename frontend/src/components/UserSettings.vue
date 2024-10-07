@@ -16,6 +16,20 @@
           <form @submit.prevent="onFormSubmitted">
 
             <div class="form">
+              <div>
+                <img id="preview" src="" alt="Preview" width="200">
+              </div>
+              <div>
+                <label for="avatar">Avatar</label>
+                <input
+                    type="file"
+                    id="avatar"
+                    accept="image/*"
+                />
+              </div>
+            </div>
+
+            <div class="form">
               <label for="firstName">First Name</label>
               <input
                   type="text"
@@ -96,15 +110,30 @@ export default {
       email: null,
       password: null,
       confirmPassword: null,
+      avatarInput: null,
+      avatarPreview: null,
     };
   },
   methods: {
+    onNewAvatarLoaded(event) {
+      event.preventDefault();
+      const file = event.target.files[0];
+      if (file && file.type.match('image.*')) {
+        this.avatarPreview.src = URL.createObjectURL(file);
+        console.log("hello: ", this.avatarPreview.src);
+        this.avatarPreview.onload = () => {
+          URL.revokeObjectURL(this.avatarPreview.src);
+        }
+      }
+    },
     selectDOMInputs() {
       this.firstName = document.querySelector("#firstName");
       this.lastName = document.querySelector("#lastName");
       this.email = document.querySelector("#email");
       this.password = document.querySelector("#password");
       this.confirmPassword = document.querySelector("#confirm-password");
+      this.avatarInput = document.querySelector("#avatar");
+      this.avatarPreview = document.querySelector("#preview");
     },
     fetchAuthStore() {
       const authStore = useAuthStore();
@@ -148,9 +177,12 @@ export default {
           updatedData["email"] = this.email.value;
         if (this.password.value !== "")
           updatedData["password"] = this.password.value;
-        if (Object.keys(updatedData).length > 0)
+        if (this.avatarPreview.src !== this.user.avatar)
+          updatedData["avatar"] = this.avatarPreview.src;
+        if (Object.keys(updatedData).length > 0) {
+          console.log(updatedData);
           await this.patchUser(updatedData);
-        else
+      } else
           this.renderSubmitStatus("No field changed", "red");
       }
     },
@@ -159,6 +191,7 @@ export default {
       this.firstName.value = this.user.first_name;
       this.lastName.value = this.user.last_name;
       this.email.value = this.user.email;
+      this.avatarPreview.src = this.user.avatar;
     },
     async patchUser(userData) {
       let response = null;
@@ -177,7 +210,8 @@ export default {
         if (parseInt(response.status, 10) === 200)
           this.renderSubmitStatus("Updated account", "green");
       } catch (e) {
-        this.renderSubmitStatus("Email already exists", "red");
+        console.error(Object.values(e.response.data)[0]);
+        this.renderSubmitStatus(Object.values(e.response.data)[0], "red");
       }
       await this.updateInputsValues();
     },
@@ -219,6 +253,7 @@ export default {
     this.selectDOMInputs();
     await this.updateInputsValues();
 
+    this.avatarInput.addEventListener("change", this.onNewAvatarLoaded);
   },
 };
 </script>
