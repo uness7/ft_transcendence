@@ -2,13 +2,14 @@
 	<div class="content">
 		<canvas id="game-canvas"></canvas>
 		<div class="power-up-buttons">
-			<button :class="{ active: pongConfig?.isSpeedBuffActive ?? false }" @click="togglePlayerSpeed">Speed Buff</button>
-			<button :class="{ active: pongConfig?.isLargerPaddleActive ?? false }" @click="toggleLargerPaddle">Larger Paddle</button>
-			<button :class="{ active: pongConfig?.isFasterBallActive ?? false }" @click="toggleFasterBall">Faster Ball</button>
-			<button :class="{ active: pongConfig?.isImmortalActive ?? false }" @click="togglePlayerImmortal">Immortal</button>
+			<button :class="{ active: pongConfig?.isSpeedBuffActive ?? false }" @click="togglePlayerSpeed">{{ $t('speedBuff') }}</button>
+			<button :class="{ active: pongConfig?.isLargerPaddleActive ?? false }" @click="toggleLargerPaddle">{{ $t('largerPaddle') }}</button>
+			<button :class="{ active: pongConfig?.isFasterBallActive ?? false }" @click="toggleFasterBall">{{ $t('fasterBall') }}</button>
+			<button :class="{ active: pongConfig?.isImmortalActive ?? false }" @click="togglePlayerImmortal">{{ $t('immortal') }}</button>
 		</div>
 	</div>
 </template>
+
 
 <script>
 import Ball from "../pong/entities/ball.js";

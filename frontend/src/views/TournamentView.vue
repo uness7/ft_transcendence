@@ -1,26 +1,26 @@
 <template>
-    <div class="content">
-      <h1>Tournament Page</h1>
-      <p>Welcome to the tournament page. Please choose an action below:</p>
-  
-      <div class="button-container">
-        <router-link to="/tournament/create" class="btn">
-          Create Tournament
-        </router-link>
-        <router-link to="/tournament/details" class="btn">
-          Continue Tournament
-        </router-link>
-      </div>
+  <div class="content">
+    <h1>{{ $t('tournamentPage') }}</h1>
+    <p>{{ $t('welcomeTournamentPage') }}</p>
+
+    <div class="button-container">
+      <router-link to="/tournament/create" class="btn">
+        {{ $t('createTournament') }}
+      </router-link>
+      <router-link to="/tournament/details" class="btn">
+        {{ $t('continueTournament') }}
+      </router-link>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script>
+<script>
   export default {
     name: 'TournamentPage',
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
 
     @font-face {
 			font-family: '8bit';
@@ -72,5 +72,5 @@
   .btn:active {
     background-color: rgb(30,30,30);
   }
-  </style>
+</style>
   

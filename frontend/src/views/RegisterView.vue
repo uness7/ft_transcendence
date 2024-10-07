@@ -62,8 +62,9 @@
 								required
 							/>
 							<label for="consent">
-								I agree to the <router-link to="privacy" class="aaa">privacy policy</router-link>.
+								{{ $t('agreeTo') }} <router-link to="privacy" class="aaa">{{ $t('privacyPolicy') }}</router-link>.
 							</label>
+
 <!-- >>>>>>> jules -->
 						</div>
 						<button

@@ -2,23 +2,24 @@
   <div class="otp-verification">
     <transition name="fade" mode="out-in">
       <div v-if="isFirstTime" key="qr-code-view" class="qr-code-container">
-        <h2>Scan QR Code for 2FA Setup</h2>
-        <p>To secure your account, please scan the QR code with your authentication app (Google Authenticator, etc.)</p>
+        <h2>{{ $t('qrSetupTitle') }}</h2>
+        <p>{{ $t('qrSetupDescription') }}</p>
         <img :src="`data:image/svg+xml;base64,${qrCode}`" alt="QR Code" v-if="qrCode" class="qr-code-img"/>
-        <button @click="handleNext">Next</button>
+        <button @click="handleNext">{{ $t('nextButton') }}</button>
       </div>
 
       <div v-else key="otp-input-view" class="otp-container">
-        <h2>Enter OTP Code</h2>
-        <p>Please enter the 6-digit code from your authentication app.</p>
-        <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input" />
-        <button @click="verifyOTP">Verify</button>
-        <button @click="displayQR">Display QR Code</button>
+        <h2>{{ $t('otpTitle') }}</h2>
+        <p>{{ $t('otpDescription') }}</p>
+        <input v-model="otpCode" type="text" maxlength="6" :placeholder="$t('otpPlaceholder')" class="otp-input" />
+        <button @click="verifyOTP">{{ $t('verifyButton') }}</button>
+        <button @click="displayQR">{{ $t('displayQRButton') }}</button>
         <img :src="`data:image/svg+xml;base64,${qrCodeAgain}`" alt="QR Code" v-if="qrCodeAgain" class="qr-code-img" />
       </div>
     </transition>
   </div>
 </template>
+
 
 <script>
 

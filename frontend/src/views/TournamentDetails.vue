@@ -1,17 +1,17 @@
 <template>
     <div class="content">
-        <h1>{{ tournament ? `${tournament.name} Tournament` : "Error: no tournament" }}</h1>
-        <p>Details for tournament:</p>
-        <p>Number of participants: {{ tournament?.participants?.length ?? 0 }}</p>
+        <h1>{{ tournament ? `${tournament.name} ${$t('tournament')}` : $t('errorNoTournament') }}</h1>
+        <p>{{ $t('detailsForTournament') }}</p>
+        <p>{{ $t('numberOfParticipants') }}: {{ tournament?.participants?.length ?? 0 }}</p>
         <p id="player-1">{{ tournament?.participants?.[0] }}</p>
         <p id="player-2">{{ tournament?.participants?.[1] }}</p>
         <p id="player-3">{{ tournament?.participants?.[2] }}</p>
         <p id="player-4">{{ tournament?.participants?.[3] }}</p>
         <div v-if="!isTournamentFull()">
-            <button class="btn join-btn" @click="join">Join Tournament</button>
+            <button class="btn join-btn" @click="join">{{ $t('joinTournament') }}</button>
         </div>
         <div v-else>
-            <button class="btn join-btn" @click="startTournament">Start Tournament</button>
+            <button class="btn join-btn" @click="startTournament">{{ $t('startTournament') }}</button>
         </div>
     </div>
 </template>
