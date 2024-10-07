@@ -17,6 +17,7 @@ import PongLocalView from "../views/PongLocalView.vue";
 import PongTournamentView from "../views/PongTournamentView.vue";
 import PongAiView from "../views/PongAiView.vue";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
+import FriendsView from "../views/FriendsView.vue";
 
 // import UserDashboard from "../views/UserDashboard.vue";
 // import PerformanceChart from "../views/PerformanceChart.vue";
@@ -75,7 +76,16 @@ const routes = [
         name: "user",
         component: UserView,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
+            // requiresOTP: true,
+        },
+    },
+    {
+        path: "/friends",
+        name: "friends",
+        component: FriendsView,
+        meta: {
+            requiresAuth:false,
             // requiresOTP: true,
         },
     },

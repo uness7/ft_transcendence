@@ -2,6 +2,7 @@
 	<div class="top-bar">
 		<header id="top-bar-content">
 			<router-link to="/" id="logo-text">ft_transcendence</router-link>
+			<!-- <router-link to="/add-friend"></router-link> -->
 			<img :src="currentFlag" alt="flag" id="language-flag" @click="toggleLanguage">
 			<router-link to="/about" id="about-button">{{ $t('about') }}</router-link>
 			<router-link v-if="!isLoggedIn" to="/login" id="login-button">{{ $t('login') }}</router-link>
