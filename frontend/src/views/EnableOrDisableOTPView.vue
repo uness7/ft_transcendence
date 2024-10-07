@@ -38,10 +38,10 @@ export default {
     const username = computed(() => user.value.username);
     const userId = computed(() => user.value.id);
     
-    const isFirstTime = ref(); // Initially, we assume it is the first time
-    const qrCode = ref(""); // Use ref to make this reactive
-    const sharedKey = ref(""); // Reactive shared key
-    const otpCode = ref(""); // To capture user OTP input
+    const isFirstTime = ref();
+    const qrCode = ref("");
+    const sharedKey = ref("");
+    const otpCode = ref("");
     const qrCodeAgain = ref("");
 
     const displayQR = () => {
@@ -59,8 +59,12 @@ export default {
         });
         if (response.request.status === 200)
         {
+//          console.log("DEBUG: \n");
+//          console.log("Response: \n"); console.log(response);
+//          console.log("is_otp_verified: ", )
           router.push('/');
         } else {
+          console.log("Verify otp has failed");
         }
       } catch (error) {
         throw new Error("Error occurred: ", error);
@@ -87,11 +91,13 @@ export default {
               isFirstTime.value = false;
             }
           } catch (error) {
-            throw new Error("Error occured", error);
+            throw new Error("Error has occured", error);
           }
         } catch (error) {
+          console.log("Error has occurred: ", error);
         }
       } else {
+        router.push('/login');
       }
     };
 
@@ -118,8 +124,6 @@ export default {
   },
 }
 </script>
-
-
 <style scoped>
 .otp-verification {
   display: flex;
