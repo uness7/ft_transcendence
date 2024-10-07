@@ -16,7 +16,7 @@ class   UserSerializer(serializers.ModelSerializer):
     class   Meta:
         model = User;
         fields = ['id', 'username', 'first_name', 'last_name', 'is_active', 'is_otp_verified', 'bio', 'friends',
-                  'avatar', 'created', 'updated' ]; 
+                  'avatar', 'created', 'updated', 'games_played', 'games_won', 'games_lost'];
         read_only_field = ['is_active'];
 
     def validate_username(self, value):

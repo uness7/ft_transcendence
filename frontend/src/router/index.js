@@ -31,14 +31,6 @@ const routes = [
             requiresAuth: false,
         },
     },
-    // {
-    //     path: "/d",
-    //     name: "d",
-    //     component: UserDashboard,
-    //     meta: {
-    //         requiresAuth: false,
-    //     },
-    // },
     {
         path: "/about",
         name: "about",
@@ -77,7 +69,7 @@ const routes = [
         component: UserView,
         meta: {
             requiresAuth: true,
-            // requiresOTP: true,
+            requiresOTP: true,
         },
     },
     {
@@ -122,7 +114,7 @@ const routes = [
         component: UserSettings,
         meta: {
             requiresAuth: true,
-            // requiresOTP: true,
+            requiresOTP: true,
         },
     },
     {
@@ -138,7 +130,8 @@ const routes = [
         name: "pong-local",
         component: PongLocalView,
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
@@ -164,8 +157,8 @@ const routes = [
         name: "pong-multiplayer",
         component: PongMultiplayerView,
         meta: {
-            requiresAuth: false,
-            requiresOTP: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {

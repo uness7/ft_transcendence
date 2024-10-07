@@ -24,6 +24,9 @@ import gameConfig, {
 } from "../pong/game/config.js"; 
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
+import { computed } from 'vue';
+import { useAuthStore } from '@/store/auth';
+import axios from "axios"
 
 export default {
 	name: 'PongLocalView',
@@ -32,7 +35,7 @@ export default {
 		pongConfig: null,
 	};
 	},
-	mounted()
+	async mounted()
 	{
 		this.pongConfigData = localStorage.getItem("pongConfig");
 		if (!this.pongConfigData) {
@@ -46,10 +49,10 @@ export default {
 		} else {
 			this.pongConfig = JSON.parse(this.pongConfigData);
 		}
-		this.initGame();
+		await this.initGame();
 	},
 	methods: {
-		updatePongConfig() {
+ 		updatePongConfig() {
 			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
 			this.$router.go(0);
 		},
@@ -69,7 +72,7 @@ export default {
 			this.pongConfig.isImmortalActive = !this.pongConfig.isImmortalActive;
 			this.updatePongConfig();
 		},
-		initGame() {
+		async initGame() {
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
 
@@ -89,6 +92,25 @@ export default {
 				Play: "play",
 				Serve: "serve",
 			}
+
+      const authStore = useAuthStore();
+      const user = computed(() => authStore.user || { username: 'default', id: '' });
+      let response = null;
+      try
+      {
+        response = await axios.get(
+            `http://localhost:8000/api/user/${user.value.id}/`,
+            {
+              headers: {
+                Authorization: `Bearer ${authStore.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+      } catch (e) {
+        console.error(e);
+      }
+      const username = response.data.username;
 
 			class Pong {
 				constructor() {
@@ -196,17 +218,48 @@ export default {
 					}
 				}
 
+        onGameFinished = async (playerWon) => {
+          const updatedData = {
+            games_played: response.data.games_played + 1,
+            games_won: playerWon ? response.data.games_won + 1 : response.data.games_won,
+            games_lost: playerWon ? response.data.games_lost : response.data.games_lost + 1,
+          }
+          try
+          {
+            response = await axios.patch(
+                `http://localhost:8000/api/user/${user.value.id}/`,
+                {
+                  "games_played": updatedData.games_played,
+                  "games_lost": updatedData.games_lost,
+                  "games_won": updatedData.games_won,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${authStore.accessToken}`,
+                    'Content-Type': 'application/json'
+                  }
+                }
+            );
+          } catch (e) {
+            console.error(e);
+          }
+
+        }
 				checkGameFinished = () => {
 					if (gameConfig.game.playerImmortal)
 						return;
 					if (this.leftScore === gameConfig.game.maxScore
 						|| this.rightScore === gameConfig.game.maxScore
 					) {
-						if (this.leftScore === gameConfig.game.maxScore)
-							this.entities.gameStateText.text = "LEFT WINS";
-						else
-							this.entities.gameStateText.text = "RIGHT WINS";
+						if (this.leftScore === gameConfig.game.maxScore) {
+              this.entities.gameStateText.text = `${username} WINS`;
+              this.onGameFinished(true);
+            } else {
+              this.entities.gameStateText.text = "RIGHT WINS";
+              this.onGameFinished(false);
+            }
 						this.state = GameState.Wait;
+
 						setTimeout(() => {
 							this.state = GameState.Menu;
 						}, 3 * 1000);
@@ -217,7 +270,7 @@ export default {
 					const ball = this.entities.ball;
 					if (this.state === GameState.Serve) {
 						if (this.isLeftServe) {
-							this.entities.gameStateText.text = "LEFT SERVES";
+							this.entities.gameStateText.text = `${username} SERVES`;
 							ball.speed.scale(-1);
 						}
 						else {
@@ -309,16 +362,16 @@ export default {
 
 			document.addEventListener("keydown", event => {
 				event.preventDefault();
-				if (event.key == "w" && game.state === GameState.Play && !leftToggleMoveUp) {
+				if (event.key === "w" && game.state === GameState.Play && !leftToggleMoveUp) {
 					leftToggleMoveUp = true;
 				}
-				if (event.key == "s" && game.state === GameState.Play && !leftToggleMoveDown) {
+				if (event.key === "s" && game.state === GameState.Play && !leftToggleMoveDown) {
 					leftToggleMoveDown = true;
 				}
-				if (event.key == "ArrowUp" && game.state === GameState.Play && !rightToggleMoveUp) {
+				if (event.key === "ArrowUp" && game.state === GameState.Play && !rightToggleMoveUp) {
 					rightToggleMoveUp = true;
 				}
-				if (event.key == "ArrowDown" && game.state === GameState.Play && !rightToggleMoveDown) {
+				if (event.key === "ArrowDown" && game.state === GameState.Play && !rightToggleMoveDown) {
 					rightToggleMoveDown = true;
 				}
 			});
