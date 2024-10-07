@@ -29,6 +29,9 @@ import gameConfig, {
 } from "../pong/game/config.js";
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
+import {useAuthStore} from "@/store/auth";
+import {computed} from "vue";
+import axios from "axios";
 
 export default {
 	name: 'PongAiView',
@@ -79,9 +82,28 @@ export default {
 			this.pongConfig.isAISpeedBuffActive = !this.pongConfig.isAISpeedBuffActive;
 			this.updatePongConfig();
 		},
-		initGame(){
+		async initGame(){
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
+
+      const authStore = useAuthStore();
+      const user = computed(() => authStore.user || { username: 'default', id: '' });
+      let response = null;
+      try
+      {
+        response = await axios.get(
+            `http://localhost:8000/api/user/${user.value.id}/`,
+            {
+              headers: {
+                Authorization: `Bearer ${authStore.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+      } catch (e) {
+        console.error(e);
+      }
+      const username = response.data.username;
 
 			const pongConfig = this.pongConfig;
 			if (pongConfig.isSpeedBuffActive)
@@ -216,17 +238,45 @@ export default {
 						aiPaddle.changePosition();
 					}
 				}
-
+        onGameFinished = async (playerWon) => {
+          const updatedData = {
+            games_played: response.data.games_played + 1,
+            games_won: playerWon ? response.data.games_won + 1 : response.data.games_won,
+            games_lost: playerWon ? response.data.games_lost : response.data.games_lost + 1,
+          }
+          try
+          {
+            response = await axios.patch(
+                `http://localhost:8000/api/user/${user.value.id}/`,
+                {
+                  "games_played": updatedData.games_played,
+                  "games_lost": updatedData.games_lost,
+                  "games_won": updatedData.games_won,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${authStore.accessToken}`,
+                    'Content-Type': 'application/json'
+                  }
+                }
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
 				checkGameFinished = () => {
 					if (gameConfig.game.playerImmortal && this.leftScore < gameConfig.game.maxScore)
 						return;
 					if (this.leftScore === gameConfig.game.maxScore
 						|| this.rightScore === gameConfig.game.maxScore
 					) {
-						if (this.leftScore === gameConfig.game.maxScore)
-							this.entities.gameStateText.text = "PLAYER WINS";
-						else
-							this.entities.gameStateText.text = "PLAYER LOST";
+						if (this.leftScore === gameConfig.game.maxScore) {
+              this.entities.gameStateText.text = "PLAYER WINS";
+              this.onGameFinished(true);
+            } else {
+              this.entities.gameStateText.text = "PLAYER LOST";
+              this.onGameFinished(false);
+            }
 						this.state = GameState.Wait;
 						setTimeout(() => {
 							this.state = GameState.Menu;

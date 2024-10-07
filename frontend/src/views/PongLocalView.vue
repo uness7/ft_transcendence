@@ -243,7 +243,6 @@ export default {
           } catch (e) {
             console.error(e);
           }
-
         }
 				checkGameFinished = () => {
 					if (gameConfig.game.playerImmortal)
