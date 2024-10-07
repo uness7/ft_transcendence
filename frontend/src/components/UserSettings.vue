@@ -5,20 +5,66 @@
       <div class="settings">
         <h2>{{ $t('color-theme') }}</h2>
         <div class="color-options">
-          <button v-for="color in colors" :key="color" :style="buttonStyle(color)" class="color-button" @click="changeColor(color)">
+          <button v-for="color in colors" :key="color" :style="buttonStyle(color)" class="color-button"
+                  @click="changeColor(color)">
             <span class="visually-hidden">{{ color }}</span>
           </button>
         </div>
 
         <h2>{{ $t('account-settings') }}</h2>
         <div class="account-settings">
-          <input
-              class="account-inputs"
-              id="firstname-input"
-              type="text"
-              required
-          />
-          <button>Save modifications</button>
+          <form @submit.prevent="onFormSubmitted">
+
+            <div class="form">
+              <label for="firstName">First Name</label>
+              <input
+                  type="text"
+                  id="firstName"
+              />
+            </div>
+
+            <div class="form">
+              <label for="lastName">Last Name</label>
+              <input
+                  type="text"
+                  id="lastName"
+              />
+            </div>
+
+            <div class="form">
+
+              <label for="email">Email</label>
+              <input
+                  type="text"
+                  id="email"
+              />
+            </div>
+
+            <div class="form">
+              <label for="password">Password</label>
+              <input
+                  type="text"
+                  id="password"
+              />
+            </div>
+
+            <div class="form">
+              <label for="password">Confirm Password</label>
+              <input
+                  type="text"
+                  id="confirm-password"
+              />
+            </div>
+
+            <div class="form">
+              <button id="submit-button" type="submit">Save Modifications</button>
+            </div>
+
+            <div class="form">
+              <p id="submit-status"></p>
+            </div>
+
+          </form>
         </div>
 
       </div>
@@ -42,11 +88,113 @@ export default {
     return {
       colors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
       selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
-
       user: null,
+      userId: null,
+      accessToken: null,
+      firstName: null,
+      lastName: null,
+      email: null,
+      password: null,
+      confirmPassword: null,
     };
   },
   methods: {
+    selectDOMInputs() {
+      this.firstName = document.querySelector("#firstName");
+      this.lastName = document.querySelector("#lastName");
+      this.email = document.querySelector("#email");
+      this.password = document.querySelector("#password");
+      this.confirmPassword = document.querySelector("#confirm-password");
+    },
+    fetchAuthStore() {
+      const authStore = useAuthStore();
+      const user = computed(() => authStore.user || {username: 'default', id: ''});
+      this.userId = user.value.id;
+      this.accessToken = authStore.accessToken;
+    },
+    async fetchUser() {
+      let response = null;
+      try {
+        response = await axios.get(
+            `http://localhost:8000/api/user/${this.userId}/`,
+            {
+              headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+        this.user = response.data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    renderSubmitStatus(text, color) {
+      const statusText = document.querySelector("#submit-status");
+      statusText.style.color = color;
+      statusText.textContent = text;
+    },
+    async onFormSubmitted() {
+      if (!this.isFormValid()) {
+        this.renderSubmitStatus("Invalid fields", "red");
+        await this.updateInputsValues();
+      } else {
+        const updatedData = {};
+        if (this.firstName.value !== this.user.first_name)
+          updatedData["first_name"] = this.firstName.value;
+        if (this.lastName.value !== this.user.last_name)
+          updatedData["last_name"] = this.lastName.value;
+        if (this.email.value !== this.user.email)
+          updatedData["email"] = this.email.value;
+        if (this.password.value !== "")
+          updatedData["password"] = this.password.value;
+        if (Object.keys(updatedData).length > 0)
+          await this.patchUser(updatedData);
+        else
+          this.renderSubmitStatus("No field changed", "red");
+      }
+    },
+    async updateInputsValues() {
+      await this.fetchUser();
+      this.firstName.value = this.user.first_name;
+      this.lastName.value = this.user.last_name;
+      this.email.value = this.user.email;
+    },
+    async patchUser(userData) {
+      let response = null;
+      try
+      {
+        response = await axios.patch(
+            `http://localhost:8000/api/user/${this.userId}/`,
+            userData,
+            {
+              headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+        if (parseInt(response.status, 10) === 200)
+          this.renderSubmitStatus("Updated account", "green");
+      } catch (e) {
+        this.renderSubmitStatus("Email already exists", "red");
+      }
+      await this.updateInputsValues();
+    },
+    isFormValid() {
+      const emailRe = /^\S+@\S+\.\S+$/;
+      const passwordRe = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+
+      const fields = {};
+      fields["isFistNameValid"] = String(this.firstName.value).trim() !== "";
+      fields["isLastNameValid"] = String(this.lastName.value).trim() !== "";
+      fields["isEmailValid"] = emailRe.test(this.email.value);
+      fields["isPasswordValid"] = this.password.value.length === 0 || passwordRe.test(this.password.value);
+      fields["isConfirmPasswordValid"] = this.confirmPassword.value === this.password.value;
+
+      return Object.values(fields).every(value => value === true);
+    },
+
     changeColor(color) {
       this.selectedColor = color;
       localStorage.setItem('primaryColor', color);
@@ -66,27 +214,11 @@ export default {
   async mounted() {
     this.updateCssVariables(this.selectedColor);
 
-    const authStore = useAuthStore();
-    const user = computed(() => authStore.user || { username: 'default', id: '' });
-    let response = null;
-    try
-    {
-      response = await axios.get(
-          `http://localhost:8000/api/user/${user.value.id}/`,
-          {
-            headers: {
-              Authorization: `Bearer ${authStore.accessToken}`,
-              'Content-Type': 'application/json'
-            }
-          }
-      );
-      this.user = response.data;
-    } catch (e) {
-      console.error(e);
-    }
+    this.fetchAuthStore();
+    await this.fetchUser();
+    this.selectDOMInputs();
+    await this.updateInputsValues();
 
-    const usernameInput = document.getElementById("username-input");
-    usernameInput.value = this.user.username;
   },
 };
 </script>
@@ -95,9 +227,20 @@ export default {
 <style scoped>
 .content {
   color: white;
-  margin-top: 80px; /* <--- ne pas trop changer */
+  margin-top: 80px;
   margin-left: 400px;
   font-family: '8bit', sans-serif;
+}
+
+#submit-button {
+  font-family: '8bit', sans-serif;
+  font-size: 20px;
+}
+
+#submit-status {
+  font-family: '8bit', sans-serif;
+  font-size: 20px;
+  color: white;
 }
 
 .settings {
@@ -105,9 +248,18 @@ export default {
   font-size: 40px;
 }
 
-.account-inputs {
+label {
   color: white;
-  font-size: 40px;
+  font-size: 20px;
+  margin-top: 10px;
+
+}
+
+input {
+  background-color: white;
+  color: black;
+  font-size: 20px;
+  margin-top: 5px;
 }
 
 .color-options {
@@ -142,4 +294,3 @@ export default {
 }
 
 </style>
-
