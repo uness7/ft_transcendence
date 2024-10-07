@@ -36,7 +36,7 @@ class AnonymizeUser(View, anon.BaseAnonymizer):
         return JsonResponse({
                 "message": "User has been anonymized, your password remains unchanged", 
                 "note": "You must keep your new email to be able to log in",
-                "data update" : {
+                "data_update" : {
                     "username": user.username,
                     "email": user.email,
                     "first_name": user.first_name,

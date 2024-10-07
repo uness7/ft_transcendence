@@ -34,7 +34,7 @@ export default class Paddle {
 		this.pos.y = clamp(
 			this.pos.y,
 			this.boundBox.getPosition().y,
-			this.boundBox.getSize().y - this.size.y
+			this.boundBox.getPosition().y + this.boundBox.getSize().y - this.size.y
 		);
 		this.rect = new Rect2(this.pos, this.size);
 	}

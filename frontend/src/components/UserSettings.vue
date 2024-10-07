@@ -9,13 +9,18 @@
             <span class="visually-hidden">{{ color }}</span>
           </button>
         </div>
-        <div class="powerup-section">
-          <h3>{{ $t('power-up') }}</h3>
-          <label class="switch">
-            <input type="checkbox" v-model="powerUp" @change="togglePowerUp">
-            <span class="slider"></span>
-          </label>
+
+        <h2>{{ $t('account-settings') }}</h2>
+        <div class="account-settings">
+          <input
+              class="account-inputs"
+              id="firstname-input"
+              type="text"
+              required
+          />
+          <button>Save modifications</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -23,44 +28,67 @@
 
 
 <script>
-  import NavBar from '../components/NavBar.vue';
+import NavBar from '../components/NavBar.vue';
+import {useAuthStore} from "@/store/auth";
+import {computed} from "vue";
+import axios from "axios";
 
-  export default {
-    name: 'UserSettings',
-    components: {
-      NavBar,
+export default {
+  name: 'UserSettings',
+  components: {
+    NavBar,
+  },
+  data() {
+    return {
+      colors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
+      selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
+
+      user: null,
+    };
+  },
+  methods: {
+    changeColor(color) {
+      this.selectedColor = color;
+      localStorage.setItem('primaryColor', color);
+      this.updateCssVariables(color);
     },
-    data() {
+    updateCssVariables(color) {
+      document.documentElement.style.setProperty('--primary-color', color);
+    },
+    buttonStyle(color) {
       return {
-        colors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
-        selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
-        powerUp: localStorage.getItem('PowerUp') === 'true',
+        backgroundColor: color,
+        border: this.selectedColor === color ? '5px solid white' : 'none',
+        borderRadius: '10px',
       };
     },
-    methods: {
-      changeColor(color) {
-        this.selectedColor = color;
-        localStorage.setItem('primaryColor', color);
-        this.updateCssVariables(color);
-      },
-      updateCssVariables(color) {
-        document.documentElement.style.setProperty('--primary-color', color);
-      },
-      buttonStyle(color) {
-        return {
-          backgroundColor: color,
-          border: this.selectedColor === color ? '5px solid white' : 'none',
-          borderRadius: '10px',
-        };
-      },
-      togglePowerUp() {
-        localStorage.setItem('PowerUp', this.powerUp);
-      },
-    },
-    mounted() {
-      this.updateCssVariables(this.selectedColor);
-    },
-  };
+  },
+  async mounted() {
+    this.updateCssVariables(this.selectedColor);
+
+    const authStore = useAuthStore();
+    const user = computed(() => authStore.user || { username: 'default', id: '' });
+    let response = null;
+    try
+    {
+      response = await axios.get(
+          `http://localhost:8000/api/user/${user.value.id}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+      );
+      this.user = response.data;
+    } catch (e) {
+      console.error(e);
+    }
+
+    const usernameInput = document.getElementById("username-input");
+    usernameInput.value = this.user.username;
+  },
+};
 </script>
 
 
@@ -74,6 +102,11 @@
 
 .settings {
   padding: 20px;
+  font-size: 40px;
+}
+
+.account-inputs {
+  color: white;
   font-size: 40px;
 }
 
@@ -108,53 +141,5 @@
   border: 0;
 }
 
-.powerup-section {
-  margin-top: 40px;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #49a078;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
 </style>
 

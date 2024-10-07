@@ -59,12 +59,9 @@ export default {
         });
         if (response.request.status === 200)
         {
-//          console.log("DEBUG: \n");
-//          console.log("Response: \n"); console.log(response);
-//          console.log("is_otp_verified: ", )
           router.push('/');
         } else {
-          console.log("Verify otp has failed");
+          console.error("Verify otp has failed");
         }
       } catch (error) {
         throw new Error("Error occurred: ", error);
@@ -94,7 +91,7 @@ export default {
             throw new Error("Error has occured", error);
           }
         } catch (error) {
-          console.log("Error has occurred: ", error);
+          console.error("Error has occurred: ", error);
         }
       } else {
         router.push('/login');
