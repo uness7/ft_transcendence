@@ -22,6 +22,26 @@
                 </div>
             </router-link>
 
+            <!-- MULTIPLAYER -->
+            <router-link v-if="!isAuthenticated" to="/login" class="left-bottom link">
+                <div class="text-container">
+                    <p class="title">{{ $t('multiplayer') }} 🔒</p>
+                    <p class="description">{{ $t('multiplayerDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
+                <div class="text-container">
+                    <p class="title">{{ $t('multiplayer') }} 🔒</p>
+                    <p class="description">{{ $t('multiplayerDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link v-else to="/pong/multiplayer" class="left-up link">
+                <div class="text-container">
+                    <p class="title">{{ $t('multiplayer') }}</p>
+                    <p class="description">{{ $t('multiplayerDesc') }}</p>
+                </div>
+            </router-link>
+
             <!-- AI -->
             <router-link v-if="!isAuthenticated" to="/login" class="left-bottom link">
                 <div class="text-container">
