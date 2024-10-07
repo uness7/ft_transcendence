@@ -251,7 +251,7 @@ export default {
 						|| this.rightScore === gameConfig.game.maxScore
 					) {
 						if (this.leftScore === gameConfig.game.maxScore) {
-              this.entities.gameStateText.text = `${username} WINS`;
+              this.entities.gameStateText.text = `${username.toUpperCase()} WINS`;
               this.onGameFinished(true);
             } else {
               this.entities.gameStateText.text = "RIGHT WINS";
@@ -269,7 +269,7 @@ export default {
 					const ball = this.entities.ball;
 					if (this.state === GameState.Serve) {
 						if (this.isLeftServe) {
-							this.entities.gameStateText.text = `${username} SERVES`;
+							this.entities.gameStateText.text = `${username.toUpperCase()} SERVES`;
 							ball.speed.scale(-1);
 						}
 						else {
