@@ -7,7 +7,6 @@ from django.db import models;
 from django.http import Http404;
 from django_otp.plugins.otp_totp.models import TOTPDevice;
 
-
 class   UserManager(BaseUserManager):
     def get_object_by_public_id(self, public_id):
         try:
@@ -42,7 +41,6 @@ class   UserManager(BaseUserManager):
         user.save(using=self._db);
         return user;
 
-
 class   User(AbstractBaseUser, PermissionsMixin):
     public_id = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4, editable=False);
     username = models.CharField(db_index=True, max_length=255, unique=True);
@@ -54,11 +52,15 @@ class   User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False);
     created = models.DateTimeField(auto_now=True);
     updated = models.DateTimeField(auto_now_add=True);
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True); # optional
+    bio = models.TextField(max_length=500, blank=True, null=True, default="A short bio about you.");
+    avatar = models.ImageField(upload_to='avatars/', default='avatars/default_avatar.jpg', null=True, blank=True);
     games_played = models.IntegerField(default=0);
     games_won = models.IntegerField(default=0);
     games_lost = models.IntegerField(default=0);
+    is_anonymous = models.BooleanField(default=False);
     is_otp_verified = models.BooleanField(default=False);
+    friends = models.ManyToManyField('self', symmetrical=False, related_name='friend_set', blank=True);
+    # user.friend_set.all() would give you all friends of a user.
 
     # Data validation
     def clean(self):
@@ -89,3 +91,13 @@ class   User(AbstractBaseUser, PermissionsMixin):
     @property
     def name(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class   FriendRequest(models.Model):
+    from_user = models.ForeignKey(User, related_name='sent_requests', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name='received_requests', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.from_user} -> {self.to_user}"
+

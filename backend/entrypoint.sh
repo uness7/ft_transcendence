@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-source .env
+source .env.dev
 
 python manage.py makemigrations
 python manage.py migrate

@@ -13,6 +13,8 @@ class   RegisterSerializer(UserSerializer):
                 'username', 
                 'first_name', 
                 'last_name', 
+                'bio',
+                'avatar',
                 'password'
         ];
 
