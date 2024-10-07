@@ -14,7 +14,7 @@ export default class PlayerPaddle extends Paddle {
 			: boundBox.getSize().x - this.padding - this.size.x;
 		this.resetPos = new Vec2(
 			x,
-			this.boundBox.getHalfHeight() - this.halfHeight
+			this.boundBox.topBound + this.boundBox.getHalfHeight() - this.halfHeight
 		);
 		this.pos = this.resetPos.clone();
 		this.rect = new Rect2(this.pos, this.size);

@@ -16,6 +16,7 @@ import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
 import PongTournamentView from "../views/PongTournamentView.vue";
 import PongAiView from "../views/PongAiView.vue";
+import PongMultiplayerView from "../views/PongMultiplayerView.vue";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 
 // import UserDashboard from "../views/UserDashboard.vue";
@@ -156,6 +157,15 @@ const routes = [
         meta: {
             requiresAuth: true,
             requiresOTP: true,
+        },
+    },
+    {
+        path: "/pong/multiplayer",
+        name: "pong-multiplayer",
+        component: PongMultiplayerView,
+        meta: {
+            requiresAuth: false,
+            requiresOTP: false,
         },
     },
     {
