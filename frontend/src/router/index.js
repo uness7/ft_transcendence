@@ -19,8 +19,6 @@ import PongAiView from "../views/PongAiView.vue";
 import PongMultiplayerView from "../views/PongMultiplayerView.vue";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 
-// import UserDashboard from "../views/UserDashboard.vue";
-// import PerformanceChart from "../views/PerformanceChart.vue";
 
 const routes = [
     {
