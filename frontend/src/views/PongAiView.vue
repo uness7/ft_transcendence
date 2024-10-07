@@ -40,7 +40,7 @@ export default {
 		pongConfig: null,
 	};
 	},
-	mounted()
+	async mounted()
 	{
 		this.pongConfigData = localStorage.getItem("pongConfig");
 		if (!this.pongConfigData) {
@@ -55,7 +55,7 @@ export default {
 		} else {
 			this.pongConfig = JSON.parse(this.pongConfigData);
 		}
-		this.initGame();
+		await this.initGame();
 	},
 	methods: {
 		updatePongConfig() {

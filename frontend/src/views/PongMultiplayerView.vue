@@ -24,6 +24,9 @@ import gameConfig, {
 } from "../pong/game/config.js"; 
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
+import {useAuthStore} from "@/store/auth";
+import {computed} from "vue";
+import axios from "axios";
 
 export default {
 	name: 'PongLocalView',
@@ -32,7 +35,7 @@ export default {
 		pongConfig: null,
 	};
 	},
-	mounted()
+	async mounted()
 	{
 		this.pongConfigData = localStorage.getItem("pongConfig");
 		if (!this.pongConfigData) {
@@ -46,7 +49,7 @@ export default {
 		} else {
 			this.pongConfig = JSON.parse(this.pongConfigData);
 		}
-		this.initGame();
+		await this.initGame();
 	},
 	methods: {
 		updatePongConfig() {
@@ -69,7 +72,7 @@ export default {
 			this.pongConfig.isImmortalActive = !this.pongConfig.isImmortalActive;
 			this.updatePongConfig();
 		},
-		initGame() {
+		async initGame() {
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
 
@@ -89,6 +92,24 @@ export default {
 				Play: "play",
 				Serve: "serve",
 			}
+
+      const authStore = useAuthStore();
+      const user = computed(() => authStore.user || { username: 'default', id: '' });
+      let response = null;
+      try
+      {
+        response = await axios.get(
+            `http://localhost:8000/api/user/${user.value.id}/`,
+            {
+              headers: {
+                Authorization: `Bearer ${authStore.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+      } catch (e) {
+        console.error(e);
+      }
 
 			class Pong {
 				constructor() {
@@ -210,16 +231,45 @@ export default {
 					}
 				}
 
+        onGameFinished = async (playerWon) => {
+          const updatedData = {
+            games_played: response.data.games_played + 1,
+            games_won: playerWon ? response.data.games_won + 1 : response.data.games_won,
+            games_lost: playerWon ? response.data.games_lost : response.data.games_lost + 1,
+          }
+          try
+          {
+            response = await axios.patch(
+                `http://localhost:8000/api/user/${user.value.id}/`,
+                {
+                  "games_played": updatedData.games_played,
+                  "games_lost": updatedData.games_lost,
+                  "games_won": updatedData.games_won,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${authStore.accessToken}`,
+                    'Content-Type': 'application/json'
+                  }
+                }
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
 				checkGameFinished = () => {
 					if (gameConfig.game.playerImmortal)
 						return;
 					if (this.leftScore === gameConfig.game.maxScore
 						|| this.rightScore === gameConfig.game.maxScore
 					) {
-						if (this.leftScore === gameConfig.game.maxScore)
-							this.entities.gameStateText.text = "LEFT WIN";
-						else
-							this.entities.gameStateText.text = "RIGHT WIN";
+						if (this.leftScore === gameConfig.game.maxScore) {
+              this.entities.gameStateText.text = "LEFT PLAYERS WIN";
+              this.onGameFinished(true);
+            } else {
+              this.entities.gameStateText.text = "RIGHT PLAYERS WIN";
+              this.onGameFinished(false);
+            }
 						this.state = GameState.Wait;
 						setTimeout(() => {
 							this.state = GameState.Menu;
