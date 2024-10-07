@@ -12,12 +12,13 @@
         </div>
       </div>
     </section>
-    <router-link to="/privacy" class="privacy">{{ $t('read-privacy') }}</router-link>
+    <div class="privacy-container">
+      <router-link to="/privacy" class="privacy">{{ $t('read-privacy') }}</router-link>
+    </div>
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -55,12 +56,10 @@ export default {
 </script>
 
 <style scoped>
-
 .content {
   color: white;
   background-color: var(--background-color);
-  margin-top: 200px; /* <--- ne pas trop changer */
-  /* font-family: '8bit', sans-serif; */
+  margin-top: 200px;
 }
 
 .heading {
@@ -120,13 +119,20 @@ p {
   margin: 0;
 }
 
-.privacy{
-  font-family: '8bit',sans-serif;
+.privacy-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.privacy {
+  font-family: '8bit', sans-serif;
   font-size: 25px;
-  color: rgb(200,200,200);
+  color: rgb(200, 200, 200);
   background: var(--background-color);
-  margin-left: 820px;
-  position: relative;
-  top: 60px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
 }
 </style>
