@@ -20,7 +20,7 @@
           </div>
           <div class="stat">
             <h2>{{ $t('win-rate') }}</h2>
-            <p>{{ (response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)) ?? 0 }}%</p>
+            <p>{{ (100 * response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)).toFixed(2) ?? 0 }}%</p>
           </div>
         </div>
       </div>
@@ -72,11 +72,11 @@ export default {
     new Chart(ctx, {
       type: "pie",
       data: {
-        labels: ["Gagnees", "Perdues"],
+        labels: ["Won", "Lost"],
         datasets: [
           {
-            label: "Parties",
-            data: [this.gamesWon, this.gamesLost],
+            label: "Games",
+            data: [this.response.data.games_won, this.response.data.games_lost],
             backgroundColor: [this.primaryColor, "#222"],
           },
         ],
