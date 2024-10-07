@@ -9,6 +9,7 @@
     "multiText": "{'Multijugador'}",
     "profile": "{'perfil'}",
     "settings": "{'ajustes'}",
+    "account-settings": "configuraciones de cuenta",
     "logout": "{'logout'}",
     "team": "{'Nuestro equipo'}",
     "ouissem-status": "{'Responsable de docker'}",
