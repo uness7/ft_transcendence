@@ -16,6 +16,7 @@
     "crypto-js": "^4.2.0",
     "path-browserify": "^1.0.1",
     "pinia": "^2.2.2",
+    "pinia-plugin-persistedstate": "^4.1.1",
     "socket.io-client": "^4.7.5",
     "util": "^0.12.5",
     "vue": "^3.4.36",
