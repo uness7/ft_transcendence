@@ -198,6 +198,7 @@ const routes = [
       component: FriendsView,
       meta: {
           requiresAuth: true,
+          requiresOTP: true,
       },
     },
     {
@@ -206,7 +207,7 @@ const routes = [
         component: MatchHistoryView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
 ];

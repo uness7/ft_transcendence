@@ -108,7 +108,7 @@ class   FriendRequest(models.Model):
 def get_choices():
     return [
         ("LO", "Local"),
-        ("1VS1", "One against One"),
+        ("2VS2", "One against One"),
         ("AI", "Against Artificial Intelligence"),
     ];
 

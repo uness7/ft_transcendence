@@ -226,7 +226,21 @@ export default {
             playerRightPaddle.collideBall(ball);
           }
         }
-
+        updateMatchHistory = async (playerWon) => {
+          let response = null;
+          try {
+            response = await axios.post(
+                `http://localhost:8000/api/v1/user/match_history/${user.value.id}/`,
+                {
+                  user: username,
+                  final_score: playerWon,
+                  mode: "LO",
+                }
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
         onGameFinished = async (playerWon) => {
           const updatedData = {
             games_played: response.data.games_played + 1,
@@ -251,6 +265,7 @@ export default {
           } catch (e) {
             console.error(e);
           }
+          await this.updateMatchHistory(playerWon);
         }
         checkGameFinished = () => {
           if (gameConfig.game.playerImmortal)

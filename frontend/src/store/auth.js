@@ -102,7 +102,26 @@ export const useAuthStore = defineStore("auth", {
                 throw new Error(error);
             }
         },
+        async onLogout() {
+            try {
+                await axios.patch(
+                    `http://localhost:8000/api/user/${this.user.id}/`,
+                    {
+                        "is_otp_verified": false
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.accessToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+            } catch (e) {
+                console.error(e);
+            }
+        },
         async logout() {
+            await this.onLogout();
             await this.apiBlacklistToken();
             this.clearTokens();
             this.setUser(null);
