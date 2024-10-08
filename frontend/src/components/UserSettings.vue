@@ -182,6 +182,7 @@ export default {
       this.lastName.value = this.user.last_name;
       this.email.value = this.user.email;
       this.avatarPreview.src = this.user.avatar;
+      this.avatarInput.value = "";
     },
     async patchUser(userData) {
       let response = null;
