@@ -13,7 +13,7 @@
 
         <h2>{{ $t('account-settings') }}</h2>
         <div class="account-settings">
-          <form @submit.prevent="onFormSubmitted">
+          <form @submit.prevent="onFormSubmitted"  enctype="multipart/form-data">
 
             <div class="form">
               <div>
@@ -199,11 +199,13 @@ export default {
       {
         response = await axios.patch(
             `http://localhost:8000/api/user/${this.userId}/`,
-            userData,
+            {
+              userData
+            },
             {
               headers: {
                 Authorization: `Bearer ${this.accessToken}`,
-                'Content-Type': 'application/json'
+                "Content-Type": "multipart/form-data"
               }
             }
         );
@@ -327,5 +329,75 @@ input {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+form {
+  max-width: 600px; /* Limit the width of the form */
+  margin: 0 auto; /* Center the form */
+  padding: 20px; /* Padding around the form */
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.form {
+  margin-bottom: 20px; /* Space between form elements */
+}
+
+label {
+  display: block; /* Ensure labels are block elements */
+  font-weight: bold; /* Bold font for labels */
+  margin-bottom: 5px; /* Space below the label */
+  color: #34495e; /* Darker text color */
+}
+
+input[type="text"], input[type="file"] {
+  width: 100%; /* Full width input */
+  padding: 10px; /* Padding inside the input */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+  box-sizing: border-box; /* Include padding in total width */
+  font-size: 16px; /* Font size */
+  transition: border-color 0.3s ease; /* Transition for border color */
+}
+
+/* Focus effect for inputs */
+input[type="text"]:focus, input[type="file"]:focus {
+  border-color: #3498db; /* Change border color on focus */
+  outline: none; /* Remove outline */
+}
+
+/* Button styling */
+#submit-button {
+  background-color: #3498db; /* Primary button color */
+  color: white; /* White text */
+  padding: 10px; /* Padding inside button */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
+  font-size: 16px; /* Font size */
+  transition: background-color 0.3s ease; /* Transition for hover effect */
+}
+
+/* Button hover effect */
+#submit-button:hover {
+  background-color: #2980b9; /* Darker shade on hover */
+}
+
+/* Image preview styling */
+#preview {
+  margin-bottom: 10px; /* Space below the image */
+  border: 1px solid #ddd; /* Light border around the preview */
+  border-radius: 5px; /* Rounded corners */
+  width: 100%; /* Make sure the image fits */
+  max-width: 200px; /* Limit the width */
+}
+
+/* Submit status message styling */
+#submit-status {
+  margin-top: 10px; /* Space above the status message */
+  font-weight: bold; /* Bold text */
+  color: #27ae60; /* Green color for success messages */
+}
+
 
 </style>

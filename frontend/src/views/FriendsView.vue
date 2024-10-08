@@ -9,6 +9,7 @@
   const toAddUser = ref("");
   const myFriendshipReqs = ref([]);
   const reqId = ref("");
+  const is_online = ref(false);
 
   function acceptRequest(request_id) {
     axios
@@ -70,6 +71,24 @@
     }
   }
 
+  function getUserStatus() {
+    axios
+        .get(`http://localhost:8000/api/user/${user.value.id}/`, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+            "Content-Type": "application/json"
+          },
+        })
+        .then((res) => {
+          console.log("Response Starts: ", res);
+          is_online.value = res.data.is_active;
+          console.log(is_online.value);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+  }
+
   async function removeFriend(username) {
     const response = await axios.post(`http://localhost:8000/api/v1/remove_friend/${user.value.id}/${username}/`);
     if (response.status === 200) {
@@ -83,7 +102,11 @@
     console.log("This view has been mounted");
     fetchFriends();
     fetchFriendshipReqs();
+    getUserStatus();
   });
+
+
+
 </script>
 
 <template>
@@ -107,6 +130,7 @@
         <ul class="friends-list">
           <li v-for="friend in friends" :key="friend.id">
             This is {{ friend.username }} is your friend
+            <p>{{ is_online ? "Online" : "Offline" }}</p>
             <button @click="removeFriend(friend.username)" class="btn-remove">Remove</button>
           </li>
         </ul>

@@ -14,10 +14,11 @@ class MatchHistorySerializer(serializers.ModelSerializer):
         fields = ['id', 'date', 'final_score', 'mode'];
 
 class   UserSerializer(serializers.ModelSerializer):
-    match_history = MatchHistorySerializer(many=True, read_only=True);
-    id = serializers.UUIDField(source='public_id', read_only=True, format='hex');
-    created = serializers.DateTimeField(read_only=True);
-    updated = serializers.DateTimeField(read_only=True);
+    match_history = MatchHistorySerializer(many=True, read_only=True)
+    avatar = serializers.ImageField(required=False)
+    id = serializers.UUIDField(source='public_id', read_only=True, format='hex')
+    created = serializers.DateTimeField(read_only=True)
+    updated = serializers.DateTimeField(read_only=True)
 
     class   Meta:
         model = User;

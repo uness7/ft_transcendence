@@ -41,6 +41,9 @@ class   UserManager(BaseUserManager):
         user.save(using=self._db);
         return user;
 
+def upload_to(instance, filename):
+    return 'avatars/{filename}'.format(filename=filename)
+
 class   User(AbstractBaseUser, PermissionsMixin):
     public_id = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4, editable=False);
     username = models.CharField(db_index=True, max_length=255, unique=True);
@@ -53,7 +56,7 @@ class   User(AbstractBaseUser, PermissionsMixin):
     created = models.DateTimeField(auto_now=True);
     updated = models.DateTimeField(auto_now_add=True);
     bio = models.TextField(max_length=500, blank=True, null=True, default="A short bio about you.");
-    avatar = models.ImageField(upload_to='avatars/', default='avatars/default_avatar.jpg', null=True, blank=True);
+    avatar = models.ImageField(upload_to=upload_to, default='avatars/default_avatar.jpg', null=True, blank=True);
     games_played = models.IntegerField(default=0);
     games_won = models.IntegerField(default=0);
     games_lost = models.IntegerField(default=0);
