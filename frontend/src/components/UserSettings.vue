@@ -49,7 +49,7 @@
             <div class="form">
               <label for="password">Password</label>
               <input
-                  type="text"
+                  type="password"
                   id="password"
               />
             </div>
@@ -57,7 +57,7 @@
             <div class="form">
               <label for="password">Confirm Password</label>
               <input
-                  type="text"
+                  type="password"
                   id="confirm-password"
               />
             </div>
@@ -110,7 +110,6 @@ export default {
       const file = event.target.files[0];
       if (file && file.type.match('image.*')) {
         this.avatarPreview.src = URL.createObjectURL(file);
-        console.log("hello: ", this.avatarPreview.src);
         this.avatarPreview.onload = () => {
           URL.revokeObjectURL(this.avatarPreview.src);
         }
@@ -165,15 +164,16 @@ export default {
           updatedData["last_name"] = this.lastName.value;
         if (this.email.value !== this.user.email)
           updatedData["email"] = this.email.value;
-        if (this.password.value !== "")
-          updatedData["password"] = this.password.value;
         if (this.avatarPreview.src !== this.user.avatar)
           updatedData["avatar"] = this.avatarPreview.src;
         if (Object.keys(updatedData).length > 0) {
-          console.log(updatedData);
           await this.patchUser(updatedData);
-        } else
-          this.renderSubmitStatus("No field changed", "red");
+        } else {
+          if (this.password.value === "")
+            this.renderSubmitStatus("No field changed", "red");
+        }
+        if (this.password.value !== "")
+          await this.patchPassword(this.password.value);
       }
     },
     async updateInputsValues() {
@@ -183,6 +183,27 @@ export default {
       this.email.value = this.user.email;
       this.avatarPreview.src = this.user.avatar;
       this.avatarInput.value = "";
+      this.password.value = "";
+      this.confirmPassword.value = "";
+    },
+    async patchPassword(newPassword) {
+      let response = null;
+      try {
+        response = await axios.patch(
+            `http://localhost:8000/api/v1/update_password/${this.userId}/${newPassword}/`,
+            {
+              headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+        if (parseInt(response.status, 10) === 201)
+          this.renderSubmitStatus("Updated account", "green");
+      } catch (e) {
+        console.error(e);
+      }
+      await this.updateInputsValues();
     },
     async patchUser(userData) {
       let response = null;
