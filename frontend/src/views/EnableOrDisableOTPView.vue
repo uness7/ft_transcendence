@@ -61,6 +61,7 @@ export default {
         });
         if (response.request.status === 200) {
           router.push('/');
+          authStore.isOTPVerified = true;
         } else {
           console.error("Verify otp has failed");
         }
