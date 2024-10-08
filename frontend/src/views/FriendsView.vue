@@ -1,89 +1,91 @@
 <script setup>
-  import {useAuthStore} from "@/store/auth";
-  import {computed, onMounted, ref} from "vue";
-  import axios from "axios";
+import {useAuthStore} from "@/store/auth";
+import {computed, onMounted, ref} from "vue";
+import axios from "axios";
 
-  const authStore = useAuthStore();
-  const user = computed(() => authStore.user);
-  const friends = ref([]);
-  const toAddUser = ref("");
-  const myFriendshipReqs = ref([]);
-  const reqId = ref("");
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
+const friends = ref([]);
+const toAddUser = ref("");
+const myFriendshipReqs = ref([]);
+const reqId = ref("");
 
-  function acceptRequest(request_id) {
-    axios
-        .post(`http://localhost:8000/api/v1/accept_request/${user.value.id}/${request_id}/`)
-        .then((res) => {
-          alert(res.data.message);
-        })
-        .catch((err) => {console.error(err)});
-  }
+function acceptRequest(request_id) {
+  axios
+      .post(`http://localhost:8000/api/v1/accept_request/${user.value.id}/${request_id}/`)
+      .then((res) => {
+        alert(res.data.message);
+      })
+      .catch((err) => {
+        console.error(err)
+      });
+}
 
-  function fetchFriendshipReqs() {
-    axios
-        .get(`http://localhost:8000/api/v1/friend_requests/${user.value.id}/`)
-        .then((res) => {
-          myFriendshipReqs.value = res.data.friend_requests;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-  }
+function fetchFriendshipReqs() {
+  axios
+      .get(`http://localhost:8000/api/v1/friend_requests/${user.value.id}/`)
+      .then((res) => {
+        myFriendshipReqs.value = res.data.friend_requests;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+}
 
-  function fetchFriends() {
-    axios.get(`http://localhost:8000/api/v1/get_friends_list/${user.value.id}/`)
-        .then((res) => {
-          friends.value = res.data.friends;
-        })
-        .catch((err) => {
-          console.error(err);
-        })
-  }
+function fetchFriends() {
+  axios.get(`http://localhost:8000/api/v1/get_friends_list/${user.value.id}/`)
+      .then((res) => {
+        friends.value = res.data.friends;
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+}
 
-  async function getUserByUsername(username) {
-    let user = null;
-    const res = await axios.get(`http://localhost:8000/api/user/`, {
-      headers: {
-        Authorization: `Bearer ${authStore.accessToken}`,
-        "Content-Type": "application/json"
-      }
-    });
-    const users = res.data;
-    user = users.find(entries => entries.username === username);
-    return user;
-  }
-
-  async function addUser() {
-    const to_add_user = await getUserByUsername(toAddUser.value);
-    if (!to_add_user) {
-      alert("User Not Found");
-    } else {
-      const user_id = user.value.id;
-      const to_add_user_id = to_add_user.id;
-      const response = await axios.post(`http://localhost:8000/api/v1/send_request/${user_id}/${to_add_user_id}/`);
-      if (response.status === 200) {
-        reqId.value = response.data.request_id;
-        alert("Friend request was sent!");
-      } else {
-        alert("Friend Request failed!");
-      }
+async function getUserByUsername(username) {
+  let user = null;
+  const res = await axios.get(`http://localhost:8000/api/user/`, {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`,
+      "Content-Type": "application/json"
     }
-  }
-
-  async function removeFriend(username) {
-    const response = await axios.post(`http://localhost:8000/api/v1/remove_friend/${user.value.id}/${username}/`);
-    if (response.status === 200) {
-      alert(`${username} was removed!`);
-    } else {
-      alert("Something went wrong! Try again!");
-    }
-  }
-
-  onMounted(() => {
-    console.log("This view has been mounted");
-    fetchFriends();
-    fetchFriendshipReqs();
   });
+  const users = res.data;
+  user = users.find(entries => entries.username === username);
+  return user;
+}
+
+async function addUser() {
+  const to_add_user = await getUserByUsername(toAddUser.value);
+  if (!to_add_user) {
+    alert("User Not Found");
+  } else {
+    const user_id = user.value.id;
+    const to_add_user_id = to_add_user.id;
+    const response = await axios.post(`http://localhost:8000/api/v1/send_request/${user_id}/${to_add_user_id}/`);
+    if (response.status === 200) {
+      reqId.value = response.data.request_id;
+      alert("Friend request was sent!");
+    } else {
+      alert("Friend Request failed!");
+    }
+  }
+}
+
+async function removeFriend(username) {
+  const response = await axios.post(`http://localhost:8000/api/v1/remove_friend/${user.value.id}/${username}/`);
+  if (response.status === 200) {
+    alert(`${username} was removed!`);
+  } else {
+    alert("Something went wrong! Try again!");
+  }
+}
+
+onMounted(() => {
+  console.log("This view has been mounted");
+  fetchFriends();
+  fetchFriendshipReqs();
+});
 </script>
 
 <template>

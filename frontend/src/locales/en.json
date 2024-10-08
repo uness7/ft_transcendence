@@ -1,108 +1,116 @@
 {
-    "anonymize-user": "anonymize user data",
-    "delete": "delete account",
-    "play": "play",
-    "about": "about",
-    "login": "login",
-    "aiText": "Player vs AI",
-    "lanText": "Player vs Player",
-    "multiText": "Multiplayer",
-    "profile": "profile",
-    "settings": "settings",
-    "account-settings": " account settings",
-    "logout": "logout",
-    "team": "Our team",
-    "ouissem-status": "Devops responsible",
-    "lionel-status": "Pong responsible",
-    "jules-status": "Front-end responsible",
-    "navid-status": "Front-end responsible",
-    "youness-status": "Back-end responsible",
-    "color-theme": "Color theme",
-    "error": "Error",
-    "error-text": "The page you are looking for does not exist",
-    "games-played": "Games Played",
-    "wins": "Wins",
-    "losses": "Losses",
-    "total-score": "Total Score",
-    "friends": "friends",
-    "create-account": "Create an Account",
-    "already-account": "Already have an account?",
-    "sign-in": "Sign in",
-    "no-account": "Don't have an account?",
-    "image-upload": "Upload your profile picture",
-    "local": "1v1",
-    "localDesc": "1v1 mode for playing with a friend on the same device.",
-    "multiplayer": "2v2",
-    "multiplayerDesc": "2v2 multiplayer mode for playing with friends on the same device.",
-    "tournament": "Tournament",
-    "tournamentDesc": "Compete in a tournament with multiple rounds and opponents.",
-    "ai": "1v1 AI",
-    "aiDesc": "Play against an artificial intelligence",
-    "difficulty": "difficulty",
-    "easy": "easy",
-    "medium": "medium",
-    "hard": "hard",
-    "read-privacy": "read our privacy policy",
-    "register": "or register",
-    "privacy": {
-        "title": "Privacy Policy",
-        "effective_date": "Effective Date: 2024-09-25",
-        "introduction": {
-            "title": "Introduction",
-            "text": "We are committed to protecting and respecting your privacy. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website. This policy complies with the General Data Protection Regulation (GDPR)."
-        },
-        "data_we_collect": {
-            "title": "Data We Collect",
-            "text": "We may collect and process the following personal data from you: Contact Information: Email address, login name, or any other information you provide when creating an account."
-        },
-        "how_we_use_your_data": {
-            "title": "How We Use Your Data",
-            "text": "We process your personal data for the following purposes: To provide, operate, and maintain our services. To allow you to register and manage an account. To improve our services and personalize your experience."
-        },
-        "legal_basis_for_processing": {
-            "title": "Legal Basis for Processing",
-            "text": "Under GDPR, we process your personal data based on one or more of the following: Consent: You have provided explicit consent to process your data for one or more specific purposes (e.g., account creation). Performance of a Contract: Data processing is necessary to provide the services you've requested."
-        },
-        "data_sharing": {
-            "title": "Data Sharing and Third-Party Services",
-            "text": "We will not share your personal data with third parties, except: If required by law or to comply with legal obligations."
-        },
-        "data_security": {
-            "title": "Data Security",
-            "text": "We use appropriate technical and organizational measures to protect your personal data from unauthorized access, misuse, loss, or destruction. These include: Access control measures for authorized personnel only."
-        },
-        "data_retention": {
-            "title": "Data Retention",
-            "text": "We retain your personal data only as long as necessary for the purposes outlined in this policy or as required by law. If you delete your account, we will erase your personal data within 30 days, except where retention is required for legal reasons."
-        },
-        "your_rights": {
-            "title": "Your Data Protection Rights",
-            "text": "Under GDPR, you have the following rights: Right to Access: You can request a copy of the personal data we hold about you. Right to Rectification: You can request corrections to inaccurate or incomplete data. Right to Erasure: You can request the deletion of your personal data. Right to Data Portability: You can request that we provide your data in a machine-readable format. Right to Restrict Processing: You can request limitations on how your data is processed. Right to Object: You can object to the processing of your data under certain circumstances. Right to Withdraw Consent: If processing is based on consent, you can withdraw it at any time. To exercise any of these rights, contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
-        },
-        "cookies": {
-            "title": "Cookies and Tracking Technologies",
-            "text": "We use cookies and similar tracking technologies to enhance user experience"
-        },
-        "children_privacy": {
-            "title": "Children's Privacy",
-            "text": "Our services are not intended for users under the age of 13. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such data, please contact us, and we will delete it."
-        },
-        "data_transfers": {
-            "title": "Data Transfers",
-            "text": "We do not transfer your personal data outside the European Economic Area (EEA)."
-        },
-        "changes_to_policy": {
-            "title": "Changes to This Policy",
-            "text": "We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated 'Effective Date.' We encourage you to review this policy periodically for updates."
-        },
-        "contact_us": {
-            "title": "Contact Us",
-            "text": "If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
-        }
+  "anonymize-user": "anonymize user data",
+  "delete": "delete account",
+  "play": "play",
+  "about": "about",
+  "login": "login",
+  "aiText": "Player vs AI",
+  "lanText": "Player vs Player",
+  "multiText": "Multiplayer",
+  "profile": "profile",
+  "settings": "settings",
+  "account-settings": "account settings",
+  "game-settings": "game settings",
+  "logout": "logout",
+  "team": "Our team",
+  "ouissem-status": "Devops responsible",
+  "lionel-status": "Pong responsible",
+  "jules-status": "Front-end responsible",
+  "navid-status": "Front-end responsible",
+  "youness-status": "Back-end responsible",
+  "color-theme": "Color theme",
+  "error": "Error",
+  "error-text": "The page you are looking for does not exist",
+  "games-played": "Games Played",
+  "wins": "Wins",
+  "losses": "Losses",
+  "total-score": "Total Score",
+  "friends": "friends",
+  "create-account": "Create an Account",
+  "already-account": "Already have an account?",
+  "sign-in": "Sign in",
+  "no-account": "Don't have an account?",
+  "image-upload": "Upload your profile picture",
+  "local": "1v1",
+  "localDesc": "1v1 mode for playing with a friend on the same device.",
+  "multiplayer": "2v2",
+  "multiplayerDesc": "2v2 multiplayer mode for playing with friends on the same device.",
+  "tournament": "Tournament",
+  "tournamentDesc": "Compete in a tournament with multiple rounds and opponents.",
+  "ai": "1v1 AI",
+  "aiDesc": "Play against an artificial intelligence",
+  "difficulty": "difficulty",
+  "easy": "easy",
+  "medium": "medium",
+  "hard": "hard",
+  "read-privacy": "read our privacy policy",
+  "register": "or register",
+  "privacy": {
+    "title": "Privacy Policy",
+    "effective_date": "Effective Date: 2024-09-25",
+    "introduction": {
+      "title": "Introduction",
+      "text": "We are committed to protecting and respecting your privacy. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website. This policy complies with the General Data Protection Regulation (GDPR)."
     },
-    "power-up":"power-up",
-    "games-won": "Games won",
-    "games-lost": "Games lost",
-    "win-rate": "Win rate",
-    "tournaments-won": "Tournaments won"
+    "data_we_collect": {
+      "title": "Data We Collect",
+      "text": "We may collect and process the following personal data from you: Contact Information: Email address, login name, or any other information you provide when creating an account."
+    },
+    "how_we_use_your_data": {
+      "title": "How We Use Your Data",
+      "text": "We process your personal data for the following purposes: To provide, operate, and maintain our services. To allow you to register and manage an account. To improve our services and personalize your experience."
+    },
+    "legal_basis_for_processing": {
+      "title": "Legal Basis for Processing",
+      "text": "Under GDPR, we process your personal data based on one or more of the following: Consent: You have provided explicit consent to process your data for one or more specific purposes (e.g., account creation). Performance of a Contract: Data processing is necessary to provide the services you've requested."
+    },
+    "data_sharing": {
+      "title": "Data Sharing and Third-Party Services",
+      "text": "We will not share your personal data with third parties, except: If required by law or to comply with legal obligations."
+    },
+    "data_security": {
+      "title": "Data Security",
+      "text": "We use appropriate technical and organizational measures to protect your personal data from unauthorized access, misuse, loss, or destruction. These include: Access control measures for authorized personnel only."
+    },
+    "data_retention": {
+      "title": "Data Retention",
+      "text": "We retain your personal data only as long as necessary for the purposes outlined in this policy or as required by law. If you delete your account, we will erase your personal data within 30 days, except where retention is required for legal reasons."
+    },
+    "your_rights": {
+      "title": "Your Data Protection Rights",
+      "text": "Under GDPR, you have the following rights: Right to Access: You can request a copy of the personal data we hold about you. Right to Rectification: You can request corrections to inaccurate or incomplete data. Right to Erasure: You can request the deletion of your personal data. Right to Data Portability: You can request that we provide your data in a machine-readable format. Right to Restrict Processing: You can request limitations on how your data is processed. Right to Object: You can object to the processing of your data under certain circumstances. Right to Withdraw Consent: If processing is based on consent, you can withdraw it at any time. To exercise any of these rights, contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
+    },
+    "cookies": {
+      "title": "Cookies and Tracking Technologies",
+      "text": "We use cookies and similar tracking technologies to enhance user experience"
+    },
+    "children_privacy": {
+      "title": "Children's Privacy",
+      "text": "Our services are not intended for users under the age of 13. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such data, please contact us, and we will delete it."
+    },
+    "data_transfers": {
+      "title": "Data Transfers",
+      "text": "We do not transfer your personal data outside the European Economic Area (EEA)."
+    },
+    "changes_to_policy": {
+      "title": "Changes to This Policy",
+      "text": "We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated 'Effective Date.' We encourage you to review this policy periodically for updates."
+    },
+    "contact_us": {
+      "title": "Contact Us",
+      "text": "If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
+    }
+  },
+  "power-up": "power-ups",
+  "games-won": "Games won",
+  "games-lost": "Games lost",
+  "win-rate": "Win rate",
+  "tournaments-won": "Tournaments won",
+  "map-background": "map background",
+  "toggle-player-speed": "player speed buff",
+  "toggle-player-size": "player size buff",
+  "toggle-player-immortal": "player immortal buff",
+  "toggle-ball-speed": "ball speed buff",
+  "toggle-ai-speed": "ai speed buff",
+  "appearance-settings": "appearance"
 }

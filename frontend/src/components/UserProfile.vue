@@ -2,25 +2,29 @@
   <div class="content">
     <div class="profile-section">
       <img :src="`${response?.data?.avatar}`" alt="Profile Image" class="profile-img">
-      <h1 class="username">{{ response?.data?.username ?? "default"}}</h1>
-      <h1>{{ response?.data?.first_name ?? "default"}}</h1>
-      <h1>{{ response?.data?.last_name ?? "default"}}</h1>
-      <h1>{{ response?.data?.email ?? "default"}}</h1>
+      <h1 class="username">{{ response?.data?.username ?? "default" }}</h1>
+      <h1>{{ response?.data?.first_name ?? "default" }}</h1>
+      <h1>{{ response?.data?.last_name ?? "default" }}</h1>
+      <h1>{{ response?.data?.email ?? "default" }}</h1>
     </div>
     <div class="main-section">
       <div class="left-section">
         <div class="stat-grid">
           <div class="stat">
             <h2>{{ $t('games-won') }}</h2>
-            <p>{{ response?.data?.games_won ?? 0}}</p>
+            <p>{{ response?.data?.games_won ?? 0 }}</p>
           </div>
           <div class="stat">
             <h2>{{ $t('games-lost') }}</h2>
-            <p>{{ response?.data?.games_lost ?? 0}}</p>
+            <p>{{ response?.data?.games_lost ?? 0 }}</p>
           </div>
           <div class="stat">
             <h2>{{ $t('win-rate') }}</h2>
-            <p>{{ (100 * response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)).toFixed(2) ?? 0 }}%</p>
+            <p>{{
+                isNaN(response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost))
+                    ? 0
+                    : (100 * response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)).toFixed(2)
+              }}%</p>
           </div>
         </div>
       </div>
@@ -34,8 +38,8 @@
 
 <script>
 import Chart from "chart.js/auto";
-import { computed } from 'vue';
-import { useAuthStore } from '@/store/auth';
+import {computed} from 'vue';
+import {useAuthStore} from '@/store/auth';
 import axios from "axios"
 
 export default {
@@ -46,9 +50,8 @@ export default {
   },
   async mounted() {
     const authStore = useAuthStore();
-    const user = computed(() => authStore.user || { username: 'default', id: '' });
-    try
-    {
+    const user = computed(() => authStore.user || {username: 'default', id: ''});
+    try {
       this.response = await axios.get(
           `http://localhost:8000/api/user/${user.value.id}/`,
           {

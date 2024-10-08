@@ -10,7 +10,7 @@
 				<div class="dropdown-content">
 					<!-- <router-link :to="{ name: 'user', params: { id: user.id}}">{{ $t('profile') }}</router-link> -->
 					<router-link to="/user">{{ $t('profile') }}</router-link>
-					<router-link to="/user/settings">{{ $t('settings') }}</router-link>
+					<router-link to="/user/account-settings">{{ $t('settings') }}</router-link>
           <router-link to="/add-friends">{{ $t('friends') }}</router-link>
 					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
 				</div>
@@ -225,6 +225,7 @@ export default {
   right: 50px;
   top: 20px;
   font-family: '8bit', sans-serif;
+  z-index: 10;
 }
 
 .dropdown-content {
@@ -235,7 +236,7 @@ export default {
   background-color: var(--background-color);
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 11;
   right: auto;
   left: 0;
 }
