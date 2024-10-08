@@ -52,7 +52,7 @@ export default {
 		await this.initGame();
 	},
 	methods: {
- 		updatePongConfig() {
+    updatePongConfig() {
 			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
 			this.$router.go(0);
 		},

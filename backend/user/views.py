@@ -22,7 +22,7 @@ class AnonymizeUser(View, anon.BaseAnonymizer):
     def patch(self, request, user_id):
         try:
             user = User.objects.get(public_id=user_id);
-        except User.ObjectDoesNotExist:
+        except ObjectDoesNotExist:
             return JsonResponse({"message": "User Not Found"}, status=400);
         
         # anonymization logic
@@ -53,7 +53,7 @@ class SendRequestView(View):
         try:
             user = User.objects.get(public_id=user_id);
             to_user = User.objects.get(public_id=to_user_id);
-        except User.ObjectDoesNotExist:
+        except ObjectDoesNotExist:
             return JsonResponse({"message": "User Not Found"}, status=400);
         
         if user != to_user and not user.friends.filter(public_id=to_user.public_id).exists():
@@ -63,9 +63,28 @@ class SendRequestView(View):
                 "request_id": friend_request.id,  # Access the ID here
                 "created": created
             });
-            #return JsonResponse({"message": "Friend request sent."}, status=201);
         else:
             return JsonResponse({"message": "Friend request was already sent or cannot add self."}, status=400);
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GetRequestView(View):
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(public_id=user_id);
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'User Not Found!'}, status=400);
+
+        requests = FriendRequest.objects.filter(to_user=user);
+        requests_data = [
+            {
+                "request_id": friend_request.id,
+                "from_user": friend_request.from_user.username,
+                "created_at": friend_request.created_at,
+            }
+            for friend_request in requests
+        ]
+        return JsonResponse({"friend_requests": requests_data}, status=200);
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AcceptRequestView(View):
@@ -73,7 +92,7 @@ class AcceptRequestView(View):
         try:
             user = User.objects.get(public_id=user_id);
             friend_request = FriendRequest.objects.get(id=request_id, to_user=user);
-        except User.DoesNotExist:
+        except DoesNotExist:
             return JsonResponse({"message": "User Not Found"}, status=400)
         except FriendRequest.DoesNotExist:
             return JsonResponse({"message": "Friend request not found"}, status=404)
@@ -88,7 +107,7 @@ class RemoveFriendView(View):
         try:
             user = User.objects.get(public_id=user_id);
             friend = User.objects.get(username=to_user_username);
-        except User.ObjectDoesNotExist:
+        except ObjectDoesNotExist:
             return JsonResponse({"message": "User Not Found"}, status=400);
 
         if user.friends.filter(public_id=friend.public_id).exists():
@@ -98,6 +117,25 @@ class RemoveFriendView(View):
             return JsonResponse({"message": "Friend was blocked"}, status=200);
         else:
             return JsonResponse({"message": "Friend does not exist."}, status=400)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GetFriendsListView(View):
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(public_id=user_id);
+        except User.DoesNotExist:
+            return JsonResponse({"message": "User Not Found"}, status=400);
+
+        friends = user.friend_set.all();
+        friends_list = [
+            {
+                "id": friend.public_id,
+                "username": friend.username,
+            }
+            for friend in friends
+        ];
+        return JsonResponse({'friends': friends_list}, status=200);
+
     
         
 

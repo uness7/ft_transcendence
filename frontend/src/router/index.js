@@ -18,6 +18,7 @@ import PongTournamentView from "../views/PongTournamentView.vue";
 import PongAiView from "../views/PongAiView.vue";
 import PongMultiplayerView from "../views/PongMultiplayerView.vue";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
+import FriendsView from "@/views/FriendsView.vue";
 
 
 const routes = [
@@ -171,6 +172,14 @@ const routes = [
         meta: {
             requiresAuth: true,
         },
+    },
+    {
+      path: "/add-friends",
+      name: "friends",
+      component: FriendsView,
+      meta: {
+          requiresAuth: true,
+      },
     },
 ];
 
