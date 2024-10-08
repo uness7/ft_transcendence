@@ -181,11 +181,12 @@ export default {
   color: white;
   background-color: rgb(155, 0, 0);
   border: none;
-  padding: 15px;
+  padding: 20px;
+  margin-bottom: 10px;
   cursor: pointer;
   text-align: center;
-  font-size: 25px;
-  width: 100%;
+  font-size: 20px;
+  width: 210px;
   height: 20px;
   border-radius: 5px;
   text-decoration: none;
@@ -196,4 +197,5 @@ export default {
 #logout-button:hover {
   background-color: darkred;
 }
+
 </style>

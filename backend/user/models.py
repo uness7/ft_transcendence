@@ -41,6 +41,9 @@ class   UserManager(BaseUserManager):
         user.save(using=self._db);
         return user;
 
+def upload_to(instance, filename):
+    return 'avatars/{filename}'.format(filename=filename)
+
 class   User(AbstractBaseUser, PermissionsMixin):
     public_id = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4, editable=False);
     username = models.CharField(db_index=True, max_length=255, unique=True);
@@ -53,7 +56,7 @@ class   User(AbstractBaseUser, PermissionsMixin):
     created = models.DateTimeField(auto_now=True);
     updated = models.DateTimeField(auto_now_add=True);
     bio = models.TextField(max_length=500, blank=True, null=True, default="A short bio about you.");
-    avatar = models.ImageField(upload_to='avatars/', default='avatars/default_avatar.jpg', null=True, blank=True);
+    avatar = models.ImageField(upload_to=upload_to, default='avatars/default_avatar.jpg', null=True, blank=True);
     games_played = models.IntegerField(default=0);
     games_won = models.IntegerField(default=0);
     games_lost = models.IntegerField(default=0);
@@ -61,6 +64,7 @@ class   User(AbstractBaseUser, PermissionsMixin):
     is_otp_verified = models.BooleanField(default=False);
     friends = models.ManyToManyField('self', symmetrical=False, related_name='friend_set', blank=True);
     # user.friend_set.all() would give you all friends of a user.
+    match_history = models.ManyToManyField('self', symmetrical=False, related_name='player', blank=True);
 
     # Data validation
     def clean(self):
@@ -94,10 +98,26 @@ class   User(AbstractBaseUser, PermissionsMixin):
 
 
 class   FriendRequest(models.Model):
-    from_user = models.ForeignKey(User, related_name='sent_requests', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name='received_requests', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    from_user = models.ForeignKey(User, related_name='sent_requests', on_delete=models.CASCADE);
+    to_user = models.ForeignKey(User, related_name='received_requests', on_delete=models.CASCADE);
+    created_at = models.DateTimeField(auto_now_add=True);
 
     def __str__(self):
-        return f"{self.from_user} -> {self.to_user}"
+        return f"{self.from_user} -> {self.to_user}";
 
+def get_choices():
+    return [
+        ("LO", "Local"),
+        ("1VS1", "One against One"),
+        ("AI", "Against Artificial Intelligence"),
+    ];
+
+class   MatchHistory(models.Model):
+    player      = models.ForeignKey(User, related_name='user_match_history', on_delete=models.CASCADE);
+    date        = models.DateTimeField(auto_now_add=True)
+    final_score = models.BooleanField(default=False, null=False);
+    mode        = models.CharField(max_length=10, choices=get_choices);
+
+    def save(self, *args, **kwargs):
+            super().save(*args, **kwargs)
+            self.player.user_match_history.add(self)

@@ -21,6 +21,8 @@ import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 import FriendsView from "@/views/FriendsView.vue";
 import AppearanceSettings from "@/components/AppearanceSettings.vue";
 import GameSettings from "../components/GameSettings.vue";
+import MatchHistoryView from "@/views/MatchHistoryView.vue";
+
 
 const routes = [
     {
@@ -69,7 +71,7 @@ const routes = [
         component: UserView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -78,7 +80,7 @@ const routes = [
         component: TournamentView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -87,7 +89,7 @@ const routes = [
         component: CreateTournament,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -96,7 +98,7 @@ const routes = [
         component: TournamentDetails,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -105,7 +107,7 @@ const routes = [
         component: TournamentBrackets,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -114,7 +116,7 @@ const routes = [
         component: UserSettings,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -122,7 +124,7 @@ const routes = [
         component: GameSettings,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -130,7 +132,7 @@ const routes = [
         component: AppearanceSettings,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -147,7 +149,7 @@ const routes = [
         component: PongLocalView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -156,7 +158,7 @@ const routes = [
         component: PongTournamentView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -165,7 +167,7 @@ const routes = [
         component: PongAiView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -174,7 +176,7 @@ const routes = [
         component: PongMultiplayerView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -197,6 +199,15 @@ const routes = [
       meta: {
           requiresAuth: true,
       },
+    },
+    {
+        path: "/match-history",
+        name: "match_history",
+        component: MatchHistoryView,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: false,
+        },
     },
 ];
 

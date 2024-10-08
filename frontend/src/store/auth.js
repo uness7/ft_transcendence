@@ -107,7 +107,7 @@ export const useAuthStore = defineStore("auth", {
             this.clearTokens();
             this.setUser(null);
         },
-        async refreshToken() {
+        async getRefreshToken() {
             try {
                 const response = await axios.post(
                     "http://localhost:8000/api/authentication/refresh/",
@@ -136,7 +136,7 @@ export const useAuthStore = defineStore("auth", {
                 this.setUser(response.data);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
-                    const newToken = await this.refreshToken();
+                    const newToken = await this.getRefreshToken();
                     if (newToken) {
                         return this.fetchUser();
                     }

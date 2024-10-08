@@ -8,10 +8,10 @@
 			<div v-else class="dropdown">
 				<button class="dropbtn">{{ truncatedUsername }}</button>
 				<div class="dropdown-content">
-					<!-- <router-link :to="{ name: 'user', params: { id: user.id}}">{{ $t('profile') }}</router-link> -->
 					<router-link to="/user">{{ $t('profile') }}</router-link>
 					<router-link to="/user/account-settings">{{ $t('settings') }}</router-link>
           <router-link to="/add-friends">{{ $t('friends') }}</router-link>
+          <router-link to="/match-history">{{ $t('history') }}</router-link>
 					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
 				</div>
 			</div>
@@ -102,7 +102,6 @@ export default {
 
 
 <style scoped>
-/*  ##### GLOBAL  ##### */
 
 @font-face {
 	font-family: '8bit';
@@ -112,8 +111,6 @@ export default {
 :global(body) {
 	background-color: var(--background-color);
 }
-
-/*  ##### HEADER  ##### */
 
 .top-bar {
 	width: 100%;

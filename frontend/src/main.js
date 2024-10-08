@@ -16,7 +16,6 @@ app.use(i18n)
 
 const authStore = useAuthStore()
 
-// Axios interceptor for token refresh
 axios.interceptors.response.use(
   response => response,
   async error => {
