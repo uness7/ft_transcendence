@@ -68,7 +68,7 @@ const routes = [
         component: UserView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -77,7 +77,7 @@ const routes = [
         component: TournamentView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -86,7 +86,7 @@ const routes = [
         component: CreateTournament,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -95,7 +95,7 @@ const routes = [
         component: TournamentDetails,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -104,7 +104,7 @@ const routes = [
         component: TournamentBrackets,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -113,7 +113,7 @@ const routes = [
         component: UserSettings,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -130,7 +130,7 @@ const routes = [
         component: PongLocalView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -139,7 +139,7 @@ const routes = [
         component: PongTournamentView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -148,7 +148,7 @@ const routes = [
         component: PongAiView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
@@ -157,7 +157,7 @@ const routes = [
         component: PongMultiplayerView,
         meta: {
             requiresAuth: true,
-            requiresOTP: false,
+            requiresOTP: true,
         },
     },
     {
