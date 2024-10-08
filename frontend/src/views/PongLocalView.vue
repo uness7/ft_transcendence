@@ -408,7 +408,7 @@ export default {
 <style scoped>
 #game-canvas {
 	display: block;
-	background: var(--background-color);
+	background: var(--map-background);
 	margin: auto;
 	position: absolute;
 	top: 0;

@@ -105,5 +105,6 @@
     "games-won":"Parties gagnees",
     "games-lost":"Parties perdues",
     "win-rate":"Taux de victoire",
-    "tournaments-won":"Tournois gagnes"
+    "tournaments-won":"Tournois gagnes",
+    "map-background": "fond de carte"
 }
