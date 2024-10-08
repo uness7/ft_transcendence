@@ -20,7 +20,11 @@
           </div>
           <div class="stat">
             <h2>{{ $t('win-rate') }}</h2>
-            <p>{{ (100 * response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)).toFixed(2) ?? 0 }}%</p>
+            <p>{{
+                isNaN(response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost))
+                    ? 0
+                    : (100 * response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)).toFixed(2)
+              }}%</p>
           </div>
         </div>
       </div>
