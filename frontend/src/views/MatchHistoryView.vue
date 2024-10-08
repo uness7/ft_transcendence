@@ -15,7 +15,6 @@
     axios
         .get(URL_MATCH_HISTORY)
         .then((res) => {
-          console.log(res);
           message.value = res.data.message;
           matchHistory.value = res.data.match_history;
         })
