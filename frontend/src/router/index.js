@@ -19,6 +19,7 @@ import PongAiView from "../views/PongAiView.vue";
 import PongMultiplayerView from "../views/PongMultiplayerView.vue";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 import FriendsView from "@/views/FriendsView.vue";
+import MatchHistoryView from "@/views/MatchHistoryView.vue";
 
 
 const routes = [
@@ -180,6 +181,15 @@ const routes = [
       meta: {
           requiresAuth: true,
       },
+    },
+    {
+        path: "/match-history",
+        name: "match_history",
+        component: MatchHistoryView,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: false,
+        },
     },
 ];
 

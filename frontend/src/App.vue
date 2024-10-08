@@ -12,6 +12,7 @@
 					<router-link to="/user">{{ $t('profile') }}</router-link>
 					<router-link to="/user/settings">{{ $t('settings') }}</router-link>
           <router-link to="/add-friends">{{ $t('friends') }}</router-link>
+          <router-link to="/match-history">{{ $t('matchi_history') }}</router-link>
 					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
 				</div>
 			</div>
