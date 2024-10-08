@@ -10,7 +10,7 @@
 				<div class="dropdown-content">
 					<!-- <router-link :to="{ name: 'user', params: { id: user.id}}">{{ $t('profile') }}</router-link> -->
 					<router-link to="/user">{{ $t('profile') }}</router-link>
-					<router-link to="/user/settings">{{ $t('settings') }}</router-link>
+					<router-link to="/user/account-settings">{{ $t('settings') }}</router-link>
           <router-link to="/add-friends">{{ $t('friends') }}</router-link>
 					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
 				</div>

@@ -10,6 +10,7 @@
     "profile": "{'perfil'}",
     "settings": "{'ajustes'}",
     "account-settings": "configuraciones de cuenta",
+    "game-settings": "configuraciones del juego",
     "logout": "{'logout'}",
     "team": "{'Nuestro equipo'}",
     "ouissem-status": "{'Responsable de docker'}",

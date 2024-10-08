@@ -3,14 +3,6 @@
     <NavBar/>
     <div class="content">
       <div class="settings">
-        <h2>{{ $t('color-theme') }}</h2>
-        <div class="color-options">
-          <button v-for="color in colors" :key="color" :style="buttonStyle(color)" class="color-button"
-                  @click="changeColor(color)">
-            <span class="visually-hidden">{{ color }}</span>
-          </button>
-        </div>
-
         <h2>{{ $t('account-settings') }}</h2>
         <div class="account-settings">
           <form @submit.prevent="onFormSubmitted">
@@ -100,8 +92,6 @@ export default {
   },
   data() {
     return {
-      colors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
-      selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
       user: null,
       userId: null,
       accessToken: null,
@@ -182,7 +172,7 @@ export default {
         if (Object.keys(updatedData).length > 0) {
           console.log(updatedData);
           await this.patchUser(updatedData);
-      } else
+        } else
           this.renderSubmitStatus("No field changed", "red");
       }
     },
@@ -195,8 +185,7 @@ export default {
     },
     async patchUser(userData) {
       let response = null;
-      try
-      {
+      try {
         response = await axios.patch(
             `http://localhost:8000/api/user/${this.userId}/`,
             userData,
@@ -228,26 +217,8 @@ export default {
 
       return Object.values(fields).every(value => value === true);
     },
-
-    changeColor(color) {
-      this.selectedColor = color;
-      localStorage.setItem('primaryColor', color);
-      this.updateCssVariables(color);
-    },
-    updateCssVariables(color) {
-      document.documentElement.style.setProperty('--primary-color', color);
-    },
-    buttonStyle(color) {
-      return {
-        backgroundColor: color,
-        border: this.selectedColor === color ? '5px solid white' : 'none',
-        borderRadius: '10px',
-      };
-    },
   },
   async mounted() {
-    this.updateCssVariables(this.selectedColor);
-
     this.fetchAuthStore();
     await this.fetchUser();
     this.selectDOMInputs();
@@ -295,37 +266,6 @@ input {
   color: black;
   font-size: 20px;
   margin-top: 5px;
-}
-
-.color-options {
-  display: flex;
-  gap: 20px;
-}
-
-.color-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-  cursor: pointer;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  position: relative;
-  transition: transform 0.3s, border 0.3s;
-}
-
-.color-button:hover {
-  transform: scale(1.1);
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
 }
 
 </style>
