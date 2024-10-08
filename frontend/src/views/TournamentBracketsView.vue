@@ -51,7 +51,7 @@ export default {
     },
 	methods: {
 		startMatch() {
-			this.$router.push("/pong/tournament");
+			this.$router.push("/pong-tournament");
 		},
 	},
 };

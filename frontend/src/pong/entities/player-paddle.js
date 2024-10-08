@@ -4,8 +4,8 @@ import Vec2 from "../maths/vec2.js";
 
 
 export default class PlayerPaddle extends Paddle {
-	constructor(ctx, boundBox, isLeftSide=true) {
-		super();
+	constructor(ctx, size, speedY, boundBox, isLeftSide=true) {
+		super(size, speedY);
 		this.ctx = ctx;
 		this.boundBox = boundBox;
 

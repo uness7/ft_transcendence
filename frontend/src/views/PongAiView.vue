@@ -1,15 +1,6 @@
 <template>
 	<div class="content">
 		<canvas id="game-canvas"></canvas>
-		<div class="power-up-buttons">
-			<button :class="{ active: pongConfig?.isSpeedBuffActive ?? false }" @click="togglePlayerSpeed">Speed Buff</button>
-			<button :class="{ active: pongConfig?.isLargerPaddleActive ?? false }" @click="toggleLargerPaddle">Larger Paddle</button>
-			<button :class="{ active: pongConfig?.isFasterBallActive ?? false }" @click="toggleFasterBall">Faster Ball</button>
-			<button :class="{ active: pongConfig?.isImmortalActive ?? false }" @click="togglePlayerImmortal">Immortal</button>
-		</div>
-		<div class="ai-power-up-buttons">
-			<button :class="{ active: pongConfig?.isAISpeedBuffActive ?? false }" @click="toggleAISpeed">AI Speed Buff</button>
-		</div>
 	</div>
 </template>
 
@@ -20,13 +11,6 @@ import AiPaddle from "../pong/entities/ai-paddle.js"
 import TextHUD from "../pong/entities/text-hud.js"
 import Vec2 from "../pong/maths/vec2.js";
 import CollisionDetector from "../pong/misc/collision-detector.js";
-import gameConfig, { 
-	togglePlayerSpeedBuff,
-	togglePlayerLargerPaddleBuff, 
-	toggleFasterBallBuff,
-	togglePlayerImmortalBuff,
-	toggleAISpeedBuff,
-} from "../pong/game/config.js";
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
 import {useAuthStore} from "@/store/auth";
@@ -35,53 +19,81 @@ import axios from "axios";
 
 export default {
 	name: 'PongAiView',
-	data() {
-	return {
-		pongConfig: null,
-	};
-	},
-	async mounted()
-	{
-		this.pongConfigData = localStorage.getItem("pongConfig");
-		if (!this.pongConfigData) {
-			this.pongConfig = {
-				isSpeedBuffActive: false,
-				isLargerPaddleActive: false,
-				isFasterBallActive: false,
-				isImmortalActive: false,
-				isAISpeedBuffActive: false,
-			};
-			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
-		} else {
-			this.pongConfig = JSON.parse(this.pongConfigData);
-		}
-		await this.initGame();
-	},
+  data() {
+    return {
+      pongConfig: null,
+      gameConfig: {
+        canvas: {
+          width: 1280,
+          height: 720
+        },
+        paddle: {
+          size: {
+            x: 15,
+            y: 125
+          },
+          sizeAi: {
+            x: 15,
+            y: 125
+          },
+          speed: 520,
+          speedAi: 520,
+          padding: 20,
+          color: "white"
+        },
+        ball: {
+          radius: 8,
+          color: "white",
+          speed: 500
+        },
+        game: {
+          maxScore: 3,
+          playerIsLeftSide: true,
+          timeBeforeGameStarts: 3,
+          timeBeforeRoundStarts: 1.25,
+          playerImmortal: false
+        },
+        text: {
+          color: "white",
+          fontMain: "48px serif",
+          fontScores: "48px serif",
+          yPaddingMain: 50,
+          yPaddingScores: 100
+        },
+        ai: {
+          chaseBuffer: 18
+        }
+      },
+    };
+  },
+  async mounted() {
+    this.pongConfigData = localStorage.getItem("pongConfig");
+    if (!this.pongConfigData) {
+      this.pongConfig = {
+        playerSpeed: false,
+        playerSize: false,
+        playerImmortal: false,
+        ballSpeed: false,
+        aiSpeed: false,
+      };
+      localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
+    } else {
+      this.pongConfig = JSON.parse(this.pongConfigData);
+    }
+
+    if (this.pongConfig.playerSpeed)
+      this.gameConfig.paddle.speed = 820;
+    if (this.pongConfig.playerSize)
+      this.gameConfig.paddle.size.y = 190;
+    if (this.pongConfig.ballSpeed)
+      this.gameConfig.ball.speed = 750;
+    if (this.pongConfig.playerImmortal)
+      this.gameConfig.game.playerImmortal = true;
+    if (this.pongConfig.aiSpeed)
+      this.gameConfig.paddle.speedAi = 820;
+    await this.initGame();
+  },
 	methods: {
-		updatePongConfig() {
-			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
-			this.$router.go(0);
-		},
-		togglePlayerSpeed() {
-			this.pongConfig.isSpeedBuffActive = !this.pongConfig.isSpeedBuffActive;
-			this.updatePongConfig();
-		},
-		toggleLargerPaddle() {
-			this.pongConfig.isLargerPaddleActive = !this.pongConfig.isLargerPaddleActive;
-			this.updatePongConfig();
-		},
-		toggleFasterBall() {
-			this.pongConfig.isFasterBallActive = !this.pongConfig.isFasterBallActive;
-			this.updatePongConfig();
-		},
-		togglePlayerImmortal() {
-			this.pongConfig.isImmortalActive = !this.pongConfig.isImmortalActive;
-			this.updatePongConfig();
-		},
-		toggleAISpeed() {
-			this.pongConfig.isAISpeedBuffActive = !this.pongConfig.isAISpeedBuffActive;
-			this.updatePongConfig();
-		},
 		async initGame(){
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
@@ -104,18 +116,7 @@ export default {
         console.error(e);
       }
       const username = response.data.username;
-
-			const pongConfig = this.pongConfig;
-			if (pongConfig.isSpeedBuffActive)
-				togglePlayerSpeedBuff();
-			if (pongConfig.isLargerPaddleActive)
-				togglePlayerLargerPaddleBuff();
-			if (pongConfig.isFasterBallActive)
-				toggleFasterBallBuff();
-			if (pongConfig.isImmortalActive)
-				togglePlayerImmortalBuff();
-			if (pongConfig.isAISpeedBuffActive)
-				toggleAISpeedBuff();
+      const gameConfig = this.gameConfig;
 
 			const GameState = {
 				Menu: "menu",
@@ -133,8 +134,8 @@ export default {
 					this.rightScore = 0;
 					this.state = GameState.Menu;
 					this.entities = {
-						playerPaddle: new PlayerPaddle(ctx, gameBox, true),
-						aiPaddle: new AiPaddle(ctx, gameBox, false),
+            playerPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, gameBox, true),
+						aiPaddle: new AiPaddle(ctx, gameConfig.paddle.sizeAi, gameConfig.paddle.speedAi, gameBox, false),
 						ball: new Ball(
 							ctx,
 							gameBox.getCenter().clone(),
@@ -361,12 +362,12 @@ export default {
 			////////////////////////////////////////////////////////////////////////////////
 
 			// canvas
-			canvas.width = gameConfig.canvas.width;
-			canvas.height = gameConfig.canvas.height;
+			canvas.width = this.gameConfig.canvas.width;
+			canvas.height = this.gameConfig.canvas.height;
 
 			window.addEventListener("resize", () => {
-				canvas.width = gameConfig.canvas.width;
-				canvas.height = gameConfig.canvas.height;
+				canvas.width = this.gameConfig.canvas.width;
+				canvas.height = this.gameConfig.canvas.height;
 			});
 
 			const canvasRect = new Rect2(
@@ -386,10 +387,10 @@ export default {
 
 			document.addEventListener("keydown", event => {
 				event.preventDefault();
-				if (event.key == "w" && game.state === GameState.Play && !leftToggleMoveUp) {
+				if (event.key === "w" && game.state === GameState.Play && !leftToggleMoveUp) {
 					leftToggleMoveUp = true;
 				}
-				if (event.key == "s" && game.state === GameState.Play && !leftToggleMoveDown) {
+				if (event.key === "s" && game.state === GameState.Play && !leftToggleMoveDown) {
 					leftToggleMoveDown = true;
 				}
 			});
@@ -428,39 +429,4 @@ export default {
 	right: 0;
 	border: 2px solid white;
 }
-
-.power-up-buttons {
-	position: absolute;
-	top: 50%;
-	left: 20px;
-	transform: translateY(-50%);
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
-}
-
-.ai-power-up-buttons {
-	position: absolute;
-	top: 50%;
-	right: 20px;
-	transform: translateY(-50%);
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
-}
-
-button {
-	width: 150px;
-	padding: 10px;
-	background-color: rgb(30,30,30);
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-button.active {
-	background-color: rgb(44, 116, 44);
-}
-
 </style>

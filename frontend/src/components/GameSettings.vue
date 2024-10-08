@@ -1,5 +1,5 @@
 <script setup>
-import {reactive, watch} from "vue"
+import {reactive, watch} from "vue";
 import NavBar from "@/components/NavBar.vue";
 
 let powerups = null;

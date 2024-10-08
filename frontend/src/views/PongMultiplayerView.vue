@@ -16,12 +16,6 @@ import PlayerPaddle from "../pong/entities/player-paddle.js"
 import TextHUD from "../pong/entities/text-hud.js"
 import Vec2 from "../pong/maths/vec2.js";
 import CollisionDetector from "../pong/misc/collision-detector.js";
-import gameConfig, { 
-	togglePlayerSpeedBuff,
-	togglePlayerLargerPaddleBuff, 
-	toggleFasterBallBuff,
-	togglePlayerImmortalBuff 
-} from "../pong/game/config.js"; 
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
 import {useAuthStore} from "@/store/auth";
@@ -30,61 +24,83 @@ import axios from "axios";
 
 export default {
 	name: 'PongLocalView',
-	data() {
-	return {
-		pongConfig: null,
-	};
-	},
-	async mounted()
-	{
-		this.pongConfigData = localStorage.getItem("pongConfig");
-		if (!this.pongConfigData) {
-			this.pongConfig = {
-				isSpeedBuffActive: false,
-				isLargerPaddleActive: false,
-				isFasterBallActive: false,
-				isImmortalActive: false,
-			};
-			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
-		} else {
-			this.pongConfig = JSON.parse(this.pongConfigData);
-		}
+  data() {
+    return {
+      pongConfig: null,
+      gameConfig: {
+        canvas: {
+          width: 1280,
+          height: 720
+        },
+        paddle: {
+          size: {
+            x: 15,
+            y: 125
+          },
+          sizeAi: {
+            x: 15,
+            y: 125
+          },
+          speed: 520,
+          speedAi: 520,
+          padding: 20,
+          color: "white"
+        },
+        ball: {
+          radius: 8,
+          color: "white",
+          speed: 500
+        },
+        game: {
+          maxScore: 3,
+          playerIsLeftSide: true,
+          timeBeforeGameStarts: 3,
+          timeBeforeRoundStarts: 1.25,
+          playerImmortal: false
+        },
+        text: {
+          color: "white",
+          fontMain: "48px serif",
+          fontScores: "48px serif",
+          yPaddingMain: 50,
+          yPaddingScores: 100
+        },
+        ai: {
+          chaseBuffer: 18
+        }
+      },
+    };
+  },
+	async mounted() {
+    this.pongConfigData = localStorage.getItem("pongConfig");
+    if (!this.pongConfigData) {
+      this.pongConfig = {
+        playerSpeed: false,
+        playerSize: false,
+        playerImmortal: false,
+        ballSpeed: false,
+        aiSpeed: false,
+      };
+      localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
+    } else {
+      this.pongConfig = JSON.parse(this.pongConfigData);
+    }
+
+    if (this.pongConfig.playerSpeed)
+      this.gameConfig.paddle.speed = 820;
+    if (this.pongConfig.playerSize)
+      this.gameConfig.paddle.size.y = 190;
+    if (this.pongConfig.ballSpeed)
+      this.gameConfig.ball.speed = 750;
+    if (this.pongConfig.playerImmortal)
+      this.gameConfig.game.playerImmortal = true;
+
 		await this.initGame();
 	},
 	methods: {
-		updatePongConfig() {
-			localStorage.setItem("pongConfig", JSON.stringify(this.pongConfig));
-			this.$router.go(0);
-		},
-		togglePlayerSpeed() {
-			this.pongConfig.isSpeedBuffActive = !this.pongConfig.isSpeedBuffActive;
-			this.updatePongConfig();
-		},
-		toggleLargerPaddle() {
-			this.pongConfig.isLargerPaddleActive = !this.pongConfig.isLargerPaddleActive;
-			this.updatePongConfig();
-		},
-		toggleFasterBall() {
-			this.pongConfig.isFasterBallActive = !this.pongConfig.isFasterBallActive;
-			this.updatePongConfig();
-		},
-		togglePlayerImmortal() {
-			this.pongConfig.isImmortalActive = !this.pongConfig.isImmortalActive;
-			this.updatePongConfig();
-		},
 		async initGame() {
 			const canvas = document.querySelector("#game-canvas");
 			const ctx = canvas.getContext("2d");
-
-			const pongConfig = this.pongConfig;
-			if (pongConfig.isSpeedBuffActive)
-				togglePlayerSpeedBuff();
-			if (pongConfig.isLargerPaddleActive)
-				togglePlayerLargerPaddleBuff();
-			if (pongConfig.isFasterBallActive)
-				toggleFasterBallBuff();
-			if (pongConfig.isImmortalActive)
-				togglePlayerImmortalBuff();
 
 			const GameState = {
 				Menu: "menu",
@@ -111,6 +127,8 @@ export default {
         console.error(e);
       }
 
+      const gameConfig = this.gameConfig;
+
 			class Pong {
 				constructor() {
 					this.timeLastFrame = 0;
@@ -119,10 +137,10 @@ export default {
 					this.rightScore = 0;
 					this.state = GameState.Menu;
 					this.entities = {
-						playerLeftPaddle: new PlayerPaddle(ctx, highHalfBox, true),
-						playerRightPaddle: new PlayerPaddle(ctx, highHalfBox, false),
-						playerLeftLowPaddle: new PlayerPaddle(ctx, lowHalfBox, true),
-						playerRightLowPaddle: new PlayerPaddle(ctx, lowHalfBox, false),
+						playerLeftPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, highHalfBox, true),
+						playerRightPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, highHalfBox, false),
+						playerLeftLowPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, lowHalfBox, true),
+						playerRightLowPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, lowHalfBox, false),
 						ball: new Ball(
 							ctx,
 							gameBox.getCenter().clone(),
@@ -411,28 +429,28 @@ export default {
 
 			document.addEventListener("keydown", event => {
 				event.preventDefault();
-				if (event.key == "w" && game.state === GameState.Play && !leftToggleMoveUp) {
+				if (event.key === "w" && game.state === GameState.Play && !leftToggleMoveUp) {
 					leftToggleMoveUp = true;
 				}
-				if (event.key == "s" && game.state === GameState.Play && !leftToggleMoveDown) {
+				if (event.key === "s" && game.state === GameState.Play && !leftToggleMoveDown) {
 					leftToggleMoveDown = true;
 				}
-				if (event.key == "u" && game.state === GameState.Play && !leftLowToggleMoveUp) {
+				if (event.key === "u" && game.state === GameState.Play && !leftLowToggleMoveUp) {
 					leftLowToggleMoveUp = true;
 				}
-				if (event.key == "j" && game.state === GameState.Play && !leftLowToggleMoveDown) {
+				if (event.key === "j" && game.state === GameState.Play && !leftLowToggleMoveDown) {
 					leftLowToggleMoveDown = true;
 				}
-				if (event.key == "ArrowUp" && game.state === GameState.Play && !rightToggleMoveUp) {
+				if (event.key === "ArrowUp" && game.state === GameState.Play && !rightToggleMoveUp) {
 					rightToggleMoveUp = true;
 				}
-				if (event.key == "ArrowDown" && game.state === GameState.Play && !rightToggleMoveDown) {
+				if (event.key === "ArrowDown" && game.state === GameState.Play && !rightToggleMoveDown) {
 					rightToggleMoveDown = true;
 				}
-				if (event.key == "PageUp" && game.state === GameState.Play && !rightLowToggleMoveUp) {
+				if (event.key === "PageUp" && game.state === GameState.Play && !rightLowToggleMoveUp) {
 					rightLowToggleMoveUp = true;
 				}
-				if (event.key == "PageDown" && game.state === GameState.Play && !rightLowToggleMoveDown) {
+				if (event.key === "PageDown" && game.state === GameState.Play && !rightLowToggleMoveDown) {
 					rightLowToggleMoveDown = true;
 				}
 			});
@@ -490,30 +508,6 @@ export default {
 	left: 0;
 	right: 0;
 	border: 2px solid white;
-}
-
-.power-up-buttons {
-	position: absolute;
-	top: 50%;
-	left: 20px;
-	transform: translateY(-50%);
-	display: flex;
-	flex-direction: column;
-	gap: 30px;
-}
-
-button {
-	width: 150px;
-	padding: 10px;
-	background-color: rgb(30,30,30);
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-button.active {
-	background-color: rgb(44, 116, 44);
 }
 
 </style>

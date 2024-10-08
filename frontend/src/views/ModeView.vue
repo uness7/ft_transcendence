@@ -9,14 +9,13 @@
                     <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
-<!--          TODO: add back-->
-<!--            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">-->
-<!--                <div class="text-container">-->
-<!--                    <p class="title">{{ $t('local') }} 🔒</p>-->
-<!--                    <p class="description">{{ $t('localDesc') }}</p>-->
-<!--                </div>-->
-<!--            </router-link>-->
-            <router-link v-else to="/pong/local" class="left-up link">
+            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
+                <div class="text-container">
+                    <p class="title">{{ $t('local') }} 🔒</p>
+                    <p class="description">{{ $t('localDesc') }}</p>
+                </div>
+            </router-link>
+            <router-link v-else to="/pong-local" class="left-up link">
                 <div class="text-container">
                     <p class="title">{{ $t('local') }}</p>
                     <p class="description">{{ $t('localDesc') }}</p>
@@ -36,7 +35,7 @@
                     <p class="description">{{ $t('multiplayerDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-else to="/pong/multiplayer" class="left-up link">
+            <router-link v-else to="/pong-multiplayer" class="left-up link">
                 <div class="text-container">
                     <p class="title">{{ $t('multiplayer') }}</p>
                     <p class="description">{{ $t('multiplayerDesc') }}</p>
@@ -56,7 +55,7 @@
                     <p class="description">{{ $t('aiDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-else to="/pong/ai" class="left-up link">
+            <router-link v-else to="/pong-ai" class="left-up link">
                 <div class="text-container">
                     <p class="title">{{ $t('ai') }}</p>
                     <p class="description">{{ $t('aiDesc') }}</p>
@@ -78,13 +77,13 @@
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-else-if="isAuthenticated && isOTPVerified && isTournamentFinished" to="/tournament/create" class="link">
+            <router-link v-else-if="isAuthenticated && !isOTPVerified && isTournamentFinished" to="/tournament/create" class="link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }}</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-else-if="isAuthenticated && isOTPVerified && !isTournamentFinished" to="/tournament" class="link">
+            <router-link v-else-if="isAuthenticated && !isOTPVerified && !isTournamentFinished" to="/tournament" class="link">
                 <div class="text-container">
                     <p class="title">{{ $t('tournament') }}</p>
                     <p class="description">{{ $t('tournamentDesc') }}</p>

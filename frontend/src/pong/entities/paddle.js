@@ -6,16 +6,13 @@ import MyMaths from "../maths/maths.js";
 
 
 export default class Paddle {
-	constructor() {
+	constructor(size, speedY) {
 		this.ctx;
-		this.size = new Vec2(
-			gameConfig.paddle.size.x,
-			gameConfig.paddle.size.y
-		);
+		this.size = new Vec2(size.x, size.y);
 		this.halfHeight = this.size.y / 2;
 		this.color = gameConfig.paddle.color;
 		this.padding = gameConfig.paddle.padding;
-		this.resetSpeed = new Vec2(0, gameConfig.paddle.speed);
+		this.resetSpeed = new Vec2(0, speedY);
 		this.speed = this.resetSpeed.clone();
 		this.rect;
 		this.resetPos;

@@ -142,7 +142,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/local",
+        path: "/pong-local",
         name: "pong-local",
         component: PongLocalView,
         meta: {
@@ -151,7 +151,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/tournament",
+        path: "/pong-tournament",
         name: "pong-tournament",
         component: PongTournamentView,
         meta: {
@@ -160,7 +160,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/ai",
+        path: "/pong-ai",
         name: "pong-ai",
         component: PongAiView,
         meta: {
@@ -169,7 +169,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/multiplayer",
+        path: "/pong-multiplayer",
         name: "pong-multiplayer",
         component: PongMultiplayerView,
         meta: {
