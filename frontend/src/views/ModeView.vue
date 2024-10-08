@@ -77,14 +77,14 @@
           <p class="description">{{ $t('tournamentDesc') }}</p>
         </div>
       </router-link>
-      <router-link v-else-if="isAuthenticated && !isOTPVerified && isTournamentFinished" to="/tournament/create"
+      <router-link v-else-if="isAuthenticated && isOTPVerified && isTournamentFinished" to="/tournament/create"
                    class="link">
         <div class="text-container">
           <p class="title">{{ $t('tournament') }}</p>
           <p class="description">{{ $t('tournamentDesc') }}</p>
         </div>
       </router-link>
-      <router-link v-else-if="isAuthenticated && !isOTPVerified && !isTournamentFinished" to="/tournament" class="link">
+      <router-link v-else-if="isAuthenticated && isOTPVerified && !isTournamentFinished" to="/tournament" class="link">
         <div class="text-container">
           <p class="title">{{ $t('tournament') }}</p>
           <p class="description">{{ $t('tournamentDesc') }}</p>
