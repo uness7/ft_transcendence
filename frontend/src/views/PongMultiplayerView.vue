@@ -250,9 +250,8 @@ export default {
           }
         }
         updateMatchHistory = async (playerWon) => {
-          let response = null;
           try {
-            response = await axios.post(
+            await axios.post(
                 `http://localhost:8000/api/v1/user/match_history/${user.value.id}/`,
                 {
                   user: username,
