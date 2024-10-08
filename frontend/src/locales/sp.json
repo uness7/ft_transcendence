@@ -106,5 +106,11 @@
   "games-lost": "Partidas perdidas",
   "win-rate": "Tasa de victoria",
   "tournaments-won": "Torneos ganados",
-  "map-background": "fondo del mapa"
+  "map-background": "fondo del mapa",
+  "toggle-player-speed": "aumento de velocidad del jugador",
+  "toggle-player-size": "aumento de tamaño del jugador",
+  "toggle-player-immortal": "inmortalidad del jugador",
+  "toggle-ball-speed": "aumento de velocidad de la pelota",
+  "toggle-ai-speed": "aumento de velocidad del IA",
+  "appearance-settings": "apariencia"
 }

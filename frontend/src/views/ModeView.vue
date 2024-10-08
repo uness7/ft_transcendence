@@ -9,12 +9,13 @@
                     <p class="description">{{ $t('localDesc') }}</p>
                 </div>
             </router-link>
-            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">
-                <div class="text-container">
-                    <p class="title">{{ $t('local') }} 🔒</p>
-                    <p class="description">{{ $t('localDesc') }}</p>
-                </div>
-            </router-link>
+<!--          TODO: add back-->
+<!--            <router-link v-else-if="!isOTPVerified" to="/two-factor-auth" class="left-bottom link">-->
+<!--                <div class="text-container">-->
+<!--                    <p class="title">{{ $t('local') }} 🔒</p>-->
+<!--                    <p class="description">{{ $t('localDesc') }}</p>-->
+<!--                </div>-->
+<!--            </router-link>-->
             <router-link v-else to="/pong/local" class="left-up link">
                 <div class="text-container">
                     <p class="title">{{ $t('local') }}</p>

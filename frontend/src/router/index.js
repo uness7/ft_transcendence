@@ -6,7 +6,6 @@ import AboutView from "../views/AboutView.vue";
 import ModeView from "../views/ModeView.vue";
 import UserView from "../views/UserView.vue";
 import UserSettings from "../components/UserSettings.vue";
-import GameSettings from "../components/GameSettings.vue";
 import TournamentView from "../views/TournamentView.vue";
 import NotFound from "../views/NotFound.vue";
 import { useAuthStore } from "@/store/auth";
@@ -20,7 +19,8 @@ import PongAiView from "../views/PongAiView.vue";
 import PongMultiplayerView from "../views/PongMultiplayerView.vue";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 import FriendsView from "@/views/FriendsView.vue";
-
+import AppearanceSettings from "@/components/AppearanceSettings.vue";
+import GameSettings from "../components/GameSettings.vue";
 
 const routes = [
     {
@@ -119,8 +119,15 @@ const routes = [
     },
     {
         path: "/user/game-settings",
-        name: "game-settings",
         component: GameSettings,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: false,
+        },
+    },
+    {
+        path: "/user/appearance-settings",
+        component: AppearanceSettings,
         meta: {
             requiresAuth: true,
             requiresOTP: false,

@@ -101,10 +101,16 @@
             "text": "If you have any questions or concerns about this Privacy Policy or how we handle your personal data, please contact us at: {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
         }
     },
-    "power-up":"power-up",
+    "power-up":"power-ups",
     "games-won": "Games won",
     "games-lost": "Games lost",
     "win-rate": "Win rate",
     "tournaments-won": "Tournaments won",
-    "map-background": "map background"
+    "map-background": "map background",
+    "toggle-player-speed": "player speed buff",
+    "toggle-player-size": "player size buff",
+    "toggle-player-immortal": "player immortal buff",
+    "toggle-ball-speed": "ball speed buff",
+    "toggle-ai-speed": "ai speed buff",
+    "appearance-settings": "appearance"
 }

@@ -3,6 +3,7 @@
     <ul class="nav-list">
       <li class="nav-item"><router-link to="/user" id="profile-button">{{ $t('profile') }}</router-link></li>
       <li class="nav-item"><router-link to="/user/account-settings" id="settings-button">{{ $t('account-settings') }}</router-link></li>
+      <li class="nav-item"><router-link to="/user/appearance-settings" id="settings-button">{{ $t('appearance-settings') }}</router-link></li>
       <li class="nav-item"><router-link to="/user/game-settings" id="settings-button">{{ $t('game-settings') }}</router-link></li>
     </ul>
     <div class="logout-box" @click="logout">

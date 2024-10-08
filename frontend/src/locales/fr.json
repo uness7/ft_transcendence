@@ -106,5 +106,11 @@
     "games-lost":"Parties perdues",
     "win-rate":"Taux de victoire",
     "tournaments-won":"Tournois gagnes",
-    "map-background": "fond de carte"
+    "map-background": "fond de carte",
+    "toggle-player-speed": "boost de vitesse du joueur",
+    "toggle-player-size": "boost de taille du joueur",
+    "toggle-player-immortal": "boost d'immortalite du joueur",
+    "toggle-ball-speed": "boost de vitesse de la balle",
+    "toggle-ai-speed": "boost de vitesse de l'IA",
+    "appearance-settings": "apparence"
 }

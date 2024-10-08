@@ -1,88 +1,83 @@
+<script setup>
+import {reactive, watch} from "vue"
+import NavBar from "@/components/NavBar.vue";
+
+let powerups = null;
+if (!localStorage.getItem("pongConfig")) {
+  powerups = reactive({
+    playerSpeed: false,
+    playerSize: false,
+    playerImmortal: false,
+    ballSpeed: false,
+    aiSpeed: false,
+  });
+  localStorage.setItem("pongConfig", JSON.stringify(powerups));
+} else {
+  powerups = reactive(JSON.parse(localStorage.getItem("pongConfig")));
+}
+
+watch(powerups, newConf => {
+  localStorage.setItem("pongConfig", JSON.stringify(newConf));
+});
+
+</script>
+
 <template>
-  <div>
-    <NavBar/>
-    <div class="content">
-      <div class="settings">
+  <NavBar/>
+  <div class="content">
+    <div class="settings">
+      <div class="powerup-section">
+        <h3>{{ $t('power-up') }}</h3>
 
-        <h2>{{ $t('color-theme') }}</h2>
-        <div class="color-options">
-          <button v-for="color in themeColors" :key="color" :style="buttonStyle(color, selectedColor)" class="color-button" @click="changeColor(color)">
-            <span class="visually-hidden">{{ color }}</span>
-          </button>
-        </div>
-
-        <h2>{{ $t('map-background') }}</h2>
-        <div class="color-options">
-          <button v-for="color in mapBackgroundColors" :key="color" :style="buttonStyle(color, selectedMapColor)" class="color-button" @click="changeMapColor(color)">
-            <span class="visually-hidden">{{ color }}</span>
-          </button>
-        </div>
-
-        <div class="powerup-section">
-          <h3>{{ $t('power-up') }}</h3>
+        <div>
           <label class="switch">
-            <input type="checkbox" v-model="powerUp" @change="togglePowerUp">
+            <input type="checkbox" v-model="powerups.playerSpeed">
             <span class="slider"></span>
           </label>
+          <label>{{$t("toggle-player-speed")}}</label>
         </div>
+
+        <div>
+          <label class="switch">
+            <input type="checkbox" v-model="powerups.playerSize">
+            <span class="slider"></span>
+          </label>
+          <label>{{$t("toggle-player-size")}}</label>
+        </div>
+
+        <div>
+          <label class="switch">
+            <input type="checkbox" v-model="powerups.playerImmortal">
+            <span class="slider"></span>
+          </label>
+          <label>{{$t("toggle-player-immortal")}}</label>
+        </div>
+
+        <div>
+          <label class="switch">
+            <input type="checkbox" v-model="powerups.ballSpeed">
+            <span class="slider"></span>
+          </label>
+          <label>{{$t("toggle-ball-speed")}}</label>
+        </div>
+
+        <div>
+          <label class="switch">
+            <input type="checkbox" v-model="powerups.aiSpeed">
+            <span class="slider"></span>
+          </label>
+          <label>{{$t("toggle-ai-speed")}}</label>
+        </div>
+
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import NavBar from '../components/NavBar.vue';
-
-export default {
-  name: 'UserSettings',
-  components: {
-    NavBar,
-  },
-  data() {
-    return {
-      themeColors: ['#FFFFFF', '#e71d36', '#FF5733', '#2ec4b6', '#9d4edd', '#49a078', '#fdca40'],
-      mapBackgroundColors: ['#0a0a0a', '#3b3200', '#332000', '#1a331a', '#162b2b', '#261a33', '#3b0000'],
-      selectedColor: localStorage.getItem('primaryColor') || '#FFFFFF',
-      selectedMapColor: localStorage.getItem('mapBackground') || '#0a0a0a',
-      powerUp: localStorage.getItem('PowerUp') === 'true',
-    };
-  },
-  methods: {
-    changeColor(color) {
-      this.selectedColor = color;
-      localStorage.setItem('primaryColor', color);
-      this.updateCssVariables('--primary-color', color);
-    },
-    changeMapColor(color) {
-      this.selectedMapColor = color;
-      localStorage.setItem('mapBackground', color);
-      this.updateCssVariables('--map-background', color);
-    },
-    updateCssVariables(variable, value) {
-      document.documentElement.style.setProperty(variable, value);
-    },
-    buttonStyle(color, selectedColor) {
-      return {
-        backgroundColor: color,
-        border: selectedColor === color ? '5px solid white' : 'none',
-        borderRadius: '10px',
-      };
-    },
-    togglePowerUp() {
-      localStorage.setItem('PowerUp', this.powerUp);
-    },
-  },
-  mounted() {
-    this.updateCssVariables('--primary-color', this.selectedColor);
-    this.updateCssVariables('--map-background', this.selectedMapColor);
-  },
-};
-</script>
-
 <style scoped>
 .content {
   color: white;
-  margin-top: 80px; /* <--- ne pas trop changer */
+  margin-top: 80px;
   margin-left: 400px;
   font-family: '8bit', sans-serif;
 }
@@ -90,38 +85,6 @@ export default {
 .settings {
   padding: 20px;
   font-size: 40px;
-}
-
-.color-options {
-  display: flex;
-  gap: 20px;
-}
-
-.color-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-  cursor: pointer;
-  outline: none;
-  box-shadow: 0 0 2px rgba(255, 255, 255);
-  border: 3px solid white;
-  position: relative;
-  transition: transform 0.3s, border 0.3s;
-}
-
-.color-button:hover {
-  transform: scale(1.1);
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
 }
 
 .powerup-section {
