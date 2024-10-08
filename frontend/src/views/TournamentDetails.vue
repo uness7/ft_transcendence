@@ -1,147 +1,147 @@
 <template>
-    <div class="content">
-        <h1>{{ tournament ? `${tournament.name} Tournament` : "Error: no tournament" }}</h1>
-        <p>Details for tournament:</p>
-        <p>Number of participants: {{ tournament?.participants?.length ?? 0 }}</p>
-        <p id="player-1">{{ tournament?.participants?.[0] }}</p>
-        <p id="player-2">{{ tournament?.participants?.[1] }}</p>
-        <p id="player-3">{{ tournament?.participants?.[2] }}</p>
-        <p id="player-4">{{ tournament?.participants?.[3] }}</p>
-        <div v-if="!isTournamentFull()">
-            <button class="btn join-btn" @click="join">Join Tournament</button>
-        </div>
-        <div v-else>
-            <button class="btn join-btn" @click="startTournament">Start Tournament</button>
-        </div>
+  <div class="content">
+    <h1>{{ tournament ? `${tournament.name} Tournament` : "Error: no tournament" }}</h1>
+    <p>Details for tournament:</p>
+    <p>Number of participants: {{ tournament?.participants?.length ?? 0 }}</p>
+    <p id="player-1">{{ tournament?.participants?.[0] }}</p>
+    <p id="player-2">{{ tournament?.participants?.[1] }}</p>
+    <p id="player-3">{{ tournament?.participants?.[2] }}</p>
+    <p id="player-4">{{ tournament?.participants?.[3] }}</p>
+    <div v-if="!isTournamentFull()">
+      <button class="btn join-btn" @click="join">Join Tournament</button>
     </div>
+    <div v-else>
+      <button class="btn join-btn" @click="startTournament">Start Tournament</button>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            tournament: null,
-        };
+  data() {
+    return {
+      tournament: null,
+    };
+  },
+  mounted() {
+    const tournamentData = localStorage.getItem("pongTournament");
+    if (tournamentData) {
+      this.tournament = JSON.parse(tournamentData);
+    }
+  },
+  methods: {
+    isTournamentFull() {
+      return this.tournament?.participants?.length === 4 ?? false;
     },
-    mounted() {
-        const tournamentData = localStorage.getItem("pongTournament");
-        if (tournamentData) {
-            this.tournament = JSON.parse(tournamentData);
+
+    updateStoredTournament() {
+      localStorage.setItem("pongTournament", JSON.stringify(this.tournament));
+    },
+
+    join() {
+      let aliasInput;
+
+      do {
+        aliasInput = prompt("Please enter your alias (max 10 characters):");
+        if (aliasInput && aliasInput.length > 10) {
+          alert("Alias must be 10 characters or less.");
         }
+      } while (aliasInput && aliasInput.length > 10);
+
+      if (aliasInput) {
+        if (!this.tournament.participants)
+          this.tournament.participants = [];
+        this.tournament.participants.push(aliasInput.toUpperCase());
+        this.updateStoredTournament();
+      }
     },
-    methods: {
-        isTournamentFull() {
-            return this.tournament?.participants?.length === 4 ?? false;
-        },
 
-        updateStoredTournament() {
-            localStorage.setItem("pongTournament", JSON.stringify(this.tournament));
-        },
+    startTournament() {
+      if (!this.tournament.isStarted) {
+        const diceRoll = Math.floor(Math.random() * 3) + 1;
+        let matchRolls = [0, diceRoll];
+        const remaining = [1, 2, 3];
+        remaining.forEach(elem => {
+          if (!matchRolls.includes(elem))
+            matchRolls.push(elem);
+        });
 
-        join() {
-            let aliasInput;
-
-            do {
-                aliasInput = prompt("Please enter your alias (max 10 characters):");
-                if (aliasInput && aliasInput.length > 10) {
-                    alert("Alias must be 10 characters or less.");
-                }
-            } while (aliasInput && aliasInput.length > 10);
-
-            if (aliasInput) {
-                if (!this.tournament.participants)
-                this.tournament.participants = [];
-                this.tournament.participants.push(aliasInput.toUpperCase());
-                this.updateStoredTournament();
-            }
-        },
-
-        startTournament() {
-            if (!this.tournament.isStarted) {
-                const diceRoll = Math.floor(Math.random() * 3) + 1;
-                let matchRolls = [0, diceRoll];
-                const remaining = [1, 2, 3];
-                remaining.forEach(elem => {
-                    if (!matchRolls.includes(elem))
-                        matchRolls.push(elem);
-                });
-
-                this.tournament.matches = [];
-                this.tournament.matches.push({
-                    playerLeft: this.tournament.participants[matchRolls[0]],
-                    playerRight: this.tournament.participants[matchRolls[1]],
-                    playerLeftScore: 0,
-                    playerRightScore: 0,
-                    state: "pending",
-                    winner: null,
-                });
-                this.tournament.matches.push({
-                    playerLeft: this.tournament.participants[matchRolls[2]],
-                    playerRight: this.tournament.participants[matchRolls[3]],
-                    playerLeftScore: 0,
-                    playerRightScore: 0,
-                    state: "pending",
-                    winner: null,
-                });
-                this.tournament.nextMatch = 0;
-                this.tournament.isStarted = true;
-                this.updateStoredTournament();
-            }
-            this.$router.push("/tournament/brackets")
-        },
+        this.tournament.matches = [];
+        this.tournament.matches.push({
+          playerLeft: this.tournament.participants[matchRolls[0]],
+          playerRight: this.tournament.participants[matchRolls[1]],
+          playerLeftScore: 0,
+          playerRightScore: 0,
+          state: "pending",
+          winner: null,
+        });
+        this.tournament.matches.push({
+          playerLeft: this.tournament.participants[matchRolls[2]],
+          playerRight: this.tournament.participants[matchRolls[3]],
+          playerLeftScore: 0,
+          playerRightScore: 0,
+          state: "pending",
+          winner: null,
+        });
+        this.tournament.nextMatch = 0;
+        this.tournament.isStarted = true;
+        this.updateStoredTournament();
+      }
+      this.$router.push("/tournament/brackets")
     },
+  },
 };
 </script>
 
 <style scoped>
 @font-face {
-    font-family: '8bit';
-    src: url('../assets/font/8bit.ttf') format('truetype');
+  font-family: '8bit';
+  src: url('../assets/font/8bit.ttf') format('truetype');
 }
 
 .content {
-    color: white;
-    background-color: var(--background-color);
-    margin-top: 200px;
-    text-align: center;
-    padding: 20px;
-    font-family: '8bit', sans-serif;
+  color: white;
+  background-color: var(--background-color);
+  margin-top: 200px;
+  text-align: center;
+  padding: 20px;
+  font-family: '8bit', sans-serif;
 }
 
 h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #f0f0f0;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #f0f0f0;
 }
 
 p {
-    font-size: 1.2rem;
-    color: #b3b3b3;
+  font-size: 1.2rem;
+  color: #b3b3b3;
 }
 
 .btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: white;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .join-btn {
-    background-color: #28a745;
+  background-color: #28a745;
 }
 
 .join-btn:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
 .leave-btn {
-    background-color: #dc3545;
+  background-color: #dc3545;
 }
 
 .leave-btn:hover {
-    background-color: #c82333;
+  background-color: #c82333;
 }
 </style>

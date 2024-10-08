@@ -34,7 +34,7 @@ watch(powerups, newConf => {
             <input type="checkbox" v-model="powerups.playerSpeed">
             <span class="slider"></span>
           </label>
-          <label>{{$t("toggle-player-speed")}}</label>
+          <label>{{ $t("toggle-player-speed") }}</label>
         </div>
 
         <div>
@@ -42,7 +42,7 @@ watch(powerups, newConf => {
             <input type="checkbox" v-model="powerups.playerSize">
             <span class="slider"></span>
           </label>
-          <label>{{$t("toggle-player-size")}}</label>
+          <label>{{ $t("toggle-player-size") }}</label>
         </div>
 
         <div>
@@ -50,7 +50,7 @@ watch(powerups, newConf => {
             <input type="checkbox" v-model="powerups.playerImmortal">
             <span class="slider"></span>
           </label>
-          <label>{{$t("toggle-player-immortal")}}</label>
+          <label>{{ $t("toggle-player-immortal") }}</label>
         </div>
 
         <div>
@@ -58,7 +58,7 @@ watch(powerups, newConf => {
             <input type="checkbox" v-model="powerups.ballSpeed">
             <span class="slider"></span>
           </label>
-          <label>{{$t("toggle-ball-speed")}}</label>
+          <label>{{ $t("toggle-ball-speed") }}</label>
         </div>
 
         <div>
@@ -66,7 +66,7 @@ watch(powerups, newConf => {
             <input type="checkbox" v-model="powerups.aiSpeed">
             <span class="slider"></span>
           </label>
-          <label>{{$t("toggle-ai-speed")}}</label>
+          <label>{{ $t("toggle-ai-speed") }}</label>
         </div>
 
       </div>

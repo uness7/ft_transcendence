@@ -4,7 +4,7 @@
       <h1 class="heading">{{ $t('team') }}</h1>
       <div class="image-container">
         <div class="img" v-for="(member, index) in teamMembers" :key="index" @click="selectedMemberIndex = index">
-          <img :src="member.profileImage" :alt="member.name" />
+          <img :src="member.profileImage" :alt="member.name"/>
           <div class="info">
             <h2 class="name">{{ member.name }}</h2>
             <p>{{ $t(member.statusKey) }}</p>

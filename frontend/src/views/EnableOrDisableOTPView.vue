@@ -11,10 +11,10 @@
       <div v-else key="otp-input-view" class="otp-container">
         <h2>Enter OTP Code</h2>
         <p>Please enter the 6-digit code from your authentication app.</p>
-        <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input" />
+        <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input"/>
         <button @click="verifyOTP">Verify</button>
         <button @click="displayQR">Display QR Code</button>
-        <img :src="`data:image/svg+xml;base64,${qrCodeAgain}`" alt="QR Code" v-if="qrCodeAgain" class="qr-code-img" />
+        <img :src="`data:image/svg+xml;base64,${qrCodeAgain}`" alt="QR Code" v-if="qrCodeAgain" class="qr-code-img"/>
       </div>
     </transition>
   </div>
@@ -22,9 +22,9 @@
 
 <script>
 
-import { computed, onMounted, ref } from 'vue';
-import { useAuthStore } from '@/store/auth';
-import { useRouter } from 'vue-router';
+import {computed, onMounted, ref} from 'vue';
+import {useAuthStore} from '@/store/auth';
+import {useRouter} from 'vue-router';
 import axios from "axios";
 
 export default {
@@ -34,10 +34,10 @@ export default {
     const router = useRouter();
 
     const isLoggedIn = computed(() => authStore.isAuthenticated);
-    const user = computed(() => authStore.user || { username: '', id: '' });
+    const user = computed(() => authStore.user || {username: '', id: ''});
     const username = computed(() => user.value.username);
     const userId = computed(() => user.value.id);
-    
+
     const isFirstTime = ref();
     const qrCode = ref("");
     const sharedKey = ref("");
@@ -46,10 +46,12 @@ export default {
 
     const displayQR = () => {
       axios.get(`http://localhost:8000/api/v1/display_qr_code/${userId.value}/`)
-        .then(response => {
-          qrCodeAgain.value = response.data.qr_code;
-        })
-        .catch(e => {console.error(e)});
+          .then(response => {
+            qrCodeAgain.value = response.data.qr_code;
+          })
+          .catch(e => {
+            console.error(e)
+          });
     }
 
     const verifyOTP = async () => {
@@ -57,8 +59,7 @@ export default {
         const response = await axios.post(`http://localhost:8000/api/v1/verify_otp_code/${userId.value}/`, {
           otp_code: otpCode.value,
         });
-        if (response.request.status === 200)
-        {
+        if (response.request.status === 200) {
           router.push('/');
         } else {
           console.error("Verify otp has failed");
@@ -82,9 +83,8 @@ export default {
               key: sharedKey.value,
             });
             if (response.request.status === 201) {
-              isFirstTime.value = true;    
-            }
-            else {
+              isFirstTime.value = true;
+            } else {
               isFirstTime.value = false;
             }
           } catch (error) {

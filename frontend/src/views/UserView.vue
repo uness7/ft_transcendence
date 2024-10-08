@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="user-view">
-      <NavBar @navigate="currentView = $event" />
+      <NavBar @navigate="currentView = $event"/>
       <div class="component">
         <component :is="currentView" :id="id"></component>
       </div>
@@ -32,19 +32,19 @@ export default {
 
 <style scoped>
 
-  .content {
-    color: white;
-    margin-top: 80px;   /* <--- ne pas trop changer */
-  }
-    
-  .user-view {
-    display: flex;
-  }
+.content {
+  color: white;
+  margin-top: 80px;
+}
 
-  .component {
-    flex: 1;
-    padding: 20px;
-  }
+.user-view {
+  display: flex;
+}
+
+.component {
+  flex: 1;
+  padding: 20px;
+}
 </style>
 
 

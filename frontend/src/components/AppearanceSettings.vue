@@ -6,14 +6,16 @@
 
         <h2>{{ $t('color-theme') }}</h2>
         <div class="color-options">
-          <button v-for="color in themeColors" :key="color" :style="buttonStyle(color, selectedColor)" class="color-button" @click="changeColor(color)">
+          <button v-for="color in themeColors" :key="color" :style="buttonStyle(color, selectedColor)"
+                  class="color-button" @click="changeColor(color)">
             <span class="visually-hidden">{{ color }}</span>
           </button>
         </div>
 
         <h2>{{ $t('map-background') }}</h2>
         <div class="color-options">
-          <button v-for="color in mapBackgroundColors" :key="color" :style="buttonStyle(color, selectedMapColor)" class="color-button" @click="changeMapColor(color)">
+          <button v-for="color in mapBackgroundColors" :key="color" :style="buttonStyle(color, selectedMapColor)"
+                  class="color-button" @click="changeMapColor(color)">
             <span class="visually-hidden">{{ color }}</span>
           </button>
         </div>
