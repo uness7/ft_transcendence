@@ -1,5 +1,5 @@
 from rest_framework import serializers;
-from user.models import User;
+from user.models import User, MatchHistory;
 import re;
 
 '''
@@ -8,14 +8,20 @@ NOTES:
     - This metadata includes options like database table names, ordering of query results, unique constraints, and verbose names, among others.
 '''
 
+class MatchHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchHistory
+        fields = ['id', 'date', 'final_score', 'mode'];
+
 class   UserSerializer(serializers.ModelSerializer):
+    match_history = MatchHistorySerializer(many=True, read_only=True);
     id = serializers.UUIDField(source='public_id', read_only=True, format='hex');
     created = serializers.DateTimeField(read_only=True);
     updated = serializers.DateTimeField(read_only=True);
 
     class   Meta:
         model = User;
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_active', 'is_otp_verified', 'bio', 'friends', 'is_anonymous',
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_active', 'is_otp_verified', 'bio', 'friends', 'is_anonymous', 'match_history',
                   'avatar', 'created', 'updated', 'games_played', 'games_won', 'games_lost'];
         read_only_field = ['is_active'];
 
