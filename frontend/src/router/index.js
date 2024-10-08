@@ -19,6 +19,8 @@ import PongAiView from "../views/PongAiView.vue";
 import PongMultiplayerView from "../views/PongMultiplayerView.vue";
 import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
 import FriendsView from "@/views/FriendsView.vue";
+import AppearanceSettings from "@/components/AppearanceSettings.vue";
+import GameSettings from "../components/GameSettings.vue";
 import MatchHistoryView from "@/views/MatchHistoryView.vue";
 
 
@@ -109,9 +111,25 @@ const routes = [
         },
     },
     {
-        path: "/user/settings",
+        path: "/user/account-settings",
         name: "settings",
         component: UserSettings,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: true,
+        },
+    },
+    {
+        path: "/user/game-settings",
+        component: GameSettings,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: true,
+        },
+    },
+    {
+        path: "/user/appearance-settings",
+        component: AppearanceSettings,
         meta: {
             requiresAuth: true,
             requiresOTP: true,
@@ -126,7 +144,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/local",
+        path: "/pong-local",
         name: "pong-local",
         component: PongLocalView,
         meta: {
@@ -135,7 +153,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/tournament",
+        path: "/pong-tournament",
         name: "pong-tournament",
         component: PongTournamentView,
         meta: {
@@ -144,7 +162,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/ai",
+        path: "/pong-ai",
         name: "pong-ai",
         component: PongAiView,
         meta: {
@@ -153,7 +171,7 @@ const routes = [
         },
     },
     {
-        path: "/pong/multiplayer",
+        path: "/pong-multiplayer",
         name: "pong-multiplayer",
         component: PongMultiplayerView,
         meta: {

@@ -1,8 +1,18 @@
 <template>
   <div class="sidebar">
     <ul class="nav-list">
-      <li class="nav-item"><router-link to="/user" id="profile-button">{{ $t('profile') }}</router-link></li>
-      <li class="nav-item"><router-link to="/user/settings" id="settings-button">{{ $t('settings') }}</router-link></li>
+      <li class="nav-item">
+        <router-link to="/user" id="profile-button">{{ $t('profile') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/user/account-settings" id="settings-button">{{ $t('account-settings') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/user/appearance-settings" id="settings-button">{{ $t('appearance-settings') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/user/game-settings" id="settings-button">{{ $t('game-settings') }}</router-link>
+      </li>
     </ul>
     <div class="logout-box" @click="logout">
       <button id="logout-button" @click="deleteUser">{{ $t('delete') }}</button>
@@ -13,7 +23,7 @@
 </template>
 
 <script>
-import { useAuthStore } from '@/store/auth';
+import {useAuthStore} from '@/store/auth';
 import {computed} from "vue";
 import axios from 'axios';
 
@@ -27,9 +37,8 @@ export default {
   },
   async mounted() {
     const authStore = useAuthStore();
-    const user = computed(() => authStore.user || { username: 'default', id: '' });
-    try
-    {
+    const user = computed(() => authStore.user || {username: 'default', id: ''});
+    try {
       this.response = await axios.get(
           `http://localhost:8000/api/user/${user.value.id}/`,
           {
@@ -48,16 +57,16 @@ export default {
 
     async anonymize() {
       const authStore = useAuthStore();
-      const user = computed(() => authStore.user || { username: 'default', id: '' });
+      const user = computed(() => authStore.user || {username: 'default', id: ''});
       const user_id = user.value.id;
       try {
         const response = await axios.patch(`http://localhost:8000/api/v1/anonymize_user/${user_id}/`,
             {
-          headers: {
-            Authorization: `Bearer ${authStore.accessToken}`,
-            'Content-Type': 'application/json',
-          }
-        });
+              headers: {
+                Authorization: `Bearer ${authStore.accessToken}`,
+                'Content-Type': 'application/json',
+              }
+            });
         if (response.status === 201) {
           alert(`Your new anonymized email: ${response.data.data_update.email}`);
         } else {
@@ -69,7 +78,7 @@ export default {
     },
     async deleteUser() {
       const authStore = useAuthStore();
-      const user = computed(() => authStore.user || { username: 'default', id: '' });
+      const user = computed(() => authStore.user || {username: 'default', id: ''});
       const user_id = user.value.id;
       const response = await axios.delete(`http://localhost:8000/api/user/${user_id}/`, {
         headers: {

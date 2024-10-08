@@ -1,18 +1,18 @@
 <template>
   <div class="content">
-      <div id="versus-screen">
-        <div class="player player1">
-          <img :src="player1.photo" alt="Player 1 Avatar" class="avatar" />
-          <h2>{{ player1.name }}</h2>
-        </div>
-        <div class="versus">VS
-          
-        </div>
-        <div class="player player2">
-          <img :src="player2.photo" alt="Player 2 Avatar" class="avatar" />
-          <h2>{{ player2.name }}</h2>
-        </div>
+    <div id="versus-screen">
+      <div class="player player1">
+        <img :src="player1.photo" alt="Player 1 Avatar" class="avatar"/>
+        <h2>{{ player1.name }}</h2>
       </div>
+      <div class="versus">VS
+
+      </div>
+      <div class="player player2">
+        <img :src="player2.photo" alt="Player 2 Avatar" class="avatar"/>
+        <h2>{{ player2.name }}</h2>
+      </div>
+    </div>
     <div class="loading">
       <span>Loading</span><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
     </div>
@@ -38,17 +38,18 @@ export default {
 
 <style scoped>
 @font-face {
-        font-family: '8bit';
-        src: url('../assets/font/8bit.ttf') format('truetype');
-    }
+  font-family: '8bit';
+  src: url('../assets/font/8bit.ttf') format('truetype');
+}
 
 .content {
   color: white;
-  margin-top: 200px;   /* <--- ne pas trop changer */
-  font-family: '8bit',sans-serif;
+  margin-top: 200px; /* <--- ne pas trop changer */
+  font-family: '8bit', sans-serif;
   display: flex;
   justify-content: center;
 }
+
 #versus-screen {
   display: flex;
   justify-content: space-between;
@@ -66,15 +67,16 @@ export default {
   flex: 1;
   padding: 1rem;
   border-radius: 10px;
-  font-family: '8bit',sans-serif;
+  font-family: '8bit', sans-serif;
 }
 
 .player1 {
   background-color: black;
   border: 1px solid #fff;
-  font-family: '8bit',sans-serif;
+  font-family: '8bit', sans-serif;
   letter-spacing: 1px;
 }
+
 .player2 {
   background-color: black;
   border: 1px solid #fff;
@@ -100,7 +102,7 @@ export default {
   line-height: 100px;
 }
 
-.loading{
+.loading {
   display: flex;
   font-size: 2rem;
   font-weight: bold;

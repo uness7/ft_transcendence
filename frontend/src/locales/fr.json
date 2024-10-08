@@ -1,108 +1,116 @@
 {
-    "anonymize-user": "anonymiser les donnees d'utilisateur",
-    "delete": "supprimer le compte",
-    "play": "jouer",
-    "about": "info",
-    "login": "connexion",
-    "aiText": "Joueur vs IA",
-    "lanText": "Joueur vs Joueur",
-    "multiText": "Multijoueur",
-    "profile": "profil",
-    "settings": "parametres",
-    "account-settings": "parametres du compte",
-    "logout": "logout",
-    "team": "Notre equipe",
-    "ouissem-status": "Representant devops",
-    "lionel-status": "Responsable pong",
-    "jules-status": "Responsable front-end",
-    "navid-status": "Responsable front-end",
-    "youness-status": "Responsable back-end",
-    "color-theme": "Theme de couleur",
-    "error": "Erreur",
-    "error-text": "La page que vous recherchez n'existe pas",
-    "games-played": "Parties jouees",
-    "wins": "victoires",
-    "losses": "defaites",
-    "total-score": "Score total",
-    "friends": "amis",
-    "create-account": "Creer un compte",
-    "already-account": "Vous avez deja un compte ?",
-    "sign-in": "Se connecter",
-    "no-account": "Vous n'avez pas de compte ?",
-    "image-upload": "Telechargez votre photo de profil",
-    "local": "1v1",
-    "localDesc": "Mode 1v1 pour jouer avec un ami sur le meme appareil.",
-    "multiplayer": "2v2",
-    "multiplayerDesc": "Mode multijoueur 2v2 pour jouer avec des amis sur le meme appareil.",
-    "tournament": "Tournoi",
-    "tournamentDesc": "Participez a un tournoi avec plusieurs manches et adversaires.",
-    "ai": "1v1 IA",
-    "aiDesc": "Jouez contre une intelligence artificielle",
-    "difficulty": "difficulte",
-    "easy": "facile",
-    "medium": "moyenne",
-    "hard": "elevee",
-    "register": "ou s'inscrire",
-    "read-privacy": "lire notre politique de confidentialite",
-    "privacy": {
-        "title": "Politique de Confidentialite",
-        "effective_date": "Date d'effet : 2024-09-25",
-        "introduction": {
-            "title": "Introduction",
-            "text": "Nous nous engageons a proteger et respecter votre vie privee. Cette politique de confidentialite explique comment nous collectons, utilisons et protegons vos informations personnelles lorsque vous utilisez notre site web. Cette politique est conforme au Reglement General sur la Protection des Donnees (RGPD)."
-        },
-        "data_we_collect": {
-            "title": "Donnees Que Nous Collectons",
-            "text": "Nous pouvons collecter et traiter les donnees personnelles suivantes vous concernant : Informations de contact : Adresse e-mail, nom de connexion, ou toute autre information que vous fournissez lors de la creation d'un compte."
-        },
-        "how_we_use_your_data": {
-            "title": "Comment Nous Utilisons Vos Donnees",
-            "text": "Nous traitons vos donnees personnelles pour les finalites suivantes : Pour fournir, operer et maintenir nos services. Pour vous permettre de vous inscrire et de gerer un compte. Pour ameliorer nos services et personnaliser votre experience."
-        },
-        "legal_basis_for_processing": {
-            "title": "Base Legale pour le Traitement",
-            "text": "En vertu du RGPD, nous traitons vos donnees personnelles sur la base de l'une des bases legales suivantes : Consentement : Vous avez donne votre consentement explicite pour traiter vos donnees a des fins specifique(s) (par exemple, la creation d'un compte). Execution d'un Contrat : Le traitement des donnees est necessaire pour fournir les services que vous avez demandes."
-        },
-        "data_sharing": {
-            "title": "Partage de Donnees et Services Tiers",
-            "text": "Nous ne partagerons pas vos donnees personnelles avec des tiers, sauf : Si la loi l'exige ou pour se conformer a des obligations legales."
-        },
-        "data_security": {
-            "title": "Securite des Donnees",
-            "text": "Nous utilisons des mesures techniques et organisationnelles appropriees pour proteger vos donnees personnelles contre l'acces non autorise, l'utilisation abusive, la perte ou la destruction. Cela inclut : Des mesures de controle d'acces pour le personnel autorise uniquement."
-        },
-        "data_retention": {
-            "title": "Conservation des Donnees",
-            "text": "Nous conservons vos donnees personnelles uniquement aussi longtemps que necessaire aux fins decrites dans cette politique ou tel que requis par la loi. Si vous supprimez votre compte, nous effacerons vos donnees personnelles sous 30 jours, sauf si la loi impose leur conservation pour des raisons legales."
-        },
-        "your_rights": {
-            "title": "Vos Droits en Matiere de Protection des Donnees",
-            "text": "En vertu du RGPD, vous disposez des droits suivants : Droit d'acces : Vous pouvez demander une copie des donnees personnelles que nous detenons a votre sujet. Droit de rectification : Vous pouvez demander des corrections pour des donnees inexactes ou incompletes. Droit a l'effacement : Vous pouvez demander la suppression de vos donnees personnelles. Droit a la portabilite des donnees : Vous pouvez demander que nous fournissions vos donnees dans un format lisible par machine. Droit de limiter le traitement : Vous pouvez demander des limitations sur la facon dont vos donnees sont traitees. Droit d'opposition : Vous pouvez vous opposer au traitement de vos donnees dans certaines circonstances. Droit de retirer votre consentement : Si le traitement est base sur le consentement, vous pouvez le retirer a tout moment. Pour exercer l'un de ces droits, contactez-nous a : {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
-        },
-        "cookies": {
-            "title": "Cookies et Technologies de Suivi",
-            "text": "Nous utilisons des cookies et des technologies de suivi similaires pour améliorer l'expérience utilisateur."
-        },
-        "children_privacy": {
-            "title": "Confidentialite des Enfants",
-            "text": "Nos services ne sont pas destines aux utilisateurs de moins de 13 ans. Nous ne collectons pas sciemment d'informations personnelles provenant d'enfants. Si vous pensez que nous avons recueilli par inadvertance de telles donnees, veuillez nous contacter, et nous les supprimerons."
-        },
-        "data_transfers": {
-            "title": "Transferts de Donnees",
-            "text": "Nous ne transferons pas vos donnees personnelles en dehors de l'Espace Economique Europeen (EEE)."
-        },
-        "changes_to_policy": {
-            "title": "Modifications de cette Politique",
-            "text": "Nous pouvons mettre a jour cette politique de confidentialite de temps en temps. Toutes les modifications seront publiees sur cette page avec une 'Date d'effet' mise a jour. Nous vous encourageons a consulter cette politique periodiquement pour les mises a jour."
-        },
-        "contact_us": {
-            "title": "Contactez-nous",
-            "text": "Si vous avez des questions ou des preoccupations concernant cette politique de confidentialite ou la facon dont nous traitons vos donnees personnelles, veuillez nous contacter a : {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
-        }
+  "anonymize-user": "anonymiser les donnees d'utilisateur",
+  "delete": "supprimer le compte",
+  "play": "jouer",
+  "about": "info",
+  "login": "connexion",
+  "aiText": "Joueur vs IA",
+  "lanText": "Joueur vs Joueur",
+  "multiText": "Multijoueur",
+  "profile": "profil",
+  "settings": "parametres",
+  "account-settings": "parametres du compte",
+  "game-settings": "parametres du jeu",
+  "logout": "logout",
+  "team": "Notre equipe",
+  "ouissem-status": "Representant devops",
+  "lionel-status": "Responsable pong",
+  "jules-status": "Responsable front-end",
+  "navid-status": "Responsable front-end",
+  "youness-status": "Responsable back-end",
+  "color-theme": "Theme de couleur",
+  "error": "Erreur",
+  "error-text": "La page que vous recherchez n'existe pas",
+  "games-played": "Parties jouees",
+  "wins": "victoires",
+  "losses": "defaites",
+  "total-score": "Score total",
+  "friends": "amis",
+  "create-account": "Creer un compte",
+  "already-account": "Vous avez deja un compte ?",
+  "sign-in": "Se connecter",
+  "no-account": "Vous n'avez pas de compte ?",
+  "image-upload": "Telechargez votre photo de profil",
+  "local": "1v1",
+  "localDesc": "Mode 1v1 pour jouer avec un ami sur le meme appareil.",
+  "multiplayer": "2v2",
+  "multiplayerDesc": "Mode multijoueur 2v2 pour jouer avec des amis sur le meme appareil.",
+  "tournament": "Tournoi",
+  "tournamentDesc": "Participez a un tournoi avec plusieurs manches et adversaires.",
+  "ai": "1v1 IA",
+  "aiDesc": "Jouez contre une intelligence artificielle",
+  "difficulty": "difficulte",
+  "easy": "facile",
+  "medium": "moyenne",
+  "hard": "elevee",
+  "register": "ou s'inscrire",
+  "read-privacy": "lire notre politique de confidentialite",
+  "privacy": {
+    "title": "Politique de Confidentialite",
+    "effective_date": "Date d'effet : 2024-09-25",
+    "introduction": {
+      "title": "Introduction",
+      "text": "Nous nous engageons a proteger et respecter votre vie privee. Cette politique de confidentialite explique comment nous collectons, utilisons et protegons vos informations personnelles lorsque vous utilisez notre site web. Cette politique est conforme au Reglement General sur la Protection des Donnees (RGPD)."
     },
-    "power-up": "pouvoirs",
-    "games-won":"Parties gagnees",
-    "games-lost":"Parties perdues",
-    "win-rate":"Taux de victoire",
-    "tournaments-won":"Tournois gagnes"
+    "data_we_collect": {
+      "title": "Donnees Que Nous Collectons",
+      "text": "Nous pouvons collecter et traiter les donnees personnelles suivantes vous concernant : Informations de contact : Adresse e-mail, nom de connexion, ou toute autre information que vous fournissez lors de la creation d'un compte."
+    },
+    "how_we_use_your_data": {
+      "title": "Comment Nous Utilisons Vos Donnees",
+      "text": "Nous traitons vos donnees personnelles pour les finalites suivantes : Pour fournir, operer et maintenir nos services. Pour vous permettre de vous inscrire et de gerer un compte. Pour ameliorer nos services et personnaliser votre experience."
+    },
+    "legal_basis_for_processing": {
+      "title": "Base Legale pour le Traitement",
+      "text": "En vertu du RGPD, nous traitons vos donnees personnelles sur la base de l'une des bases legales suivantes : Consentement : Vous avez donne votre consentement explicite pour traiter vos donnees a des fins specifique(s) (par exemple, la creation d'un compte). Execution d'un Contrat : Le traitement des donnees est necessaire pour fournir les services que vous avez demandes."
+    },
+    "data_sharing": {
+      "title": "Partage de Donnees et Services Tiers",
+      "text": "Nous ne partagerons pas vos donnees personnelles avec des tiers, sauf : Si la loi l'exige ou pour se conformer a des obligations legales."
+    },
+    "data_security": {
+      "title": "Securite des Donnees",
+      "text": "Nous utilisons des mesures techniques et organisationnelles appropriees pour proteger vos donnees personnelles contre l'acces non autorise, l'utilisation abusive, la perte ou la destruction. Cela inclut : Des mesures de controle d'acces pour le personnel autorise uniquement."
+    },
+    "data_retention": {
+      "title": "Conservation des Donnees",
+      "text": "Nous conservons vos donnees personnelles uniquement aussi longtemps que necessaire aux fins decrites dans cette politique ou tel que requis par la loi. Si vous supprimez votre compte, nous effacerons vos donnees personnelles sous 30 jours, sauf si la loi impose leur conservation pour des raisons legales."
+    },
+    "your_rights": {
+      "title": "Vos Droits en Matiere de Protection des Donnees",
+      "text": "En vertu du RGPD, vous disposez des droits suivants : Droit d'acces : Vous pouvez demander une copie des donnees personnelles que nous detenons a votre sujet. Droit de rectification : Vous pouvez demander des corrections pour des donnees inexactes ou incompletes. Droit a l'effacement : Vous pouvez demander la suppression de vos donnees personnelles. Droit a la portabilite des donnees : Vous pouvez demander que nous fournissions vos donnees dans un format lisible par machine. Droit de limiter le traitement : Vous pouvez demander des limitations sur la facon dont vos donnees sont traitees. Droit d'opposition : Vous pouvez vous opposer au traitement de vos donnees dans certaines circonstances. Droit de retirer votre consentement : Si le traitement est base sur le consentement, vous pouvez le retirer a tout moment. Pour exercer l'un de ces droits, contactez-nous a : {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
+    },
+    "cookies": {
+      "title": "Cookies et Technologies de Suivi",
+      "text": "Nous utilisons des cookies et des technologies de suivi similaires pour améliorer l'expérience utilisateur."
+    },
+    "children_privacy": {
+      "title": "Confidentialite des Enfants",
+      "text": "Nos services ne sont pas destines aux utilisateurs de moins de 13 ans. Nous ne collectons pas sciemment d'informations personnelles provenant d'enfants. Si vous pensez que nous avons recueilli par inadvertance de telles donnees, veuillez nous contacter, et nous les supprimerons."
+    },
+    "data_transfers": {
+      "title": "Transferts de Donnees",
+      "text": "Nous ne transferons pas vos donnees personnelles en dehors de l'Espace Economique Europeen (EEE)."
+    },
+    "changes_to_policy": {
+      "title": "Modifications de cette Politique",
+      "text": "Nous pouvons mettre a jour cette politique de confidentialite de temps en temps. Toutes les modifications seront publiees sur cette page avec une 'Date d'effet' mise a jour. Nous vous encourageons a consulter cette politique periodiquement pour les mises a jour."
+    },
+    "contact_us": {
+      "title": "Contactez-nous",
+      "text": "Si vous avez des questions ou des preoccupations concernant cette politique de confidentialite ou la facon dont nous traitons vos donnees personnelles, veuillez nous contacter a : {'liguyon@student.42lehavre.fr'}, {'jnorget@student.42lehavre.fr'}, {'okazdar@student.42lehavre.fr'}, {'ssasdat@student.42lehavre.fr'}, {'yzioual@student.42lehavre.fr'}."
+    }
+  },
+  "power-up": "pouvoirs",
+  "games-won": "Parties gagnees",
+  "games-lost": "Parties perdues",
+  "win-rate": "Taux de victoire",
+  "tournaments-won": "Tournois gagnes",
+  "map-background": "fond de carte",
+  "toggle-player-speed": "boost de vitesse du joueur",
+  "toggle-player-size": "boost de taille du joueur",
+  "toggle-player-immortal": "boost d'immortalite du joueur",
+  "toggle-ball-speed": "boost de vitesse de la balle",
+  "toggle-ai-speed": "boost de vitesse de l'IA",
+  "appearance-settings": "apparence"
 }
