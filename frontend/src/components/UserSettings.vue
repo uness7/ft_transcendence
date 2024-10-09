@@ -11,14 +11,14 @@
               <div>
                 <img id="preview" src="" alt="Preview" width="200">
               </div>
-              <div>
-                <label for="avatar">Avatar</label>
-                <input
-                    type="file"
-                    id="avatar"
-                    accept="image/*"
-                />
-              </div>
+<!--              <div>-->
+<!--                <label for="avatar">Avatar</label>-->
+<!--                <input-->
+<!--                    type="file"-->
+<!--                    id="avatar"-->
+<!--                    accept="image/*"-->
+<!--                />-->
+<!--              </div>-->
             </div>
 
             <div class="form">
@@ -100,28 +100,28 @@ export default {
       email: null,
       password: null,
       confirmPassword: null,
-      avatarInput: null,
+      // avatarInput: null,
       avatarPreview: null,
     };
   },
   methods: {
-    onNewAvatarLoaded(event) {
-      event.preventDefault();
-      const file = event.target.files[0];
-      if (file && file.type.match('image.*')) {
-        this.avatarPreview.src = URL.createObjectURL(file);
-        this.avatarPreview.onload = () => {
-          URL.revokeObjectURL(this.avatarPreview.src);
-        }
-      }
-    },
+    // onNewAvatarLoaded(event) {
+    //   event.preventDefault();
+    //   const file = event.target.files[0];
+    //   if (file && file.type.match('image.*')) {
+    //     this.avatarPreview.src = URL.createObjectURL(file);
+    //     this.avatarPreview.onload = () => {
+    //       URL.revokeObjectURL(this.avatarPreview.src);
+    //     }
+    //   }
+    // },
     selectDOMInputs() {
       this.firstName = document.querySelector("#firstName");
       this.lastName = document.querySelector("#lastName");
       this.email = document.querySelector("#email");
       this.password = document.querySelector("#password");
       this.confirmPassword = document.querySelector("#confirm-password");
-      this.avatarInput = document.querySelector("#avatar");
+      // this.avatarInput = document.querySelector("#avatar");
       this.avatarPreview = document.querySelector("#preview");
     },
     fetchAuthStore() {
@@ -164,8 +164,8 @@ export default {
           updatedData["last_name"] = this.lastName.value;
         if (this.email.value !== this.user.email)
           updatedData["email"] = this.email.value;
-        if (this.avatarPreview.src !== this.user.avatar)
-          updatedData["avatar"] = this.avatarPreview.src;
+        // if (this.avatarPreview.src !== this.user.avatar)
+        //   updatedData["avatar"] = this.avatarPreview.src;
         if (Object.keys(updatedData).length > 0) {
           await this.patchUser(updatedData);
         } else {
@@ -182,7 +182,7 @@ export default {
       this.lastName.value = this.user.last_name;
       this.email.value = this.user.email;
       this.avatarPreview.src = this.user.avatar;
-      this.avatarInput.value = "";
+      // this.avatarInput.value = "";
       this.password.value = "";
       this.confirmPassword.value = "";
     },
@@ -246,7 +246,7 @@ export default {
     this.selectDOMInputs();
     await this.updateInputsValues();
 
-    this.avatarInput.addEventListener("change", this.onNewAvatarLoaded);
+    // this.avatarInput.addEventListener("change", this.onNewAvatarLoaded);
   },
 };
 </script>

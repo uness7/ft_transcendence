@@ -135,6 +135,7 @@ export const useAuthStore = defineStore("auth", {
                     }
                 );
                 this.setTokens(response.data.access, this.refreshToken);
+                console.log("I refresh: ", this.refreshToekn);
                 return response.data.access;
             } catch (error) {
                 console.error("Token refresh failed:", error);
