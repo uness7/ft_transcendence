@@ -66,7 +66,7 @@ export default {
           console.error("Verify otp has failed");
         }
       } catch (error) {
-        throw new Error("Error occurred: ", error);
+        alert("Enter OTP Code");
       }
     };
 
