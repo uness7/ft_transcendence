@@ -66,7 +66,7 @@ export default {
           console.error("Verify otp has failed");
         }
       } catch (error) {
-        alert("Enter OTP Code");
+        alert("Something went wrong with OPT? Did you enter the code?");
       }
     };
 
@@ -78,7 +78,6 @@ export default {
           qrCode.value = response.data.qr_code;
           sharedKey.value = response.data.key;
 
-          // save qr code in db
           try {
             const response = await axios.post(`http://localhost:8000/api/v1/save_qr_code/${userId.value}/`, {
               key: sharedKey.value,
