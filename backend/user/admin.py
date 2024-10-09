@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import User, FriendRequest, MatchHistory;
 
-# Register your models here.
+admin.site.register((MatchHistory));
+admin.site.register((User));
+admin.site.register((FriendRequest));

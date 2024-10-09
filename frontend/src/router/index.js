@@ -5,7 +5,6 @@ import RegisterView from "../views/RegisterView.vue";
 import AboutView from "../views/AboutView.vue";
 import ModeView from "../views/ModeView.vue";
 import UserView from "../views/UserView.vue";
-import RemoteView from "../views/RemoteView.vue";
 import UserSettings from "../components/UserSettings.vue";
 import TournamentView from "../views/TournamentView.vue";
 import NotFound from "../views/NotFound.vue";
@@ -17,7 +16,12 @@ import PrivacyPolicyView from "../views/PrivacyPolicyView.vue";
 import PongLocalView from "../views/PongLocalView.vue";
 import PongTournamentView from "../views/PongTournamentView.vue";
 import PongAiView from "../views/PongAiView.vue";
-import TwoFacView from "../views/TwoFacView.vue";
+import PongMultiplayerView from "../views/PongMultiplayerView.vue";
+import EnableOrDisableOTPView from "../views/EnableOrDisableOTPView.vue";
+import FriendsView from "@/views/FriendsView.vue";
+import AppearanceSettings from "@/components/AppearanceSettings.vue";
+import GameSettings from "../components/GameSettings.vue";
+import MatchHistoryView from "@/views/MatchHistoryView.vue";
 
 
 const routes = [
@@ -54,14 +58,6 @@ const routes = [
         },
     },
     {
-        path: "/2fa",
-        name: "2fa",
-        component: TwoFacView,
-        meta: {
-            requiresAuth: true,
-        },
-    },
-    {
         path: "/mode",
         name: "mode",
         component: ModeView,
@@ -70,28 +66,21 @@ const routes = [
         },
     },
     {
-        path: "/remote",
-        name: "remote",
-        component: RemoteView,
-        meta: {
-            requiresAuth: true,
-        },
-    },
-    {
-        path: "/user/:id",
+        path: "/user",
         name: "user",
         component: UserView,
         meta: {
             requiresAuth: true,
+            requiresOTP: true,
         },
-        props: true,
     },
     {
         path: "/tournament",
         name: "tournament",
         component: TournamentView,
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
@@ -99,7 +88,8 @@ const routes = [
         name: 'create-tournament',
         component: CreateTournament,
         meta: {
-          requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
@@ -107,7 +97,8 @@ const routes = [
         name: 'TournamentDetails',
         component: TournamentDetails,
         meta: {
-          requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
@@ -115,15 +106,33 @@ const routes = [
         name: 'TournamentBrackets',
         component: TournamentBrackets,
         meta: {
-          requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
-        path: "/user/settings",
+        path: "/user/account-settings",
         name: "settings",
         component: UserSettings,
         meta: {
             requiresAuth: true,
+            requiresOTP: true,
+        },
+    },
+    {
+        path: "/user/game-settings",
+        component: GameSettings,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: true,
+        },
+    },
+    {
+        path: "/user/appearance-settings",
+        component: AppearanceSettings,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
@@ -135,33 +144,71 @@ const routes = [
         },
     },
     {
-        path: "/pong/local",
+        path: "/pong-local",
         name: "pong-local",
         component: PongLocalView,
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
-        path: "/pong/tournament",
+        path: "/pong-tournament",
         name: "pong-tournament",
         component: PongTournamentView,
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
-        path: "/pong/ai",
+        path: "/pong-ai",
         name: "pong-ai",
         component: PongAiView,
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
+        },
+    },
+    {
+        path: "/pong-multiplayer",
+        name: "pong-multiplayer",
+        component: PongMultiplayerView,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
         path: "/:pathMatch(.*)*",
         name: "NotFound",
         component: NotFound,
+    },
+    {
+        path: "/two-factor-auth",
+        name: "2fa",
+        component: EnableOrDisableOTPView,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+      path: "/add-friends",
+      name: "friends",
+      component: FriendsView,
+      meta: {
+          requiresAuth: true,
+          requiresOTP: true,
+      },
+    },
+    {
+        path: "/match-history",
+        name: "match_history",
+        component: MatchHistoryView,
+        meta: {
+            requiresAuth: true,
+            requiresOTP: true,
+        },
     },
 ];
 
@@ -171,20 +218,42 @@ const router = createRouter({
 });
 
 export function isAuthenticated() {
-    return !!localStorage.getItem("accessToken");
+    const authStore = useAuthStore();
+    return authStore.isAuthenticated;
+}
+
+export const isOTPVerified = () => {
+    const authStore = useAuthStore();
+    return authStore.isOTPVerified;
 }
 
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
 
+    let proceed = true;
+    let goToLogin = false;
+
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (!authStore.isAuthenticated) {
-            next("/login");
-        } else {
-            next();
+            proceed = false;
+            goToLogin = true;
         }
-    } else {
+    }
+
+    if (to.matched.some((record) => record.meta.requiresOTP)) {
+        if (!authStore.isOTPVerified) {
+            proceed = false;
+            goToLogin = false;
+        }
+    }
+
+    if (proceed)
         next();
+    else {
+        if (goToLogin)
+            next('/login');
+        else
+            next('/two-factor-auth');
     }
 });
 

@@ -8,6 +8,9 @@ DOCKER_COMMAND_DEV = docker compose -f $(COMPOSE_DEV) --env-file $(ENV_DEV) -p $
 dev:
 	$(DOCKER_COMMAND_DEV) up -d
 
+dev-runserver:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py runserver
+
 dev-down:
 	$(DOCKER_COMMAND_DEV) down
 
@@ -26,6 +29,9 @@ dev-ps:
 dev-pytest:
 	$(DOCKER_COMMAND_DEV) exec web pytest
 
+dev-createsuperuser:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py createsuperuser
+
 dev-migrate:
 	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations game
 	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
@@ -38,12 +44,19 @@ dev-migrate-auth:
 	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations authentication 
 	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
 
+dev-migrate-generic:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py makemigrations 
+	$(DOCKER_COMMAND_DEV) exec web python manage.py migrate
+
 dev-startapp:
 	@if [ -z "$(name_app)" ]; then \
 		echo "You must provide a name for the app. Usage: make startapp name_app=your_app_name"; \
 		exit 1; \
 	fi
 	$(DOCKER_COMMAND_DEV) exec web python3 manage.py startapp $(name_app)
+
+dev-shell:
+	$(DOCKER_COMMAND_DEV) exec web python manage.py shell
 
 .PHONY: dev dev-down dev-migrate
 

@@ -1,254 +1,180 @@
- <template>
+<template>
   <div class="content">
-    <div v-if="user">
-      <div class="profile">
-        <img src="../assets/img/pp/okazdar.jpg" alt="Profile Photo" class="profile-photo"/> 
-        <div class="profile-info">
-          <h1 id="username">{{ user.name }}</h1>
-        </div>
-      </div>
-      <div class="profile-stats">
-        <div class="stat-item">
-          <span class="stat-label">{{$t('games-played')}}:</span>
-          <span class="stat-value">{{ user.id }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">{{$t('wins')}}:</span>
-          <span class="stat-value">{{ user.id }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">{{$t('losses')}}:</span>
-          <span class="stat-value">{{ user.id }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">{{$t('total-score')}}:</span>
-          <span class="stat-value">{{ user.id }}</span>
-        </div>
-        <div class="friends-list">
-        <h2>{{ $t('friends') }}</h2>
-         <ul>
-          <li v-for="friend in user.friends" :key="friend.id">
-            {{ user.id }}
-          </li> 
-        </ul>
-      </div>
-        </div>
-      </div>
-    <div v-else-if="loading">
-      <p>Chargement...</p>
+    <div class="profile-section">
+      <img :src="`${response?.data?.avatar}`" alt="Profile Image" class="profile-img">
+      <h1 class="username">{{ response?.data?.username ?? "default" }}</h1>
+      <h1>{{ response?.data?.first_name ?? "default" }}</h1>
+      <h1>{{ response?.data?.last_name ?? "default" }}</h1>
+      <h1>{{ response?.data?.email ?? "default" }}</h1>
     </div>
-    <div v-else>
-      <p>Impossible de charger les données de l'utilisateur.</p>
-    </div>
-  </div>
-</template>
-    
-<script>
-    import axios from 'axios';
-  
-    export default {
-    name: 'UserProfile',
-    props: ['id'],
-    data() {
-      return {
-        user: null,
-        loading: true,
-      };
-    },
-    mounted() {
-      this.fetchUser();
-    },
-    methods: {
-        fetchUser() {
-        axios.get(`https://jsonplaceholder.typicode.com/users/${this.id}`)
-            .then(response => {
-            this.user = response.data;
-            })
-            .catch(error => {
-            console.error('Erreur:', error);
-            });
-        }
-    }
-  };
-  </script>
-  
-<style scoped>
-
-@font-face {
-  font-family: '8bit';
-  src: url('../assets/font/8bit.ttf') format('truetype');
-}
-
-.content {
-  color: white;
-  margin-top: 80px;   /* <--- ne pas trop changer */
-  font-family: '8bit',sans-serif;
-  margin-left: 500px;
-  font-size: 20px;
-}
-
-.profile-header {
-  text-align: center;
-}
-.profile{
-  display: flex;
-  align-items: center;
-}
-.profile-photo {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #ddd;
-  margin-right: 30px;
-}
-
-.profile-info{
-  display: flex;
-  flex-direction: column;
-}
-
-#username {
-  font-size: 80px;
-  margin: 0 auto;
-}
-
-.profile-stats {
-  margin-top: 20px;
-}
-
-.stat-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.stat-label {
-  font-weight: bold;
-}
-
-.stat-value {
-  color: #333;
-}
-
-.friends-list {
-  margin-top: 20px;
-}
-
-.friends-list h2 {
-  font-size: 24px;
-}
-
-.friends-list ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.friends-list li {
-  padding: 5px 0;
-}
-
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-</style> 
-
-<!-- <template>
-  <div class="content">
-    <div v-if="user">
-      <div class="profile-header">
-        <img :src="user.profilePhoto" alt="Profile Photo" class="profile-photo"/> 
-        <h1 id="username">{{ user.name }}</h1>
-        <p>{{ user.email }}</p>
-        <p>{{ user.id }}</p>
-      </div>
-      <div class="profile-stats">
-        <div class="stat-item">
-          <span class="stat-label">Games Played:</span>
-          <span class="stat-value">{{ user.id }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Wins:</span>
-          <span class="stat-value">{{ user.id }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Losses:</span>
-          <span class="stat-value">{{ user.id }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Total Score:</span>
-          <span class="stat-value">{{ user.id }}</span>
+    <div class="main-section">
+      <div class="left-section">
+        <div class="stat-grid">
+          <div class="stat">
+            <h2>{{ $t('games-won') }}</h2>
+            <p>{{ response?.data?.games_won ?? 0 }}</p>
+          </div>
+          <div class="stat">
+            <h2>{{ $t('games-lost') }}</h2>
+            <p>{{ response?.data?.games_lost ?? 0 }}</p>
+          </div>
+          <div class="stat">
+            <h2>{{ $t('win-rate') }}</h2>
+            <p>{{
+                isNaN(response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost))
+                    ? 0
+                    : (100 * response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)).toFixed(2)
+              }}%</p>
+          </div>
         </div>
       </div>
-      <div class="friends-list">
-        <h2>Friends</h2>
-         <ul>
-          <li v-for="friend in user.friends" :key="friend.id">
-            {{ user.id }}
-          </li> 
-        </ul>
+      <div class="divider"></div>
+      <div class="right-section">
+        <canvas id="gamesChart"></canvas>
       </div>
-      <button @click="updateUserData">Update Data</button>
-    </div>
-    <div v-else-if="loading">
-      <p>Chargement...</p>
-    </div>
-    <div v-else>
-      <p>Impossible de charger les données de l'utilisateur.</p>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import Chart from "chart.js/auto";
+import {computed} from 'vue';
+import {useAuthStore} from '@/store/auth';
+import axios from "axios"
 
 export default {
-  name: 'UserProfile',
-  props: ['id'],
   data() {
     return {
-      user: null,
-      loading: true
+      response: null,
     };
   },
-  mounted() {
-    this.fetchUser();
-  },
-  methods: {
-    fetchUser() {
-      this.loading = true;
-      axios.get(`https://api.example.com/users/${this.id}`)
-        .then(response => {
-          this.user = response.data;
-          this.loading = false;
-        })
-        .catch(error => {
-          console.error('Erreur:', error);
-          this.loading = false;
-        });
-    },
-    updateUserData() {
-      axios.get(`https://api.example.com/users/${this.id}`)
-        .then(response => {
-          this.user = response.data;
-        })
-        .catch(error => {
-          console.error('Erreur:', error);
-        });
+  async mounted() {
+    const authStore = useAuthStore();
+    const user = computed(() => authStore.user || {username: 'default', id: ''});
+    try {
+      this.response = await axios.get(
+          `http://localhost:8000/api/user/${user.value.id}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${authStore.accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+      );
+    } catch (e) {
+      console.error(e);
     }
+
+    this.primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+
+    const ctx = document.getElementById("gamesChart").getContext("2d");
+
+    const canvas = document.getElementById("gamesChart");
+    canvas.height = 500;
+
+    new Chart(ctx, {
+      type: "pie",
+      data: {
+        labels: ["Won", "Lost"],
+        datasets: [
+          {
+            label: "Games",
+            data: [this.response.data.games_won, this.response.data.games_lost],
+            backgroundColor: [this.primaryColor, "#222"],
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              padding: 20,
+              color: '#FFFFFF',
+            },
+          },
+        },
+        layout: {
+          padding: {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+          },
+        },
+        maintainAspectRatio: false,
+      },
+    });
   }
 };
 </script>
- -->
+
+<style scoped>
+.content {
+  color: rgb(255, 255, 255);
+  margin-left: 400px;
+  background-color: var(--background-color);
+  font-family: '8bit', sans-serif;
+}
+
+.profile-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 80px;
+}
+
+.profile-img {
+  border-radius: 10%;
+  width: 10%;
+  margin-top: -40px;
+  border: 2px solid white;
+}
+
+.username {
+  font-size: 4rem;
+  margin-top: 0px;
+}
+
+.main-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-section {
+  width: 45%;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.stat {
+  text-align: center;
+  background-color: rgb(15, 15, 15);
+  padding: 30px;
+  border: 1px solid rgb(50, 50, 50);
+  border-radius: 8px;
+  font-size: 1.2rem;
+}
+
+.divider {
+  width: 2px;
+  background-color: grey;
+}
+
+.right-section {
+  width: 45%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+canvas {
+  width: 100%;
+  max-width: 350px;
+}
+</style>

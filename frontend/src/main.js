@@ -7,16 +7,18 @@ import './assets/styles/global.css'
 import axios from 'axios'
 import { useAuthStore } from './store/auth'
 
-const app = createApp(App)
-const pinia = createPinia()
 
-app.use(pinia)
-app.use(router)
-app.use(i18n)
+import piniaPluginPersistedState  from "pinia-plugin-persistedstate"
+
+const app = createApp(App);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedState);
+app.use(pinia);
+app.use(router);
+app.use(i18n);
 
 const authStore = useAuthStore()
 
-// Axios interceptor for token refresh
 axios.interceptors.response.use(
   response => response,
   async error => {

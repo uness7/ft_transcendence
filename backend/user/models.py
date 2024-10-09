@@ -5,9 +5,9 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.core.exceptions import ObjectDoesNotExist;
 from django.db import models;
 from django.http import Http404;
+from django_otp.plugins.otp_totp.models import TOTPDevice;
 
 class   UserManager(BaseUserManager):
-
     def get_object_by_public_id(self, public_id):
         try:
             instance = self.get(public_id=public_id);
@@ -23,6 +23,7 @@ class   UserManager(BaseUserManager):
         if password is None:
             raise TypeError('User must have a valid password');
         user = self.model(username=username, email=self.normalize_email(email), **kwargs);
+        #TOTPDevice.objects.create(user=user);
         user.set_password(password);
         user.save(using=self._db);
         return user;
@@ -40,6 +41,8 @@ class   UserManager(BaseUserManager):
         user.save(using=self._db);
         return user;
 
+def upload_to(instance, filename):
+    return 'avatars/{filename}'.format(filename=filename)
 
 class   User(AbstractBaseUser, PermissionsMixin):
     public_id = models.UUIDField(db_index=True, unique=True, default=uuid.uuid4, editable=False);
@@ -49,12 +52,31 @@ class   User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True);
     is_active = models.BooleanField(default=True);
     is_superuser = models.BooleanField(default=False);
+    is_staff = models.BooleanField(default=False);
     created = models.DateTimeField(auto_now=True);
     updated = models.DateTimeField(auto_now_add=True);
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True); # optional
+    bio = models.TextField(max_length=500, blank=True, null=True, default="A short bio about you.");
+    avatar = models.ImageField(upload_to=upload_to, default='avatars/default_avatar.jpg', null=True, blank=True);
     games_played = models.IntegerField(default=0);
     games_won = models.IntegerField(default=0);
     games_lost = models.IntegerField(default=0);
+    is_anonymous = models.BooleanField(default=False);
+    is_otp_verified = models.BooleanField(default=False);
+    friends = models.ManyToManyField('self', symmetrical=False, related_name='friend_set', blank=True);
+    # user.friend_set.all() would give you all friends of a user.
+    match_history = models.ManyToManyField('self', symmetrical=False, related_name='player', blank=True);
+
+    # Data validation
+    def clean(self):
+        super.clean(); # keeping default data validation
+        if self.games_won + self.games_lost > self.games_played:
+            raise ValidationError("Games won and lost cannot exceed games played.");
+
+        if not self.first_name or not self.last_name:
+            raise ValidationError("First name and last name cannot be empty.");
+        
+        if not self.username.isalnum():
+            raise ValidationError("Username should contain only alphanumeric characters.");
 
     @property
     def win_rate(self):
@@ -73,3 +95,29 @@ class   User(AbstractBaseUser, PermissionsMixin):
     @property
     def name(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class   FriendRequest(models.Model):
+    from_user = models.ForeignKey(User, related_name='sent_requests', on_delete=models.CASCADE);
+    to_user = models.ForeignKey(User, related_name='received_requests', on_delete=models.CASCADE);
+    created_at = models.DateTimeField(auto_now_add=True);
+
+    def __str__(self):
+        return f"{self.from_user} -> {self.to_user}";
+
+def get_choices():
+    return [
+        ("LO", "Local"),
+        ("2VS2", "One against One"),
+        ("AI", "Against Artificial Intelligence"),
+    ];
+
+class   MatchHistory(models.Model):
+    player      = models.ForeignKey(User, related_name='user_match_history', on_delete=models.CASCADE);
+    date        = models.DateTimeField(auto_now_add=True)
+    final_score = models.BooleanField(default=False, null=False);
+    mode        = models.CharField(max_length=10, choices=get_choices);
+
+    def save(self, *args, **kwargs):
+            super().save(*args, **kwargs)
+            self.player.user_match_history.add(self)

@@ -9,10 +9,13 @@ export const useAuthStore = defineStore("auth", {
         accessToken: null,
         refreshToken: null,
         user: null,
+        user_id: '',
+        isOTPVerified: false,
     }),
     getters: {
         isAuthenticated: (state) => !!state.accessToken,
         getUser: (state) => state.user,
+        getUserId: (state) => state.user_id,
     },
     actions: {
         async initTokens() {
@@ -47,12 +50,16 @@ export const useAuthStore = defineStore("auth", {
                     credentials
                 );
                 this.setTokens(response.data.access, response.data.refresh);
-                await this.fetchUser();
+                this.setUser(response.data.user);
+                this.user_id = response.data.user.user_id;
+                this.isOTPVerified = response.data.user.is_otp_verified;
+
+                await this.fetchUser(response.data.user.id);
                 return true;
             } catch (error) {
                 console.error("Login failed:", error);
                 return false;
-            } 
+            }
         },
         async register(userData) {
             try {
@@ -77,7 +84,7 @@ export const useAuthStore = defineStore("auth", {
                 const response = await axios.post(
                     "http://localhost:8000/api/authentication/logout/",
                     {
-                        refresh: this.refreshToken, // This is the payload
+                        refresh: this.refreshToken,
                     },
                     {
                         headers: {
@@ -90,17 +97,36 @@ export const useAuthStore = defineStore("auth", {
                     throw new Error('Failed to blacklist the token');
                 }
                 else
-                    console.log("Loggedout successfully!");
+                    console.error("Logged out successfully!");
             } catch (error) {
                 throw new Error(error);
             }
         },
+        async onLogout() {
+            try {
+                await axios.patch(
+                    `http://localhost:8000/api/user/${this.user.id}/`,
+                    {
+                        "is_otp_verified": false
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.accessToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+            } catch (e) {
+                console.error(e);
+            }
+        },
         async logout() {
+            await this.onLogout();
             await this.apiBlacklistToken();
             this.clearTokens();
             this.setUser(null);
         },
-        async refreshToken() {
+        async getRefreshToken() {
             try {
                 const response = await axios.post(
                     "http://localhost:8000/api/authentication/refresh/",
@@ -109,6 +135,7 @@ export const useAuthStore = defineStore("auth", {
                     }
                 );
                 this.setTokens(response.data.access, this.refreshToken);
+                console.log("I refresh: ", this.refreshToekn);
                 return response.data.access;
             } catch (error) {
                 console.error("Token refresh failed:", error);
@@ -116,10 +143,10 @@ export const useAuthStore = defineStore("auth", {
                 return null;
             }
         },
-        async fetchUser() {
+        async fetchUser(user_id) {
             try {
                 const response = await axios.get(
-                    "http://localhost:8000/api/user/",
+                    `http://localhost:8000/api/user/${user_id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${this.accessToken}`,
@@ -129,7 +156,7 @@ export const useAuthStore = defineStore("auth", {
                 this.setUser(response.data);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
-                    const newToken = await this.refreshToken();
+                    const newToken = await this.getRefreshToken();
                     if (newToken) {
                         return this.fetchUser();
                     }
@@ -138,4 +165,5 @@ export const useAuthStore = defineStore("auth", {
             }
         },
     },
+    persist: true,
 });
