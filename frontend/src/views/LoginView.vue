@@ -64,6 +64,7 @@ export default {
         router.push('/two-factor-auth');
       } else {
         router.push('/login');
+        alert("Login has failed");
       }
     };
 

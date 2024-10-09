@@ -53,8 +53,6 @@
                   required
                   @blur="validateConfirmPassword"
               />
-              <!-- <<<<<<< HEAD -->
-              <!-- ======= -->
               <input
                   type="checkbox"
                   id="consent"
@@ -66,7 +64,6 @@
                 <router-link to="privacy" class="aaa">privacy policy</router-link>
                 .
               </label>
-              <!-- >>>>>>> jules -->
             </div>
             <button
                 type="submit"
@@ -148,10 +145,12 @@ export default {
             router.push('/login');
           } else {
             errorMessage.value = "Registration failed. Please try again.";
+            alert(errorMessage.value);
           }
         } catch (error) {
           console.error("Registration error:", error);
           errorMessage.value = "An error occurred during registration.";
+          alert(errorMessage.value);
         } finally {
           isLoading.value = false;
         }
@@ -204,13 +203,10 @@ export default {
   color: #fff;
 }
 
-/* <<<<<<< HEAD */
-/* ======= */
 .aaa {
   color: white;
 }
 
-/* >>>>>>> jules */
 .w100 {
   width: 100%;
 }
