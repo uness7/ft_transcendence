@@ -9,7 +9,7 @@
   const matchHistory = ref([]);
   const message = ref("");
 
-  const URL_MATCH_HISTORY = `http://localhost:8000/api/v1/user/match_history/${user.value.id}`;
+  const URL_MATCH_HISTORY = `https://localhost:8443/api/v1/user/match_history/${user.value.id}`;
 
   function fetchMatchHistories() {
     axios

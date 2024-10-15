@@ -45,7 +45,7 @@ export default {
     const qrCodeAgain = ref("");
 
     const displayQR = () => {
-      axios.get(`http://localhost:8000/api/v1/display_qr_code/${userId.value}/`)
+      axios.get(`https://localhost:8443/api/v1/display_qr_code/${userId.value}/`)
           .then(response => {
             qrCodeAgain.value = response.data.qr_code;
           })
@@ -56,7 +56,7 @@ export default {
 
     const verifyOTP = async () => {
       try {
-        const response = await axios.post(`http://localhost:8000/api/v1/verify_otp_code/${userId.value}/`, {
+        const response = await axios.post(`https://localhost:8443/api/v1/verify_otp_code/${userId.value}/`, {
           otp_code: otpCode.value,
         });
         if (response.request.status === 200) {
@@ -73,13 +73,13 @@ export default {
     const generateQRCode = async () => {
       if (isLoggedIn.value) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/v1/get_qr_code/${userId.value}/`);
+          const response = await axios.get(`https://localhost:8443/api/v1/get_qr_code/${userId.value}/`);
 
           qrCode.value = response.data.qr_code;
           sharedKey.value = response.data.key;
 
           try {
-            const response = await axios.post(`http://localhost:8000/api/v1/save_qr_code/${userId.value}/`, {
+            const response = await axios.post(`https://localhost:8443/api/v1/save_qr_code/${userId.value}/`, {
               key: sharedKey.value,
             });
             if (response.request.status === 201) {

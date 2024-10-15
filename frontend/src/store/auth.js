@@ -46,7 +46,7 @@ export const useAuthStore = defineStore("auth", {
         async login(credentials) {
             try {
                 const response = await axios.post(
-                    "http://localhost:8000/api/authentication/login/",
+                    "https://localhost:8443/api/authentication/login/",
                     credentials
                 );
                 this.setTokens(response.data.access, response.data.refresh);
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore("auth", {
         async register(userData) {
             try {
                 await axios.post(
-                    "http://localhost:8000/api/authentication/register/",
+                    "https://localhost:8443/api/authentication/register/",
                     userData
                 );
                 return await this.login({
@@ -82,7 +82,7 @@ export const useAuthStore = defineStore("auth", {
         async apiBlacklistToken() {
             try {
                 const response = await axios.post(
-                    "http://localhost:8000/api/authentication/logout/",
+                    "https://localhost:8443/api/authentication/logout/",
                     {
                         refresh: this.refreshToken,
                     },
@@ -105,7 +105,7 @@ export const useAuthStore = defineStore("auth", {
         async onLogout() {
             try {
                 await axios.patch(
-                    `http://localhost:8000/api/user/${this.user.id}/`,
+                    `https://localhost:8443/api/user/${this.user.id}/`,
                     {
                         "is_otp_verified": false
                     },
@@ -129,7 +129,7 @@ export const useAuthStore = defineStore("auth", {
         async getRefreshToken() {
             try {
                 const response = await axios.post(
-                    "http://localhost:8000/api/authentication/refresh/",
+                    "https://localhost:8443/api/authentication/refresh/",
                     {
                         refresh: this.refreshToken,
                     }
@@ -146,7 +146,7 @@ export const useAuthStore = defineStore("auth", {
         async fetchUser(user_id) {
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/api/user/${user_id}`,
+                    `https://localhost:8443/api/user/${user_id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${this.accessToken}`,

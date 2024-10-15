@@ -103,7 +103,7 @@ export default {
       let response = null;
       try {
         response = await axios.get(
-            `http://localhost:8000/api/user/${user.value.id}/`,
+            `https://localhost:8443/api/user/${user.value.id}/`,
             {
               headers: {
                 Authorization: `Bearer ${authStore.accessToken}`,
@@ -240,7 +240,7 @@ export default {
         updateMatchHistory = async (playerWon) => {
           try {
             await axios.post(
-                `http://localhost:8000/api/v1/user/match_history/${user.value.id}/`,
+                `https://localhost:8443/api/v1/user/match_history/${user.value.id}/`,
                 {
                   user: username,
                   final_score: playerWon,
@@ -259,7 +259,7 @@ export default {
           }
           try {
             response = await axios.patch(
-                `http://localhost:8000/api/user/${user.value.id}/`,
+                `https://localhost:8443/api/user/${user.value.id}/`,
                 {
                   "games_played": updatedData.games_played,
                   "games_lost": updatedData.games_lost,

@@ -40,7 +40,7 @@ export default {
     const user = computed(() => authStore.user || {username: 'default', id: ''});
     try {
       this.response = await axios.get(
-          `http://localhost:8000/api/user/${user.value.id}/`,
+          `https://localhost:8443/api/user/${user.value.id}/`,
           {
             headers: {
               Authorization: `Bearer ${authStore.accessToken}`,
@@ -60,7 +60,7 @@ export default {
       const user = computed(() => authStore.user || {username: 'default', id: ''});
       const user_id = user.value.id;
       try {
-        const response = await axios.patch(`http://localhost:8000/api/v1/anonymize_user/${user_id}/`,
+        const response = await axios.patch(`https://localhost:8443/api/v1/anonymize_user/${user_id}/`,
             {
               headers: {
                 Authorization: `Bearer ${authStore.accessToken}`,
@@ -80,7 +80,7 @@ export default {
       const authStore = useAuthStore();
       const user = computed(() => authStore.user || {username: 'default', id: ''});
       const user_id = user.value.id;
-      const response = await axios.delete(`http://localhost:8000/api/user/${user_id}/`, {
+      const response = await axios.delete(`https://localhost:8443/api/user/${user_id}/`, {
         headers: {
           Authorization: `Bearer ${authStore.accessToken}`,
           'Content-Type': 'application/json',

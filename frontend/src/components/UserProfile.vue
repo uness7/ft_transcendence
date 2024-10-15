@@ -53,7 +53,7 @@ export default {
     const user = computed(() => authStore.user || {username: 'default', id: ''});
     try {
       this.response = await axios.get(
-          `http://localhost:8000/api/user/${user.value.id}/`,
+          `https://localhost:8443/api/user/${user.value.id}/`,
           {
             headers: {
               Authorization: `Bearer ${authStore.accessToken}`,

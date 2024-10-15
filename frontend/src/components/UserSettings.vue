@@ -134,7 +134,7 @@ export default {
       let response = null;
       try {
         response = await axios.get(
-            `http://localhost:8000/api/user/${this.userId}/`,
+            `https://localhost:8443/api/user/${this.userId}/`,
             {
               headers: {
                 Authorization: `Bearer ${this.accessToken}`,
@@ -190,7 +190,7 @@ export default {
       let response = null;
       try {
         response = await axios.patch(
-            `http://localhost:8000/api/v1/update_password/${this.userId}/${newPassword}/`,
+            `https://localhost:8443/api/v1/update_password/${this.userId}/${newPassword}/`,
             {
               headers: {
                 Authorization: `Bearer ${this.accessToken}`,
@@ -209,7 +209,7 @@ export default {
       let response = null;
       try {
         response = await axios.patch(
-            `http://localhost:8000/api/user/${this.userId}/`,
+            `https://localhost:8443/api/user/${this.userId}/`,
             userData,
             {
               headers: {

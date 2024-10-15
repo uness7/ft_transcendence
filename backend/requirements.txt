@@ -24,3 +24,5 @@ qrcode
 # data anonymization
 django-anon
 
+gunicorn>=20.0,<21.0
+
