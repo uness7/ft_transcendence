@@ -10,8 +10,8 @@
 				<div class="dropdown-content">
 					<router-link to="/user">{{ $t('profile') }}</router-link>
 					<router-link to="/user/account-settings">{{ $t('settings') }}</router-link>
-          <router-link to="/add-friends">{{ $t('friends') }}</router-link>
-          <router-link to="/match-history">{{ $t('history') }}</router-link>
+					<router-link to="/add-friends">{{ $t('friends') }}</router-link>
+					<router-link to="/match-history">{{ $t('history') }}</router-link>
 					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
 				</div>
 			</div>
@@ -147,7 +147,7 @@ export default {
 }
 
 #language-flag {
-	width: 3%;
+	width: 2%;
 	position: absolute;
 	right: 350px;
 	cursor: pointer;
@@ -248,15 +248,16 @@ export default {
 .dropdown-content a:hover {
 	background-color: rgb(20, 20, 20);
 	color: white;
+}.top-bar__about-button:hover,
+.top-bar__login-button:hover,
+.top-bar__dropbtn:hover {
+    transform: scale(1.05);
+    color: var(--primary-color);
 }
 
 .dropdown:hover .dropdown-content {
 	display: block;
 }
 
-.dropdown:hover .dropbtn {
-	background-color: var(--background-color);
-	color: var(--primary-color);
-}
 
 </style>
