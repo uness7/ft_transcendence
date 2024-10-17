@@ -15,7 +15,8 @@ import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
 import {useAuthStore} from "@/store/auth";
 import {computed} from "vue";
-import axios from "axios";
+import apiClient from "@/services/apiService";
+
 
 export default {
   name: 'PongAiView',
@@ -102,8 +103,8 @@ export default {
       const user = computed(() => authStore.user || {username: 'default', id: ''});
       let response = null;
       try {
-        response = await axios.get(
-            `http://localhost:8000/api/user/${user.value.id}/`,
+        response = await apiClient.get(
+            `/api/user/${user.value.id}/`,
             {
               headers: {
                 Authorization: `Bearer ${authStore.accessToken}`,
@@ -239,8 +240,8 @@ export default {
         }
         updateMatchHistory = async (playerWon) => {
           try {
-            await axios.post(
-                `http://localhost:8000/api/v1/user/match_history/${user.value.id}/`,
+            await apiClient.post(
+                `/api/v1/user/match_history/${user.value.id}/`,
                 {
                   user: username,
                   final_score: playerWon,
@@ -258,8 +259,8 @@ export default {
             games_lost: playerWon ? response.data.games_lost : response.data.games_lost + 1,
           }
           try {
-            response = await axios.patch(
-                `http://localhost:8000/api/user/${user.value.id}/`,
+            response = await apiClient.patch(
+                `/api/user/${user.value.id}/`,
                 {
                   "games_played": updatedData.games_played,
                   "games_lost": updatedData.games_lost,

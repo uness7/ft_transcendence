@@ -12,8 +12,8 @@
         <h2>Enter OTP Code</h2>
         <p>Please enter the 6-digit code from your authentication app.</p>
         <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input"/>
-        <button @click="verifyOTP">Verify</button>
-        <button @click="displayQR">Display QR Code</button>
+        <button @click.prevent="verifyOTP">Verify</button>
+        <button @click.prevent="displayQR">Display QR Code</button>
         <img :src="`data:image/svg+xml;base64,${qrCodeAgain}`" alt="QR Code" v-if="qrCodeAgain" class="qr-code-img"/>
       </div>
     </transition>
@@ -25,18 +25,18 @@
 import {computed, onMounted, ref} from 'vue';
 import {useAuthStore} from '@/store/auth';
 import {useRouter} from 'vue-router';
-import axios from "axios";
+import apiClient from '@/services/apiService';
 
 export default {
   name: 'QRCodeViewer',
   setup() {
     const authStore = useAuthStore();
-    const router = useRouter();
+    const router = useRouter();  
 
-    const isLoggedIn = computed(() => authStore.isAuthenticated);
+    const isLoggedIn = computed(() => authStore.isLoggedIn);
     const user = computed(() => authStore.user || {username: '', id: ''});
     const username = computed(() => user.value.username);
-    const userId = computed(() => user.value.id);
+    const userId = computed(() => authStore.user_id);
 
     const isFirstTime = ref();
     const qrCode = ref("");
@@ -45,7 +45,7 @@ export default {
     const qrCodeAgain = ref("");
 
     const displayQR = () => {
-      axios.get(`http://localhost:8000/api/v1/display_qr_code/${userId.value}/`)
+      apiClient.get(`/api/v1/display_qr_code/${userId.value}/`)
           .then(response => {
             qrCodeAgain.value = response.data.qr_code;
           })
@@ -56,12 +56,12 @@ export default {
 
     const verifyOTP = async () => {
       try {
-        const response = await axios.post(`http://localhost:8000/api/v1/verify_otp_code/${userId.value}/`, {
+        const response = await apiClient.post(`/api/v1/verify_otp_code/${userId.value}/`, {
           otp_code: otpCode.value,
         });
         if (response.request.status === 200) {
           router.push('/');
-          authStore.isOTPVerified = true;
+          authStore.is_otp_verified = true;
         } else {
           console.error("Verify otp has failed");
         }
@@ -73,13 +73,13 @@ export default {
     const generateQRCode = async () => {
       if (isLoggedIn.value) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/v1/get_qr_code/${userId.value}/`);
+          const response = await apiClient.get(`/api/v1/get_qr_code/${userId.value}/`);
 
           qrCode.value = response.data.qr_code;
           sharedKey.value = response.data.key;
 
           try {
-            const response = await axios.post(`http://localhost:8000/api/v1/save_qr_code/${userId.value}/`, {
+            const response = await apiClient.post(`/api/v1/save_qr_code/${userId.value}/`, {
               key: sharedKey.value,
             });
             if (response.request.status === 201) {
