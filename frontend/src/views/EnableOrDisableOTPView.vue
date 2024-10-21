@@ -5,7 +5,7 @@
         <h2>Scan QR Code for 2FA Setup</h2>
         <p>To secure your account, please scan the QR code with your authentication app (Google Authenticator, etc.)</p>
         <img :src="`data:image/svg+xml;base64,${qrCode}`" alt="QR Code" v-if="qrCode" class="qr-code-img"/>
-        <button @click="handleNext">Next</button>
+        <button id="next-btn" @click="handleNext">Next</button>
       </div>
 
       <div v-else key="otp-input-view" class="otp-container">
@@ -135,6 +135,13 @@ p, h2, img {
   color: white;
 }
 
+.qr-code-container {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+}
+
 .qr-code-container,
 .otp-container {
   max-width: 400px;
@@ -149,7 +156,7 @@ p, h2, img {
 .qr-code-container img {
   width: 200px;
   height: 200px;
-  margin: 20px 0;
+  margin-left: 100px;
   color: white;
 }
 
@@ -177,4 +184,13 @@ button {
 .fade-leave-to {
   opacity: 0;
 }
+
+.otp-btn {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	justify-content: center;
+	margin-bottom: 50px;
+}
+
 </style>
