@@ -1,5 +1,6 @@
 {
-  "anonymize-user": "anonimizar datos del usuario",
+  "match-history": "historia",
+  "anonymize-user": "anonimizar datos",
   "delete": "eliminar cuenta",
   "play": "{'jugar'}",
   "about": "{'info'}",
