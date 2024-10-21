@@ -122,7 +122,7 @@ export default {
 .sidebar {
 	color: white;
 	margin-top: 82px;
-	margin-left: 140px;
+	margin-left: 90px;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -135,13 +135,6 @@ export default {
 	justify-content: space-between;
 }
 
-.nav-list {
-  list-style-type: none;
-  padding: 100px 0 0 0px;
-  margin: 0;
-  flex: 1;
-}
-
 .nav-item {
   padding: 15px 20px;
   color: white;
@@ -149,10 +142,27 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: '8bit', sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .nav-item:hover {
+  background-color: rgb(30, 30, 30);
   color: var(--primary-color);
+}
+
+.nav-item a {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-list {
+  list-style-type: none;
+  padding: 100px 0 0 0px;
+  margin: 0;
+  flex: 1;
 }
 
 .logout-box {
@@ -184,23 +194,23 @@ export default {
 }
 
 #logout-button {
-	display: flex;
-	flex-direction: column;
-	color: white;
-	background-color: rgb(155, 0, 0);
-	border: none;
-	padding: 20px;
-	margin-bottom: 10px;
-	margin-right: 150px;
-	cursor: pointer;
-	text-align: center;
-	font-size: 20px;
-	width: 210px;
-	height: 20px;
-	border-radius: 5px;
-	text-decoration: none;
-	font-family: '8bit', sans-serif;
-	transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: rgb(155, 0, 0);
+  border: none;
+  padding: 20px;
+  margin-bottom: 10px;
+  margin-right: 150px;
+  cursor: pointer;
+  font-size: 20px;
+  width: 190px;
+  height: 50px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-family: '8bit', sans-serif;
+  transition: background-color 0.2s ease;
 }
 
 #logout-button:hover {
