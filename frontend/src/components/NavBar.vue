@@ -1,32 +1,33 @@
 <template>
   <div class="sidebar">
     <ul class="nav-list">
-		<li class="nav-item">
-		<router-link to="/user" id="profile-button">{{ $t('profile') }}</router-link>
-		</li>
-		<li class="nav-item">
-		<router-link to="/user/account-settings" id="settings-button">{{ $t('account-settings') }}</router-link>
-		</li>
-		<li class="nav-item">
-		<router-link to="/user/appearance-settings" id="settings-button">{{ $t('appearance-settings') }}</router-link>
-		</li>
-		<li class="nav-item">
-		<router-link to="/user/game-settings" id="settings-button">{{ $t('game-settings') }}</router-link>
-		</li>
-		<li class="nav-item">
-			<router-link to="/match-history" id="settings-button">{{ $t('match-history') }}</router-link>
-		</li>
-		<li class="nav-item">
-			<router-link to="/add-friends" id="settings-button">{{ $t('add-friends') }}</router-link>
-		</li>
+      <li class="nav-item">
+        <router-link to="/user" class="profile-button">{{ $t('profile') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/user/account-settings" class="settings-button">{{ $t('account-settings') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/user/appearance-settings" class="settings-button">{{ $t('appearance-settings') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/user/game-settings" class="settings-button">{{ $t('game-settings') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/match-history" class="settings-button">{{ $t('match-history') }}</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/add-friends" class="settings-button">{{ $t('add-friends') }}</router-link>
+      </li>
     </ul>
-    <div class="logout-box" @click="logout">
-      <button id="logout-button" @click="deleteUser">{{ $t('delete') }}</button>
-      <button id="logout-button" @click="logout">{{ $t('logout') }}</button>
-      <button id="logout-button" @click="anonymize" v-if="!is_anonymous">{{ $t('anonymize-user') }}</button>
+    <div class="logout-box">
+      <button class="logout-button" @click="deleteUser">{{ $t('delete') }}</button>
+      <button class="logout-button" @click="logout">{{ $t('logout') }}</button>
+      <button class="logout-button" @click="anonymize" v-if="!is_anonymous">{{ $t('anonymize-user') }}</button>
     </div>
   </div>
 </template>
+
 
 <script>
 import {useAuthStore} from '@/store/auth';
@@ -113,26 +114,26 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 @font-face {
   font-family: '8bit';
   src: url('../assets/font/8bit.ttf') format('truetype');
 }
 
 .sidebar {
-	color: white;
-	margin-top: 82px;
-	margin-left: 90px;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 250px;
-	height: 100%;
-	background-color: var(--background-color);
-	border-right: solid rgb(70, 70, 70) 1px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  color: white;
+  margin-top: 82px;
+  margin-left: 90px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: var(--background-color);
+  border-right: solid rgb(70, 70, 70) 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .nav-item {
@@ -144,6 +145,7 @@ export default {
   font-family: '8bit', sans-serif;
   width: 100%;
   box-sizing: border-box;
+  border-bottom: 1px solid rgb(54, 54, 54);
 }
 
 .nav-item:hover {
@@ -166,34 +168,34 @@ export default {
 }
 
 .logout-box {
-	position: fixed;
-	bottom: 50px;
-	left: 100;
-	padding: 0 10px;
-	box-sizing: border-box;
+  position: fixed;
+  bottom: 50px;
+  left: 100;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
-#profile-button {
+.profile-button {
   text-decoration: none;
   color: white;
   transition: all 0.2s ease;
 }
 
-#profile-button:hover {
+.profile-button:hover {
   color: var(--primary-color);
 }
 
-#settings-button {
+.settings-button {
   text-decoration: none;
   color: white;
   transition: all 0.2s ease;
 }
 
-#settings-button:hover {
+.settings-button:hover {
   color: var(--primary-color);
 }
 
-#logout-button {
+.logout-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -213,8 +215,7 @@ export default {
   transition: background-color 0.2s ease;
 }
 
-#logout-button:hover {
+.logout-button:hover {
   background-color: darkred;
 }
-
 </style>
