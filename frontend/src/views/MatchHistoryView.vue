@@ -52,23 +52,23 @@
 /* Styling the container */
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding-top: 100px;
-  padding-bottom: 40px;
-  padding-right: 40px;
-  padding-left: 40px;
-  background-color: #f9f9f9;
+  margin-top: 150px;
+  margin-left: 680px;
+  margin-right: 100px;
+  padding: 40px 60px;
+  background-color: #181818;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #2c3e50;
   font-family: 'Arial', sans-serif;
 }
 
+
 /* Styling the header */
 h1 {
   text-align: center;
   font-size: 32px;
-  color: #3498db;
+  color: var(--primary-color);
   margin-bottom: 20px;
 }
 
@@ -87,7 +87,7 @@ h1 {
 }
 
 .match-item {
-  background-color: white;
+  background-color: #181818;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -102,7 +102,7 @@ h1 {
 
 .match-date {
   font-size: 18px;
-  color: #2c3e50;
+  color: #b8b8b8;
   margin-bottom: 10px;
 }
 

@@ -91,11 +91,16 @@ watch(powerups, newConf => {
   margin-top: 40px;
 }
 
+.powerup-section div {
+  margin-bottom: 20px;
+}
+
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin-right: 20px;
 }
 
 .switch input {

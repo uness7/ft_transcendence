@@ -256,7 +256,7 @@ export default {
 .content {
   color: white;
   margin-top: 80px;
-  margin-left: 400px;
+  margin-left: 350px;
   font-family: '8bit', sans-serif;
 }
 
@@ -274,6 +274,19 @@ export default {
 .settings {
   padding: 20px;
   font-size: 40px;
+  margin-bottom: 0;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.account-settings {
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
@@ -291,72 +304,67 @@ input {
 }
 
 form {
-  max-width: 600px; /* Limit the width of the form */
-  margin: 0 auto; /* Center the form */
-  padding: 20px; /* Padding around the form */
-  background-color: #f9f9f9; /* Light background color */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #181818;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .form {
-  margin-bottom: 20px; /* Space between form elements */
+  margin-bottom: 20px;
 }
 
 label {
-  display: block; /* Ensure labels are block elements */
-  font-weight: bold; /* Bold font for labels */
-  margin-bottom: 5px; /* Space below the label */
-  color: #34495e; /* Darker text color */
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #cecece;
 }
 
 input[type="text"], input[type="file"] {
-  width: 100%; /* Full width input */
-  padding: 10px; /* Padding inside the input */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 5px; /* Rounded corners */
-  box-sizing: border-box; /* Include padding in total width */
-  font-size: 16px; /* Font size */
-  transition: border-color 0.3s ease; /* Transition for border color */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
-/* Focus effect for inputs */
 input[type="text"]:focus, input[type="file"]:focus {
-  border-color: #3498db; /* Change border color on focus */
-  outline: none; /* Remove outline */
+  border-color: #3498db;
+  outline: none;
 }
 
-/* Button styling */
 #submit-button {
-  background-color: #3498db; /* Primary button color */
-  color: white; /* White text */
-  padding: 10px; /* Padding inside button */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor */
-  font-size: 16px; /* Font size */
-  transition: background-color 0.3s ease; /* Transition for hover effect */
+  background-color: #707070;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
-/* Button hover effect */
 #submit-button:hover {
-  background-color: #2980b9; /* Darker shade on hover */
+  background-color: #616161;
 }
 
-/* Image preview styling */
 #preview {
-  margin-bottom: 10px; /* Space below the image */
-  border: 1px solid #ddd; /* Light border around the preview */
-  border-radius: 5px; /* Rounded corners */
-  width: 100%; /* Make sure the image fits */
-  max-width: 200px; /* Limit the width */
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 200px;
 }
 
-/* Submit status message styling */
 #submit-status {
-  margin-top: 10px; /* Space above the status message */
-  font-weight: bold; /* Bold text */
-  color: #27ae60; /* Green color for success messages */
+  margin-top: 10px;
+  font-weight: bold;
+  color: #27ae60;
 }
 
 </style>

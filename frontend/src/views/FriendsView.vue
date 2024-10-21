@@ -159,11 +159,12 @@
 
 .big-container {
   padding-top: 200px;
+  margin-left: 350px;
 }
 
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f3f4f6;
+  background-color: #181818;
   color: #333;
   margin: 0;
   padding: 0;
@@ -174,16 +175,16 @@ body {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background-color: white;
+  background-color: #181818;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  color: #2c3e50;
+  color: rgb(200, 200, 200);
   font-size: 24px;
   margin-bottom: 15px;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid var(--primary-color);
   padding-bottom: 10px;
 }
 
@@ -193,7 +194,7 @@ ul {
 }
 
 li {
-  background-color: #ecf0f1;
+  background-color: #181818;
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 6px;
@@ -203,11 +204,11 @@ li {
 }
 
 li:nth-child(even) {
-  background-color: #e0e4e5;
+  background-color: #181818;
 }
 
 .btn-request, .btn-remove, .btn-add {
-  background-color: #3498db;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -218,7 +219,7 @@ li:nth-child(even) {
 }
 
 .btn-request:hover, .btn-remove:hover, .btn-add:hover {
-  background-color: #2980b9;
+  background-color: #616161;
 }
 
 .btn-remove {
@@ -237,16 +238,18 @@ li:nth-child(even) {
   display: block;
   margin-bottom: 8px;
   font-size: 16px;
-  color: #34495e;
+  color: rgb(200, 200, 200);
 }
 
 .input-field {
+  background-color: rgb(214, 214, 214);
   padding: 10px;
   font-size: 16px;
-  width: 100%;
+  width: 80%;
   border: 2px solid #bdc3c7;
   border-radius: 6px;
   margin-bottom: 10px;
+  margin-right: 20px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s ease;
 }
