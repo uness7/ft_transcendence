@@ -5,24 +5,18 @@
         <div class="signIn">
           <div class="top">
             <div class="title">{{ $t("sign-in") }}
-              <router-link to="/register" class="rr">{{
-                  $t('register')
-                }}
-              </router-link>
+              <router-link to="/register" class="rr">{{ $t('register') }}</router-link>
             </div>
           </div>
           <form @submit.prevent="handleSubmit">
             <div class="form">
               <input required aria-required="true" aria-invalid="false" aria-label="E-mail" type="email"
-                     pattern="^[\w.-]+@[\w.-]+\.\w+$" class="w100" :class="{ invalid: emailError }"
-                     placeholder="Email" autofocus @blur="validateEmail" @keydown="validateEmail"
-                     v-model="email"/>
-              <input required aria-required="true" type="password" class="w100"
-                     :class="{ invalid: passwordError }" placeholder="Password" v-model="password"
-                     @blur="validatePassword" @keydown="validatePassword"/>
+                pattern="^[\w.-]+@[\w.-]+\.\w+$" class="w100" :class="{ invalid: emailError }" placeholder="Email"
+                autofocus @blur="validateEmail" @keydown="validateEmail" v-model="email" />
+              <input required aria-required="true" type="password" class="w100" :class="{ invalid: passwordError }"
+                placeholder="Password" v-model="password" @blur="validatePassword" @keydown="validatePassword" />
             </div>
-            <input type="submit" :value="$t('sign-in')" class="action"
-                   :class="{ 'action-disabled': !loginValid }"/>
+            <input type="submit" :value="$t('sign-in')" class="action" :class="{ 'action-disabled': !loginValid }" />
           </form>
         </div>
       </div>
@@ -31,9 +25,9 @@
 </template>
 
 <script>
-import {ref, computed} from 'vue';
-import {useRouter} from 'vue-router';
-import {useAuthStore} from '@/store/auth';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/store/auth';
 
 export default {
   setup() {
@@ -54,19 +48,25 @@ export default {
       passwordError.value = password.value === '';
     };
 
-    const handleSubmit = async () => {
+    async function handleSubmit() {
       const formData = {
-        email: email.value,
-        password: password.value
+        email: email.value, password: password.value,
       };
-      const success = await authStore.login(formData);
-      if (success) {
-        router.push('/two-factor-auth');
-      } else {
-        router.push('/login');
-        alert("Login has failed");
+
+      try {
+        const response = await authStore.login(formData);
+        if (response === true) {
+          await router.push("/two-factor-auth");
+          console.log("Login was successful!");
+        } else {
+          await router.push("/login");
+          console.log("Login failed!");
+        }
+      } catch (error) {
+        throw new Error("Error: " + error);
       }
-    };
+    }
+
 
     const emailValid = computed(() => emailRegex.test(email.value));
     const passwordValid = computed(() => password.value.length > 0);
@@ -175,8 +175,8 @@ input[type="password"] {
 html {
   background-repeat: no-repeat;
   background: linear-gradient(to bottom,
-  rgba(96, 108, 136, 1) 0%,
-  rgba(63, 76, 107, 1) 100%);
+      rgba(96, 108, 136, 1) 0%,
+      rgba(63, 76, 107, 1) 100%);
   background-size: cover;
   display: flex;
   align-items: center;

@@ -6,14 +6,7 @@
 			<router-link to="/about" id="about-button">{{ $t('about') }}</router-link>
 			<router-link v-if="!isLoggedIn" to="/login" id="login-button">{{ $t('login') }}</router-link>
 			<div v-else class="dropdown">
-				<button class="dropbtn">{{ truncatedUsername }}</button>
-				<div class="dropdown-content">
-					<router-link to="/user">{{ $t('profile') }}</router-link>
-					<router-link to="/user/account-settings">{{ $t('settings') }}</router-link>
-          <router-link to="/add-friends">{{ $t('friends') }}</router-link>
-          <router-link to="/match-history">{{ $t('history') }}</router-link>
-					<a href="#" @click.prevent="logout" class="logout-btn">{{ $t('logout') }}</a>
-				</div>
+				<RouterLink to="/user" class="dropbtn">{{truncatedUsername}}</RouterLink>
 			</div>
 		</header>
 	</div>
@@ -40,15 +33,17 @@ export default {
 	setup() {
 		const authStore = useAuthStore();
 		const router = useRouter();
-		const isLoggedIn = computed(() => authStore.isAuthenticated);
-		const user = computed(() => authStore.user || { username: 'default', id: '' });
+		const isLoggedIn = computed(() => authStore.isLoggedIn);
+		const user = computed(() => authStore.user);
+		console.log("User: ", user.value);
+
 		const logout = async () => {
 			await authStore.logout();
-			router.push('/login');
+			await router.push('/login');
 		};
 
 		const truncatedUsername = computed(() => {
-			const username = user.value.username || 'default';
+			const username = user.value.username || "default";
 			if (username.length > 5) {
 				return username.substring(0, 4) + '.';
 			}
@@ -147,7 +142,7 @@ export default {
 }
 
 #language-flag {
-	width: 3%;
+	width: 2%;
 	position: absolute;
 	right: 350px;
 	cursor: pointer;
@@ -204,6 +199,7 @@ export default {
 .dropbtn {
 	background-color: var(--background-color);
 	color: rgb(255, 255, 255);
+	text-decoration: none;
 	font-size: xx-large;
 	border: none;
 	cursor: pointer;
@@ -248,15 +244,16 @@ export default {
 .dropdown-content a:hover {
 	background-color: rgb(20, 20, 20);
 	color: white;
+}.top-bar__about-button:hover,
+.top-bar__login-button:hover,
+.top-bar__dropbtn:hover {
+    transform: scale(1.05);
+    color: var(--primary-color);
 }
 
 .dropdown:hover .dropdown-content {
 	display: block;
 }
 
-.dropdown:hover .dropbtn {
-	background-color: var(--background-color);
-	color: var(--primary-color);
-}
 
 </style>

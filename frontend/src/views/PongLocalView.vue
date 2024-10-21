@@ -6,62 +6,62 @@
 
 <script>
 import Ball from "../pong/entities/ball.js";
-import PlayerPaddle from "../pong/entities/player-paddle.js"
-import TextHUD from "../pong/entities/text-hud.js"
+import PlayerPaddle from "../pong/entities/player-paddle.js";
+import TextHUD from "../pong/entities/text-hud.js";
 import Vec2 from "../pong/maths/vec2.js";
 import CollisionDetector from "../pong/misc/collision-detector.js";
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
-import {computed} from 'vue';
-import {useAuthStore} from '@/store/auth';
-import axios from "axios"
+import { computed } from "vue";
+import { useAuthStore } from "@/store/auth";
+import apiClient from "@/services/apiService";
 
 export default {
-  name: 'PongLocalView',
+  name: "PongLocalView",
   data() {
     return {
       pongConfig: null,
       gameConfig: {
         canvas: {
           width: 1280,
-          height: 720
+          height: 720,
         },
         paddle: {
           size: {
             x: 15,
-            y: 125
+            y: 125,
           },
           sizeAi: {
             x: 15,
-            y: 125
+            y: 125,
           },
           speed: 520,
           speedAi: 520,
           padding: 20,
-          color: "white"
+          color: "white",
         },
         ball: {
           radius: 8,
           color: "white",
-          speed: 500
+          speed: 1000,
         },
         game: {
           maxScore: 3,
           playerIsLeftSide: true,
           timeBeforeGameStarts: 3,
           timeBeforeRoundStarts: 1.25,
-          playerImmortal: false
+          playerImmortal: false,
         },
         text: {
           color: "white",
           fontMain: "48px serif",
           fontScores: "48px serif",
           yPaddingMain: 50,
-          yPaddingScores: 100
+          yPaddingScores: 100,
         },
         ai: {
-          chaseBuffer: 18
-        }
+          chaseBuffer: 18,
+        },
       },
     };
   },
@@ -80,12 +80,9 @@ export default {
       this.pongConfig = JSON.parse(this.pongConfigData);
     }
 
-    if (this.pongConfig.playerSpeed)
-      this.gameConfig.paddle.speed = 820;
-    if (this.pongConfig.playerSize)
-      this.gameConfig.paddle.size.y = 190;
-    if (this.pongConfig.ballSpeed)
-      this.gameConfig.ball.speed = 750;
+    if (this.pongConfig.playerSpeed) this.gameConfig.paddle.speed = 820;
+    if (this.pongConfig.playerSize) this.gameConfig.paddle.size.y = 190;
+    if (this.pongConfig.ballSpeed) this.gameConfig.ball.speed = 750;
     if (this.pongConfig.playerImmortal)
       this.gameConfig.game.playerImmortal = true;
     await this.initGame();
@@ -100,24 +97,25 @@ export default {
         Wait: "wait",
         Play: "play",
         Serve: "serve",
-      }
+      };
 
       const authStore = useAuthStore();
-      const user = computed(() => authStore.user || {username: 'default', id: ''});
+      const user = computed(
+        () => authStore.user || { username: "default", id: "" }
+      );
       let response = null;
       try {
-        response = await axios.get(
-            `https://localhost:8443/api/user/${user.value.id}/`,
-            {
-              headers: {
-                Authorization: `Bearer ${authStore.accessToken}`,
-                'Content-Type': 'application/json'
-              }
-            }
-        );
+        response = await apiClient.get(`/api/user/${user.value.id}/`, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
       } catch (e) {
         console.error(e);
       }
+
+      console.log("response from ponglocal " + response);
       const username = response.data.username;
 
       const gameConfig = this.gameConfig;
@@ -130,47 +128,65 @@ export default {
           this.rightScore = 0;
           this.state = GameState.Menu;
           this.entities = {
-            playerLeftPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, gameBox, true),
-            playerRightPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, gameBox, false),
+            playerLeftPaddle: new PlayerPaddle(
+              ctx,
+              gameConfig.paddle.size,
+              gameConfig.paddle.speed,
+              gameBox,
+              true
+            ),
+            playerRightPaddle: new PlayerPaddle(
+              ctx,
+              gameConfig.paddle.size,
+              gameConfig.paddle.speed,
+              gameBox,
+              false
+            ),
             ball: new Ball(
-                ctx,
-                gameBox.getCenter().clone(),
-                gameConfig.ball.radius,
-                new Vec2(gameConfig.ball.speed, 0),
-                gameConfig.ball.color
+              ctx,
+              gameBox.getCenter().clone(),
+              gameConfig.ball.radius,
+              new Vec2(gameConfig.ball.speed, 0),
+              gameConfig.ball.color
             ),
             gameStateText: new TextHUD(
-                ctx,
-                "",
-                new Vec2(gameBox.getHalfWidth(), gameConfig.text.yPaddingMain),
-                gameConfig.text.fontMain,
-                gameConfig.text.color
+              ctx,
+              "",
+              new Vec2(gameBox.getHalfWidth(), gameConfig.text.yPaddingMain),
+              gameConfig.text.fontMain,
+              gameConfig.text.color
             ),
             leftScoreText: new TextHUD(
-                ctx,
-                "0",
-                new Vec2(gameBox.getHalfWidth() / 2, gameConfig.text.yPaddingScores),
-                gameConfig.text.fontScores,
-                gameConfig.text.color
+              ctx,
+              "0",
+              new Vec2(
+                gameBox.getHalfWidth() / 2,
+                gameConfig.text.yPaddingScores
+              ),
+              gameConfig.text.fontScores,
+              gameConfig.text.color
             ),
             rightScoreText: new TextHUD(
-                ctx,
-                "0",
-                new Vec2(gameBox.getHalfWidth() * 3 / 2, gameConfig.text.yPaddingScores),
-                gameConfig.text.fontScores,
-                gameConfig.text.color
+              ctx,
+              "0",
+              new Vec2(
+                (gameBox.getHalfWidth() * 3) / 2,
+                gameConfig.text.yPaddingScores
+              ),
+              gameConfig.text.fontScores,
+              gameConfig.text.color
             ),
           };
         }
 
         render = () => {
           ctx.clearRect(0, 0, gameBox.getSize().x, gameBox.getSize().y);
-          Object.values(this.entities).forEach(entity => entity.render());
-        }
+          Object.values(this.entities).forEach((entity) => entity.render());
+        };
 
         gameStartTimer = () => {
           this.state = GameState.Wait;
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             let timeToWait = gameConfig.game.timeBeforeGameStarts;
             const timer = setInterval(() => {
               this.entities.gameStateText.text = `GAME STARTS IN ${timeToWait}...`;
@@ -182,12 +198,12 @@ export default {
               }
             }, 1_000);
           });
-        }
+        };
 
         load = () => {
           this.state = GameState.Menu;
           this.gameLoop();
-        }
+        };
 
         checkCollisions = () => {
           const ball = this.entities.ball;
@@ -206,71 +222,83 @@ export default {
             this.isLeftServe = false;
           }
 
-          if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
-              && ball.isMovingDown()) {
+          if (
+            gameBox.isBeyondBottomBound(ball.getBottomPoint()) &&
+            ball.isMovingDown()
+          ) {
             ball.inverseYSpeed();
           }
 
-          if (gameBox.isBeyondTopBound(ball.getTopPoint())
-              && ball.isMovingUp()) {
+          if (
+            gameBox.isBeyondTopBound(ball.getTopPoint()) &&
+            ball.isMovingUp()
+          ) {
             ball.inverseYSpeed();
           }
 
-          if (CollisionDetector.pointToRect(ball.pos, playerLeftPaddle.rect)
-              && ball.isMovingLeft()) {
+          if (
+            CollisionDetector.pointToRect(ball.pos, playerLeftPaddle.rect) &&
+            ball.isMovingLeft()
+          ) {
             playerLeftPaddle.collideBall(ball);
           }
 
-          if (CollisionDetector.pointToRect(ball.pos, playerRightPaddle.rect)
-              && ball.isMovingRight()) {
+          if (
+            CollisionDetector.pointToRect(ball.pos, playerRightPaddle.rect) &&
+            ball.isMovingRight()
+          ) {
             playerRightPaddle.collideBall(ball);
           }
-        }
+        };
         updateMatchHistory = async (playerWon) => {
           try {
-            await axios.post(
-                `https://localhost:8443/api/v1/user/match_history/${user.value.id}/`,
-                {
-                  user: username,
-                  final_score: playerWon,
-                  mode: "LO",
-                }
+            await apiClient.post(
+              `/api/v1/user/match_history/${user.value.id}/`,
+              {
+                user: username,
+                final_score: playerWon,
+                mode: "LO",
+              }
             );
           } catch (e) {
             console.error(e);
           }
-        }
+        };
         onGameFinished = async (playerWon) => {
           const updatedData = {
             games_played: response.data.games_played + 1,
-            games_won: playerWon ? response.data.games_won + 1 : response.data.games_won,
-            games_lost: playerWon ? response.data.games_lost : response.data.games_lost + 1,
-          }
+            games_won: playerWon
+              ? response.data.games_won + 1
+              : response.data.games_won,
+            games_lost: playerWon
+              ? response.data.games_lost
+              : response.data.games_lost + 1,
+          };
           try {
-            response = await axios.patch(
-                `https://localhost:8443/api/user/${user.value.id}/`,
-                {
-                  "games_played": updatedData.games_played,
-                  "games_lost": updatedData.games_lost,
-                  "games_won": updatedData.games_won,
+            response = await apiClient.patch(
+              `/api/user/${user.value.id}/`,
+              {
+                games_played: updatedData.games_played,
+                games_lost: updatedData.games_lost,
+                games_won: updatedData.games_won,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${authStore.accessToken}`,
+                  "Content-Type": "application/json",
                 },
-                {
-                  headers: {
-                    Authorization: `Bearer ${authStore.accessToken}`,
-                    'Content-Type': 'application/json'
-                  }
-                }
+              }
             );
           } catch (e) {
             console.error(e);
           }
           await this.updateMatchHistory(playerWon);
-        }
+        };
         checkGameFinished = () => {
-          if (gameConfig.game.playerImmortal)
-            return;
-          if (this.leftScore === gameConfig.game.maxScore
-              || this.rightScore === gameConfig.game.maxScore
+          if (gameConfig.game.playerImmortal) return;
+          if (
+            this.leftScore === gameConfig.game.maxScore ||
+            this.rightScore === gameConfig.game.maxScore
           ) {
             if (this.leftScore === gameConfig.game.maxScore) {
               this.entities.gameStateText.text = `${username.toUpperCase()} WINS`;
@@ -285,7 +313,7 @@ export default {
               this.state = GameState.Menu;
             }, 3 * 1000);
           }
-        }
+        };
 
         checkServeSide = () => {
           const ball = this.entities.ball;
@@ -305,28 +333,23 @@ export default {
               }, gameConfig.game.timeBeforeRoundStarts * 1000);
             }
           }
-        }
+        };
 
         updateEntitiesPosition = (dt) => {
           const playerLeftPaddle = this.entities.playerLeftPaddle;
           const playerRightPaddle = this.entities.playerRightPaddle;
 
-          if (leftToggleMoveUp)
-            playerLeftPaddle.moveUp(dt);
-          if (leftToggleMoveDown)
-            playerLeftPaddle.moveDown(dt);
+          if (leftToggleMoveUp) playerLeftPaddle.moveUp(dt);
+          if (leftToggleMoveDown) playerLeftPaddle.moveDown(dt);
           playerLeftPaddle.updatePosition();
-          if (rightToggleMoveUp)
-            playerRightPaddle.moveUp(dt);
-          if (rightToggleMoveDown)
-            playerRightPaddle.moveDown(dt);
+          if (rightToggleMoveUp) playerRightPaddle.moveUp(dt);
+          if (rightToggleMoveDown) playerRightPaddle.moveDown(dt);
           playerRightPaddle.updatePosition();
           this.entities.ball.move(dt);
-        }
+        };
 
         gameLoop = () => {
-          if (!this.timeLastFrame)
-            this.timeLastFrame = performance.now();
+          if (!this.timeLastFrame) this.timeLastFrame = performance.now();
           const timeNow = performance.now();
           const dt = (timeNow - this.timeLastFrame) / 1000;
           this.timeLastFrame = timeNow;
@@ -351,7 +374,7 @@ export default {
           this.entities.leftScoreText.text = this.leftScore.toString();
           this.render();
           requestAnimationFrame(this.gameLoop);
-        }
+        };
       }
 
       canvas.width = this.gameConfig.canvas.width;
@@ -363,8 +386,8 @@ export default {
       });
 
       const canvasRect = new Rect2(
-          new Vec2(0, 0),
-          new Vec2(canvas.width, canvas.height)
+        new Vec2(0, 0),
+        new Vec2(canvas.width, canvas.height)
       );
       const gameBox = new BoundingBox(canvasRect);
 
@@ -378,36 +401,68 @@ export default {
         leftToggleMoveDown = false;
         rightToggleMoveUp = false;
         rightToggleMoveDown = false;
-      }
+      };
 
-      document.addEventListener("keydown", event => {
+      document.addEventListener("keydown", (event) => {
         event.preventDefault();
-        if (event.key === "w" && game.state === GameState.Play && !leftToggleMoveUp) {
+        if (
+          event.key === "w" &&
+          game.state === GameState.Play &&
+          !leftToggleMoveUp
+        ) {
           leftToggleMoveUp = true;
         }
-        if (event.key === "s" && game.state === GameState.Play && !leftToggleMoveDown) {
+        if (
+          event.key === "s" &&
+          game.state === GameState.Play &&
+          !leftToggleMoveDown
+        ) {
           leftToggleMoveDown = true;
         }
-        if (event.key === "ArrowUp" && game.state === GameState.Play && !rightToggleMoveUp) {
+        if (
+          event.key === "ArrowUp" &&
+          game.state === GameState.Play &&
+          !rightToggleMoveUp
+        ) {
           rightToggleMoveUp = true;
         }
-        if (event.key === "ArrowDown" && game.state === GameState.Play && !rightToggleMoveDown) {
+        if (
+          event.key === "ArrowDown" &&
+          game.state === GameState.Play &&
+          !rightToggleMoveDown
+        ) {
           rightToggleMoveDown = true;
         }
       });
 
-      document.addEventListener("keyup", event => {
+      document.addEventListener("keyup", (event) => {
         event.preventDefault();
-        if (event.key === "w" && game.state === GameState.Play && leftToggleMoveUp) {
+        if (
+          event.key === "w" &&
+          game.state === GameState.Play &&
+          leftToggleMoveUp
+        ) {
           leftToggleMoveUp = false;
         }
-        if (event.key === "s" && game.state === GameState.Play && leftToggleMoveDown) {
+        if (
+          event.key === "s" &&
+          game.state === GameState.Play &&
+          leftToggleMoveDown
+        ) {
           leftToggleMoveDown = false;
         }
-        if (event.key === "ArrowUp" && game.state === GameState.Play && rightToggleMoveUp) {
+        if (
+          event.key === "ArrowUp" &&
+          game.state === GameState.Play &&
+          rightToggleMoveUp
+        ) {
           rightToggleMoveUp = false;
         }
-        if (event.key === "ArrowDown" && game.state === GameState.Play && rightToggleMoveDown) {
+        if (
+          event.key === "ArrowDown" &&
+          game.state === GameState.Play &&
+          rightToggleMoveDown
+        ) {
           rightToggleMoveDown = false;
         }
         if (event.key === " ") {
@@ -421,9 +476,9 @@ export default {
 
       const game = new Pong();
       game.load();
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -439,4 +494,3 @@ export default {
   border: 2px solid white;
 }
 </style>
-

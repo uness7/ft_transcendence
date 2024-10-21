@@ -6,63 +6,63 @@
 
 <script>
 import Ball from "../pong/entities/ball.js";
-import PlayerPaddle from "../pong/entities/player-paddle.js"
-import AiPaddle from "../pong/entities/ai-paddle.js"
-import TextHUD from "../pong/entities/text-hud.js"
+import PlayerPaddle from "../pong/entities/player-paddle.js";
+import AiPaddle from "../pong/entities/ai-paddle.js";
+import TextHUD from "../pong/entities/text-hud.js";
 import Vec2 from "../pong/maths/vec2.js";
 import CollisionDetector from "../pong/misc/collision-detector.js";
 import BoundingBox from "../pong/misc/bounding-box.js";
 import Rect2 from "../pong/maths/rect2.js";
-import {useAuthStore} from "@/store/auth";
-import {computed} from "vue";
-import axios from "axios";
+import { useAuthStore } from "@/store/auth";
+import { computed } from "vue";
+import apiClient from "@/services/apiService";
 
 export default {
-  name: 'PongAiView',
+  name: "PongAiView",
   data() {
     return {
       pongConfig: null,
       gameConfig: {
         canvas: {
           width: 1280,
-          height: 720
+          height: 720,
         },
         paddle: {
           size: {
             x: 15,
-            y: 125
+            y: 125,
           },
           sizeAi: {
             x: 15,
-            y: 125
+            y: 125,
           },
           speed: 520,
           speedAi: 520,
           padding: 20,
-          color: "white"
+          color: "white",
         },
         ball: {
           radius: 8,
           color: "white",
-          speed: 500
+          speed: 1000,
         },
         game: {
           maxScore: 3,
           playerIsLeftSide: true,
           timeBeforeGameStarts: 3,
           timeBeforeRoundStarts: 1.25,
-          playerImmortal: false
+          playerImmortal: false,
         },
         text: {
           color: "white",
           fontMain: "48px serif",
           fontScores: "48px serif",
           yPaddingMain: 50,
-          yPaddingScores: 100
+          yPaddingScores: 100,
         },
         ai: {
-          chaseBuffer: 18
-        }
+          chaseBuffer: 18,
+        },
       },
     };
   },
@@ -81,16 +81,12 @@ export default {
       this.pongConfig = JSON.parse(this.pongConfigData);
     }
 
-    if (this.pongConfig.playerSpeed)
-      this.gameConfig.paddle.speed = 820;
-    if (this.pongConfig.playerSize)
-      this.gameConfig.paddle.size.y = 190;
-    if (this.pongConfig.ballSpeed)
-      this.gameConfig.ball.speed = 750;
+    if (this.pongConfig.playerSpeed) this.gameConfig.paddle.speed = 820;
+    if (this.pongConfig.playerSize) this.gameConfig.paddle.size.y = 190;
+    if (this.pongConfig.ballSpeed) this.gameConfig.ball.speed = 750;
     if (this.pongConfig.playerImmortal)
       this.gameConfig.game.playerImmortal = true;
-    if (this.pongConfig.aiSpeed)
-      this.gameConfig.paddle.speedAi = 820;
+    if (this.pongConfig.aiSpeed) this.gameConfig.paddle.speedAi = 820;
     await this.initGame();
   },
   methods: {
@@ -99,18 +95,17 @@ export default {
       const ctx = canvas.getContext("2d");
 
       const authStore = useAuthStore();
-      const user = computed(() => authStore.user || {username: 'default', id: ''});
+      const user = computed(
+        () => authStore.user || { username: "default", id: "" }
+      );
       let response = null;
       try {
-        response = await axios.get(
-            `https://localhost:8443/api/user/${user.value.id}/`,
-            {
-              headers: {
-                Authorization: `Bearer ${authStore.accessToken}`,
-                'Content-Type': 'application/json'
-              }
-            }
-        );
+        response = await apiClient.get(`/api/user/${user.value.id}/`, {
+          headers: {
+            Authorization: `Bearer ${authStore.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
       } catch (e) {
         console.error(e);
       }
@@ -122,10 +117,9 @@ export default {
         Wait: "wait",
         Play: "play",
         Serve: "serve",
-      }
+      };
 
       class Pong {
-
         constructor() {
           this.timeLastFrame = 0;
           this.isLeftServe = true;
@@ -133,35 +127,53 @@ export default {
           this.rightScore = 0;
           this.state = GameState.Menu;
           this.entities = {
-            playerPaddle: new PlayerPaddle(ctx, gameConfig.paddle.size, gameConfig.paddle.speed, gameBox, true),
-            aiPaddle: new AiPaddle(ctx, gameConfig.paddle.sizeAi, gameConfig.paddle.speedAi, gameBox, false),
+            playerPaddle: new PlayerPaddle(
+              ctx,
+              gameConfig.paddle.size,
+              gameConfig.paddle.speed,
+              gameBox,
+              true
+            ),
+            aiPaddle: new AiPaddle(
+              ctx,
+              gameConfig.paddle.sizeAi,
+              gameConfig.paddle.speedAi,
+              gameBox,
+              false
+            ),
             ball: new Ball(
-                ctx,
-                gameBox.getCenter().clone(),
-                gameConfig.ball.radius,
-                new Vec2(gameConfig.ball.speed, 0),
-                gameConfig.ball.color
+              ctx,
+              gameBox.getCenter().clone(),
+              gameConfig.ball.radius,
+              new Vec2(gameConfig.ball.speed, 0),
+              gameConfig.ball.color
             ),
             gameStateText: new TextHUD(
-                ctx,
-                "",
-                new Vec2(gameBox.getHalfWidth(), gameConfig.text.yPaddingMain),
-                gameConfig.text.fontMain,
-                gameConfig.text.color
+              ctx,
+              "",
+              new Vec2(gameBox.getHalfWidth(), gameConfig.text.yPaddingMain),
+              gameConfig.text.fontMain,
+              gameConfig.text.color
             ),
             leftScoreText: new TextHUD(
-                ctx,
-                "0",
-                new Vec2(gameBox.getHalfWidth() / 2, gameConfig.text.yPaddingScores),
-                gameConfig.text.fontScores,
-                gameConfig.text.color
+              ctx,
+              "0",
+              new Vec2(
+                gameBox.getHalfWidth() / 2,
+                gameConfig.text.yPaddingScores
+              ),
+              gameConfig.text.fontScores,
+              gameConfig.text.color
             ),
             rightScoreText: new TextHUD(
-                ctx,
-                "0",
-                new Vec2(gameBox.getHalfWidth() * 3 / 2, gameConfig.text.yPaddingScores),
-                gameConfig.text.fontScores,
-                gameConfig.text.color
+              ctx,
+              "0",
+              new Vec2(
+                (gameBox.getHalfWidth() * 3) / 2,
+                gameConfig.text.yPaddingScores
+              ),
+              gameConfig.text.fontScores,
+              gameConfig.text.color
             ),
           };
           this.timeAccumulator = 0;
@@ -169,12 +181,12 @@ export default {
 
         render = () => {
           ctx.clearRect(0, 0, gameBox.getSize().x, gameBox.getSize().y);
-          Object.values(this.entities).forEach(entity => entity.render());
-        }
+          Object.values(this.entities).forEach((entity) => entity.render());
+        };
 
         gameStartTimer = () => {
           this.state = GameState.Wait;
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             let timeToWait = gameConfig.game.timeBeforeGameStarts;
             const timer = setInterval(() => {
               this.entities.gameStateText.text = `GAME STARTS IN ${timeToWait}...`;
@@ -186,12 +198,12 @@ export default {
               }
             }, 1_000);
           });
-        }
+        };
 
         load = () => {
           this.state = GameState.Menu;
           this.gameLoop();
-        }
+        };
 
         checkCollisions = () => {
           const ball = this.entities.ball;
@@ -213,75 +225,91 @@ export default {
           }
 
           // collision with bottom bound
-          if (gameBox.isBeyondBottomBound(ball.getBottomPoint())
-              && ball.isMovingDown()) {
+          if (
+            gameBox.isBeyondBottomBound(ball.getBottomPoint()) &&
+            ball.isMovingDown()
+          ) {
             ball.inverseYSpeed();
           }
 
           // collision with top bound
-          if (gameBox.isBeyondTopBound(ball.getTopPoint())
-              && ball.isMovingUp()) {
+          if (
+            gameBox.isBeyondTopBound(ball.getTopPoint()) &&
+            ball.isMovingUp()
+          ) {
             ball.inverseYSpeed();
           }
 
           // collision with left paddle
-          if (CollisionDetector.pointToRect(ball.pos, playerPaddle.rect)
-              && ball.isMovingLeft()) {
+          if (
+            CollisionDetector.pointToRect(ball.pos, playerPaddle.rect) &&
+            ball.isMovingLeft()
+          ) {
             playerPaddle.collideBall(ball);
           }
 
           // collision with right paddle
-          if (CollisionDetector.pointToRect(ball.pos, aiPaddle.rect)
-              && ball.isMovingRight()) {
+          if (
+            CollisionDetector.pointToRect(ball.pos, aiPaddle.rect) &&
+            ball.isMovingRight()
+          ) {
             aiPaddle.collideBall(ball);
             aiPaddle.changePosition();
           }
-        }
+        };
         updateMatchHistory = async (playerWon) => {
           try {
-            await axios.post(
-                `https://localhost:8443/api/v1/user/match_history/${user.value.id}/`,
-                {
-                  user: username,
-                  final_score: playerWon,
-                  mode: "AI",
-                }
+            await apiClient.post(
+              `/api/v1/user/match_history/${user.value.id}/`,
+              {
+                user: username,
+                final_score: playerWon,
+                mode: "AI",
+              }
             );
           } catch (e) {
             console.error(e);
           }
-        }
+        };
         onGameFinished = async (playerWon) => {
           const updatedData = {
             games_played: response.data.games_played + 1,
-            games_won: playerWon ? response.data.games_won + 1 : response.data.games_won,
-            games_lost: playerWon ? response.data.games_lost : response.data.games_lost + 1,
-          }
+            games_won: playerWon
+              ? response.data.games_won + 1
+              : response.data.games_won,
+            games_lost: playerWon
+              ? response.data.games_lost
+              : response.data.games_lost + 1,
+          };
           try {
-            response = await axios.patch(
-                `https://localhost:8443/api/user/${user.value.id}/`,
-                {
-                  "games_played": updatedData.games_played,
-                  "games_lost": updatedData.games_lost,
-                  "games_won": updatedData.games_won,
+            response = await apiClient.patch(
+              `/api/user/${user.value.id}/`,
+              {
+                games_played: updatedData.games_played,
+                games_lost: updatedData.games_lost,
+                games_won: updatedData.games_won,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${authStore.accessToken}`,
+                  "Content-Type": "application/json",
                 },
-                {
-                  headers: {
-                    Authorization: `Bearer ${authStore.accessToken}`,
-                    'Content-Type': 'application/json'
-                  }
-                }
+              }
             );
           } catch (e) {
             console.error(e);
           }
           await this.updateMatchHistory(playerWon);
-        }
+        };
         checkGameFinished = () => {
-          if (gameConfig.game.playerImmortal && this.leftScore < gameConfig.game.maxScore)
+          if (
+            gameConfig.game.playerImmortal &&
+            this.leftScore < gameConfig.game.maxScore
+          )
             return;
-          if (this.leftScore === gameConfig.game.maxScore
-              || this.rightScore === gameConfig.game.maxScore
+          if (
+            this.leftScore === gameConfig.game.maxScore ||
+            this.rightScore === gameConfig.game.maxScore
           ) {
             if (this.leftScore === gameConfig.game.maxScore) {
               this.entities.gameStateText.text = `${username.toUpperCase()} WINS`;
@@ -295,7 +323,7 @@ export default {
               this.state = GameState.Menu;
             }, 3 * 1000);
           }
-        }
+        };
 
         checkServeSide = () => {
           const ball = this.entities.ball;
@@ -315,29 +343,30 @@ export default {
               }, gameConfig.game.timeBeforeRoundStarts * 1000);
             }
           }
-        }
+        };
 
         updateEntitiesPosition = (dt) => {
           const ball = this.entities.ball;
           const playerPaddle = this.entities.playerPaddle;
           const aiPaddle = this.entities.aiPaddle;
 
-          if (leftToggleMoveUp)
-            playerPaddle.moveUp(dt);
-          if (leftToggleMoveDown)
-            playerPaddle.moveDown(dt);
+          if (leftToggleMoveUp) playerPaddle.moveUp(dt);
+          if (leftToggleMoveDown) playerPaddle.moveDown(dt);
           playerPaddle.updatePosition();
           if (this.timeAccumulator >= 1000) {
             this.timeAccumulator = 0;
             aiPaddle.predictImpact(ball.pos, ball.speed);
           }
-          aiPaddle.checkMovement(dt, aiPaddle.impactPos, gameConfig.ai.chaseBuffer);
+          aiPaddle.checkMovement(
+            dt,
+            aiPaddle.impactPos,
+            gameConfig.ai.chaseBuffer
+          );
           ball.move(dt);
-        }
+        };
 
         gameLoop = () => {
-          if (!this.timeLastFrame)
-            this.timeLastFrame = performance.now();
+          if (!this.timeLastFrame) this.timeLastFrame = performance.now();
           const timeNow = performance.now();
           const dt = (timeNow - this.timeLastFrame) / 1000;
           this.timeAccumulator += timeNow - this.timeLastFrame;
@@ -347,15 +376,18 @@ export default {
           const playerPaddle = this.entities.playerPaddle;
           const aiPaddle = this.entities.aiPaddle;
 
-          if (this.state === GameState.Menu) {			// STATE MENU
+          if (this.state === GameState.Menu) {
+            // STATE MENU
             this.entities.gameStateText.text = "PRESS SPACE TO START";
             this.leftScore = 0;
             this.rightScore = 0;
-          } else if (this.state === GameState.Play) {		// STATE PLAY
+          } else if (this.state === GameState.Play) {
+            // STATE PLAY
             this.entities.gameStateText.text = "";
             this.updateEntitiesPosition(dt);
             this.checkCollisions();
-          } else if (this.state === GameState.Serve) {	// STATE SERVE
+          } else if (this.state === GameState.Serve) {
+            // STATE SERVE
             ball.reset(this.isLeftServe);
             playerPaddle.reset();
             aiPaddle.reset();
@@ -367,7 +399,7 @@ export default {
           this.entities.leftScoreText.text = this.leftScore.toString();
           this.render();
           requestAnimationFrame(this.gameLoop);
-        }
+        };
       }
 
       ////////////////////////////////////////////////////////////////////////////////
@@ -382,8 +414,8 @@ export default {
       });
 
       const canvasRect = new Rect2(
-          new Vec2(0, 0),
-          new Vec2(canvas.width, canvas.height)
+        new Vec2(0, 0),
+        new Vec2(canvas.width, canvas.height)
       );
       const gameBox = new BoundingBox(canvasRect);
 
@@ -394,29 +426,44 @@ export default {
       const toggleMoveResetAll = () => {
         leftToggleMoveUp = false;
         leftToggleMoveDown = false;
-      }
+      };
 
-      document.addEventListener("keydown", event => {
+      document.addEventListener("keydown", (event) => {
         event.preventDefault();
-        if (event.key === "w" && game.state === GameState.Play && !leftToggleMoveUp) {
+        if (
+          event.key === "w" &&
+          game.state === GameState.Play &&
+          !leftToggleMoveUp
+        ) {
           leftToggleMoveUp = true;
         }
-        if (event.key === "s" && game.state === GameState.Play && !leftToggleMoveDown) {
+        if (
+          event.key === "s" &&
+          game.state === GameState.Play &&
+          !leftToggleMoveDown
+        ) {
           leftToggleMoveDown = true;
         }
       });
 
-      document.addEventListener("keyup", event => {
+      document.addEventListener("keyup", (event) => {
         event.preventDefault();
-        if (event.key === "w" && game.state === GameState.Play && leftToggleMoveUp) {
+        if (
+          event.key === "w" &&
+          game.state === GameState.Play &&
+          leftToggleMoveUp
+        ) {
           leftToggleMoveUp = false;
         }
-        if (event.key === "s" && game.state === GameState.Play && leftToggleMoveDown) {
+        if (
+          event.key === "s" &&
+          game.state === GameState.Play &&
+          leftToggleMoveDown
+        ) {
           leftToggleMoveDown = false;
         }
         if (event.key === " " && game.state === GameState.Menu) {
-          game.gameStartTimer()
-              .then(() => game.state = GameState.Serve);
+          game.gameStartTimer().then(() => (game.state = GameState.Serve));
         }
       });
 
@@ -424,7 +471,7 @@ export default {
       const game = new Pong();
       game.load();
     },
-  }
+  },
 };
 </script>
 

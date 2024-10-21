@@ -10,7 +10,6 @@ all:
 	$(DOCKER_COMMAND_PROD) exec web python manage.py makemigrations
 	$(DOCKER_COMMAND_PROD) exec web python manage.py migrate
 
-
 prod-logs-web:
 	$(DOCKER_COMMAND_PROD) logs web
 
@@ -23,6 +22,8 @@ prod-ps:
 down:
 	rm -rf ~/.cache/google-chrome/ ~/.cache/mozilla/firefox/
 	$(DOCKER_COMMAND_PROD) down
+	
+re: down all
 
 # Nouvelle commande supp pour arrêter et supprimer tous les conteneurs
 supp:
@@ -31,11 +32,16 @@ supp:
 	echo "Removing all containers..."; \
 	docker rm $$(docker ps -aq) || true; \
 	echo "All containers stopped and removed."
+
 data: 
 	@echo "psql -U * -d *" 
 	@echo "docker exec -it Id psql -U *  -d * " 
 	@echo "\d para "
-	@echo "SELECT * FROM NAME; " 
-
-.PHONY: all down supp data
+	@echo "SELECT * FROM NAME; "
+	@echo "SELECT username, password FROM user_user;"
+	
+dock:
+	@echo "docker exec -it id /bin/bash"
+	@echo "curl http://localhost:8000/metrics"
+	@echo "docker exec -it id sh"
 

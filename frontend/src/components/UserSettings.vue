@@ -83,7 +83,7 @@
 import NavBar from '../components/NavBar.vue';
 import {useAuthStore} from "@/store/auth";
 import {computed} from "vue";
-import axios from "axios";
+import apiClient from "@/services/apiService";
 
 export default {
   name: 'UserSettings',
@@ -133,8 +133,8 @@ export default {
     async fetchUser() {
       let response = null;
       try {
-        response = await axios.get(
-            `https://localhost:8443/api/user/${this.userId}/`,
+        response = await apiClient.get(
+            `/api/user/${this.userId}/`,
             {
               headers: {
                 Authorization: `Bearer ${this.accessToken}`,
@@ -189,8 +189,8 @@ export default {
     async patchPassword(newPassword) {
       let response = null;
       try {
-        response = await axios.patch(
-            `https://localhost:8443/api/v1/update_password/${this.userId}/${newPassword}/`,
+        response = await apiClient.patch(
+            `/api/v1/update_password/${this.userId}/${newPassword}/`,
             {
               headers: {
                 Authorization: `Bearer ${this.accessToken}`,
@@ -208,8 +208,8 @@ export default {
     async patchUser(userData) {
       let response = null;
       try {
-        response = await axios.patch(
-            `https://localhost:8443/api/user/${this.userId}/`,
+        response = await apiClient.patch(
+            `/api/user/${this.userId}/`,
             userData,
             {
               headers: {

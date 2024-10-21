@@ -142,7 +142,7 @@ export default {
         try {
           const success = await authStore.register(data);
           if (success) {
-            router.push('/login');
+            await router.push('/login');
           } else {
             errorMessage.value = "Registration failed. Please try again.";
             alert(errorMessage.value);

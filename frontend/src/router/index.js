@@ -62,7 +62,8 @@ const routes = [
         name: "mode",
         component: ModeView,
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
+            requiresOTP: true,
         },
     },
     {
@@ -219,12 +220,12 @@ const router = createRouter({
 
 export function isAuthenticated() {
     const authStore = useAuthStore();
-    return authStore.isAuthenticated;
+    return authStore.isLoggedIn;
 }
 
 export const isOTPVerified = () => {
     const authStore = useAuthStore();
-    return authStore.isOTPVerified;
+    return authStore.is_otp_verified;
 }
 
 router.beforeEach((to, from, next) => {
@@ -234,14 +235,14 @@ router.beforeEach((to, from, next) => {
     let goToLogin = false;
 
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (!authStore.isAuthenticated) {
+        if (!authStore.isLoggedIn) {
             proceed = false;
             goToLogin = true;
         }
     }
 
     if (to.matched.some((record) => record.meta.requiresOTP)) {
-        if (!authStore.isOTPVerified) {
+        if (!authStore.is_otp_verified) {
             proceed = false;
             goToLogin = false;
         }

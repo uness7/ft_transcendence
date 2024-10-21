@@ -1,5 +1,7 @@
 {
-  "anonymize-user": "anonymiser les donnees d'utilisateur",
+  "add-friends": "ajouter amis",
+  "match-history": "historique",
+  "anonymize-user": "anonymiser data",
   "delete": "supprimer le compte",
   "play": "jouer",
   "about": "info",
@@ -11,7 +13,7 @@
   "settings": "parametres",
   "account-settings": "parametres du compte",
   "game-settings": "parametres du jeu",
-  "logout": "logout",
+  "logout": "quitte",
   "team": "Notre equipe",
   "ouissem-status": "Representant devops",
   "lionel-status": "Responsable pong",

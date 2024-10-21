@@ -1,7 +1,11 @@
 <template>
   <div class="content">
     <div class="profile-section">
-      <img :src="`${response?.data?.avatar}`" alt="Profile Image" class="profile-img">
+      <img
+        :src="`${response?.data?.avatar}`"
+        alt="Profile Image"
+        class="profile-img"
+      />
       <h1 class="username">{{ response?.data?.username ?? "default" }}</h1>
       <h1>{{ response?.data?.first_name ?? "default" }}</h1>
       <h1>{{ response?.data?.last_name ?? "default" }}</h1>
@@ -11,20 +15,28 @@
       <div class="left-section">
         <div class="stat-grid">
           <div class="stat">
-            <h2>{{ $t('games-won') }}</h2>
+            <h2>{{ $t("games-won") }}</h2>
             <p>{{ response?.data?.games_won ?? 0 }}</p>
           </div>
           <div class="stat">
-            <h2>{{ $t('games-lost') }}</h2>
+            <h2>{{ $t("games-lost") }}</h2>
             <p>{{ response?.data?.games_lost ?? 0 }}</p>
           </div>
           <div class="stat">
-            <h2>{{ $t('win-rate') }}</h2>
-            <p>{{
-                isNaN(response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost))
-                    ? 0
-                    : (100 * response?.data?.games_won / (response?.data?.games_won + response?.data?.games_lost)).toFixed(2)
-              }}%</p>
+            <h2>{{ $t("win-rate") }}</h2>
+            <p>
+              {{
+                isNaN(
+                  response?.data?.games_won /
+                    (response?.data?.games_won + response?.data?.games_lost)
+                )
+                  ? 0
+                  : (
+                      (100 * response?.data?.games_won) /
+                      (response?.data?.games_won + response?.data?.games_lost)
+                    ).toFixed(2)
+              }}%
+            </p>
           </div>
         </div>
       </div>
@@ -38,9 +50,9 @@
 
 <script>
 import Chart from "chart.js/auto";
-import {computed} from 'vue';
-import {useAuthStore} from '@/store/auth';
-import axios from "axios"
+import { computed } from "vue";
+import { useAuthStore } from "@/store/auth";
+import apiClient from "@/services/apiService";
 
 export default {
   data() {
@@ -50,22 +62,23 @@ export default {
   },
   async mounted() {
     const authStore = useAuthStore();
-    const user = computed(() => authStore.user || {username: 'default', id: ''});
+    const user = computed(
+      () => authStore.user || { username: "default", id: "" }
+    );
     try {
-      this.response = await axios.get(
-          `https://localhost:8443/api/user/${user.value.id}/`,
-          {
-            headers: {
-              Authorization: `Bearer ${authStore.accessToken}`,
-              'Content-Type': 'application/json'
-            }
-          }
-      );
+      this.response = await apiClient.get(`/api/user/${user.value.id}/`, {
+        headers: {
+          Authorization: `Bearer ${authStore.access_token}`,
+          "Content-Type": "application/json",
+        },
+      });
     } catch (e) {
       console.error(e);
     }
 
-    this.primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+    this.primaryColor = getComputedStyle(document.documentElement)
+      .getPropertyValue("--primary-color")
+      .trim();
 
     const ctx = document.getElementById("gamesChart").getContext("2d");
 
@@ -87,10 +100,10 @@ export default {
       options: {
         plugins: {
           legend: {
-            position: 'top',
+            position: "top",
             labels: {
               padding: 20,
-              color: '#FFFFFF',
+              color: "#FFFFFF",
             },
           },
         },
@@ -105,7 +118,7 @@ export default {
         maintainAspectRatio: false,
       },
     });
-  }
+  },
 };
 </script>
 
@@ -114,7 +127,7 @@ export default {
   color: rgb(255, 255, 255);
   margin-left: 400px;
   background-color: var(--background-color);
-  font-family: '8bit', sans-serif;
+  font-family: "8bit", sans-serif;
 }
 
 .profile-section {

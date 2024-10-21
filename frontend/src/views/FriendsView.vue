@@ -1,7 +1,8 @@
 <script setup>
   import {useAuthStore} from "@/store/auth";
   import {computed, onMounted, ref} from "vue";
-  import axios from "axios";
+  import apiClient from "@/services/apiService";
+  import navBar from "@/components/NavBar.vue";
 
   const authStore = useAuthStore();
   const user = computed(() => authStore.user);
@@ -12,8 +13,8 @@
   const is_online = ref(false);
 
   function acceptRequest(request_id) {
-    axios
-        .post(`https://localhost:8443/api/v1/accept_request/${user.value.id}/${request_id}/`)
+    apiClient
+        .post(`/api/v1/accept_request/${user.value.id}/${request_id}/`)
         .then((res) => {
           alert(res.data.message);
         })
@@ -21,8 +22,8 @@
   }
 
   function fetchFriendshipReqs() {
-    axios
-        .get(`https://localhost:8443/api/v1/friend_requests/${user.value.id}/`)
+    apiClient
+        .get(`/api/v1/friend_requests/${user.value.id}/`)
         .then((res) => {
           myFriendshipReqs.value = res.data.friend_requests;
         })
@@ -32,7 +33,7 @@
   }
 
   function fetchFriends() {
-    axios.get(`https://localhost:8443/api/v1/get_friends_list/${user.value.id}/`)
+    apiClient.get(`/api/v1/get_friends_list/${user.value.id}/`)
         .then((res) => {
           friends.value = res.data.friends;
         })
@@ -43,9 +44,9 @@
 
   async function getUserByUsername(username) {
     let user = null;
-    const res = await axios.get(`https://localhost:8443/api/user/`, {
+    const res = await apiClient.get(`/api/user/`, {
       headers: {
-        Authorization: `Bearer ${authStore.accessToken}`,
+        Authorization: `Bearer ${authStore.access_token}`,
         "Content-Type": "application/json"
       }
     });
@@ -61,7 +62,7 @@
     } else {
       const user_id = user.value.id;
       const to_add_user_id = to_add_user.id;
-      const response = await axios.post(`https://localhost:8443/api/v1/send_request/${user_id}/${to_add_user_id}/`);
+      const response = await apiClient.post(`/api/v1/send_request/${user_id}/${to_add_user_id}/`);
       if (response.status === 200) {
         reqId.value = response.data.request_id;
         alert("Friend request was sent!");
@@ -72,10 +73,10 @@
   }
 
   function getUserStatus() {
-    axios
-        .get(`https://localhost:8443/api/user/${user.value.id}/`, {
+    apiClient
+        .get(`/api/user/${user.value.id}/`, {
           headers: {
-            Authorization: `Bearer ${authStore.accessToken}`,
+            Authorization: `Bearer ${authStore.access_token}`,
             "Content-Type": "application/json"
           },
         })
@@ -90,7 +91,7 @@
   }
 
   async function removeFriend(username) {
-    const response = await axios.post(`https://localhost:8443/api/v1/remove_friend/${user.value.id}/${username}/`);
+    const response = await apiClient.post(`/api/v1/remove_friend/${user.value.id}/${username}/`);
     if (response.status === 200) {
       alert(`${username} was removed!`);
     } else {
@@ -111,13 +112,13 @@
 
 <template>
   <div class="big-container">
-
+	<nav-bar />
     <div class="container">
       <div class="requests">
         <h2>My Friendship Requests</h2>
         <ul class="list-requests">
           <li v-for="req in myFriendshipReqs" :key="req.request_id">
-            A friend request was sent from {{ req.from_user }} with req.id {{ req.request_id }}
+            A friend request was sent from {{ req.from_user }} with id {{ req.request_id }}
             <button @click="acceptRequest(req.request_id)" class="btn-request">Accept Request</button>
           </li>
         </ul>
