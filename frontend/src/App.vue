@@ -40,11 +40,12 @@ export default {
 	setup() {
 		const authStore = useAuthStore();
 		const router = useRouter();
-		const isLoggedIn = computed(() => authStore.isAuthenticated);
+		const isLoggedIn = computed(() => authStore.isLoggedIn);
 		const user = computed(() => authStore.user || { username: 'default', id: '' });
+
 		const logout = async () => {
 			await authStore.logout();
-			router.push('/login');
+			await router.push('/login');
 		};
 
 		const truncatedUsername = computed(() => {
