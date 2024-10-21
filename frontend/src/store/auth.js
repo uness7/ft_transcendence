@@ -81,16 +81,29 @@ export const useAuthStore = defineStore(
                     "http://localhost:8000/api/authentication/register/",
                     userData
                 );
-                return await login({
-                    username: userData.username,
-                    first_name: userData.first_name,
-                    last_name: userData.last_name,
-                    email: userData.email,
-                    password: userData.password,
-                });
+                return true;
             } catch (error) {
                 console.error("Registration failed:", error);
                 return false;
+            }
+        }
+
+        async function setOffOTP() {
+            try {
+                await apiClient.patch(
+                    `/api/user/${user_id.value}/`,
+                    {
+                        is_otp_verified: false,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${access_token.value}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+            } catch (error) {
+                throw new Error(error);
             }
         }
 
@@ -98,6 +111,8 @@ export const useAuthStore = defineStore(
             await apiBlacklistToken();
             clearTokens();
             isLoggedIn.value = false;
+            is_otp_verified.value = false;
+            await setOffOTP();
             user.value = {};
             user_id.value = "";
             await router.push("/login");
