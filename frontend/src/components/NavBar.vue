@@ -1,18 +1,24 @@
 <template>
   <div class="sidebar">
     <ul class="nav-list">
-      <li class="nav-item">
-        <router-link to="/user" id="profile-button">{{ $t('profile') }}</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/user/account-settings" id="settings-button">{{ $t('account-settings') }}</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/user/appearance-settings" id="settings-button">{{ $t('appearance-settings') }}</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/user/game-settings" id="settings-button">{{ $t('game-settings') }}</router-link>
-      </li>
+		<li class="nav-item">
+		<router-link to="/user" id="profile-button">{{ $t('profile') }}</router-link>
+		</li>
+		<li class="nav-item">
+		<router-link to="/user/account-settings" id="settings-button">{{ $t('account-settings') }}</router-link>
+		</li>
+		<li class="nav-item">
+		<router-link to="/user/appearance-settings" id="settings-button">{{ $t('appearance-settings') }}</router-link>
+		</li>
+		<li class="nav-item">
+		<router-link to="/user/game-settings" id="settings-button">{{ $t('game-settings') }}</router-link>
+		</li>
+		<li class="nav-item">
+			<router-link to="/match-history" id="settings-button">{{ $t('match-history') }}</router-link>
+		</li>
+		<li class="nav-item">
+			<router-link to="/add-friends" id="settings-button">{{ $t('add-friends') }}</router-link>
+		</li>
     </ul>
     <div class="logout-box" @click="logout">
       <button id="logout-button" @click="deleteUser">{{ $t('delete') }}</button>
@@ -25,7 +31,8 @@
 <script>
 import {useAuthStore} from '@/store/auth';
 import {computed} from "vue";
-import axios from 'axios';
+import apiClient from "@/services/apiService";
+// import {useRouter} from "vue-router";
 
 
 export default {
@@ -39,8 +46,8 @@ export default {
     const authStore = useAuthStore();
     const user = computed(() => authStore.user || {username: 'default', id: ''});
     try {
-      this.response = await axios.get(
-          `http://localhost:8000/api/user/${user.value.id}/`,
+      this.response = await apiClient.get(
+          `/api/user/${user.value.id}/`,
           {
             headers: {
               Authorization: `Bearer ${authStore.accessToken}`,
@@ -60,10 +67,10 @@ export default {
       const user = computed(() => authStore.user || {username: 'default', id: ''});
       const user_id = user.value.id;
       try {
-        const response = await axios.patch(`http://localhost:8000/api/v1/anonymize_user/${user_id}/`,
+        const response = await apiClient.patch(`/api/v1/anonymize_user/${user_id}/`,
             {
               headers: {
-                Authorization: `Bearer ${authStore.accessToken}`,
+                Authorization: `Bearer ${authStore.access_token}`,
                 'Content-Type': 'application/json',
               }
             });
@@ -80,9 +87,9 @@ export default {
       const authStore = useAuthStore();
       const user = computed(() => authStore.user || {username: 'default', id: ''});
       const user_id = user.value.id;
-      const response = await axios.delete(`http://localhost:8000/api/user/${user_id}/`, {
+      const response = await apiClient.delete(`/api/user/${user_id}/`, {
         headers: {
-          Authorization: `Bearer ${authStore.accessToken}`,
+          Authorization: `Bearer ${authStore.access_token}`,
           'Content-Type': 'application/json',
         }
       });
@@ -93,9 +100,10 @@ export default {
       }
     },
     async logout() {
-      const authStore = useAuthStore();
-      await authStore.logout();
-      this.$router.push('/login');
+		// const router = useRouter();
+        const authStore = useAuthStore();
+        await authStore.logout();
+        await this.$router.push('/login');
     },
     navigate(view) {
       this.$emit('navigate', view);
