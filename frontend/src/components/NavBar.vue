@@ -112,20 +112,19 @@ export default {
 }
 
 .sidebar {
-  color: white;
-  margin-top: 82px;
-  /* <--- ne pas trop changer */
-  margin-left: 140px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 200px;
-  height: 100%;
-  background-color: var(--background-color);
-  border-right: solid rgb(70, 70, 70) 1px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+	color: white;
+	margin-top: 82px;
+	margin-left: 140px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 250px;
+	height: 100%;
+	background-color: var(--background-color);
+	border-right: solid rgb(70, 70, 70) 1px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .nav-list {
@@ -149,11 +148,11 @@ export default {
 }
 
 .logout-box {
-  position: fixed;
-  bottom: 50px;
-  left: 100;
-  padding: 0 10px;
-  box-sizing: border-box;
+	position: fixed;
+	bottom: 50px;
+	left: 100;
+	padding: 0 10px;
+	box-sizing: border-box;
 }
 
 #profile-button {
@@ -177,21 +176,23 @@ export default {
 }
 
 #logout-button {
-  display: block;
-  color: white;
-  background-color: rgb(155, 0, 0);
-  border: none;
-  padding: 20px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  text-align: center;
-  font-size: 20px;
-  width: 210px;
-  height: 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-family: '8bit', sans-serif;
-  transition: background-color 0.2s ease;
+	display: flex;
+	flex-direction: column;
+	color: white;
+	background-color: rgb(155, 0, 0);
+	border: none;
+	padding: 20px;
+	margin-bottom: 10px;
+	margin-right: 150px;
+	cursor: pointer;
+	text-align: center;
+	font-size: 20px;
+	width: 210px;
+	height: 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	font-family: '8bit', sans-serif;
+	transition: background-color 0.2s ease;
 }
 
 #logout-button:hover {
