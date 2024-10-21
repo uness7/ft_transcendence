@@ -59,7 +59,7 @@ export default {
           await router.push("/two-factor-auth");
           console.log("Login was successful!");
         } else {
-          router.push("/login");
+          await router.push("/login");
           console.log("Login failed!");
         }
       } catch (error) {

@@ -1,7 +1,9 @@
 <script setup>
   import {useAuthStore} from "@/store/auth";
   import {computed, onMounted, ref} from "vue";
-  import axios from "axios";
+  import navBar from "@/components/NavBar.vue";
+  import apiClient from "@/services/apiService";
+  
 
   const authStore = useAuthStore();
   const user = computed(() => authStore.user || { username: 'default', id: '' });
@@ -9,10 +11,10 @@
   const matchHistory = ref([]);
   const message = ref("");
 
-  const URL_MATCH_HISTORY = `http://localhost:8000/api/v1/user/match_history/${user.value.id}`;
+  const URL_MATCH_HISTORY = `/api/v1/user/match_history/${user.value.id}`;
 
   function fetchMatchHistories() {
-    axios
+    apiClient
         .get(URL_MATCH_HISTORY)
         .then((res) => {
           message.value = res.data.message;
@@ -31,6 +33,7 @@
 
 <template>
   <div class="container">
+	<nav-bar />
     <h1>Match History</h1>
     <p class="subtitle">Matches Details</p>
     <ul class="match-list">
