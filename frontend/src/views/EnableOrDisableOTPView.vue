@@ -13,8 +13,11 @@
         <p>Please enter the 6-digit code from your authentication app.</p>
         <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input"/>
         <button @click.prevent="verifyOTP">Verify</button>
-        <button @click.prevent="displayQR">Display QR Code</button>
-        <img :src="`data:image/svg+xml;base64,${qrCodeAgain}`" alt="QR Code" v-if="qrCodeAgain" class="qr-code-img"/>
+		<p>
+			<span id="contact-code" >Have you lost your code?
+			<a href="mailto:younes.zioual.dev@gmail.com">Contact an admin</a><br>or<br><a href="#" @click="logout">Sign out</a>
+			</span>
+		</p>
       </div>
     </transition>
   </div>
@@ -26,6 +29,7 @@ import {computed, onMounted, ref} from 'vue';
 import {useAuthStore} from '@/store/auth';
 import {useRouter} from 'vue-router';
 import apiClient from '@/services/apiService';
+
 
 export default {
   name: 'QRCodeViewer',
@@ -97,6 +101,17 @@ export default {
         router.push('/login');
       }
     };
+	
+	const   logout = async () => {
+		const   authStore = useAuthStore();
+		authStore.clearTokens();
+		authStore.isLoggedIn = false;
+		authStore.is_otp_verified = false;
+		authStore.user = {};
+		authStore.user_id = "";
+		await router.push("/login");
+		console.log("You are logged out successfully boy. ");
+	};
 
     const handleNext = () => {
       isFirstTime.value = false;
@@ -107,16 +122,17 @@ export default {
     });
 
     return {
-      generateQRCode,
-      isFirstTime,
-      handleNext,
-      verifyOTP,
-      userId,
-      username,
-      qrCode,
-      otpCode,
-      displayQR,
-      qrCodeAgain
+		generateQRCode,
+		isFirstTime,
+		handleNext,
+		verifyOTP,
+		userId,
+		username,
+		qrCode,
+		otpCode,
+		displayQR,
+		qrCodeAgain,
+		logout
     }
   },
 }
@@ -191,6 +207,16 @@ button {
 	align-content: center;
 	justify-content: center;
 	margin-bottom: 50px;
+}
+
+#contact-code {
+	font-style: italic;
+}
+
+#contact-code, a {
+	text-decoration: underline;
+	font-size: 20px;
+	color: white;
 }
 
 </style>
