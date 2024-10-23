@@ -148,6 +148,7 @@ export const useAuthStore = defineStore(
             is_otp_verified,
             isLoggedIn,
             user_id,
+            clearTokens,
         };
     },
     {
