@@ -1,3 +1,6 @@
+
+<!-- issues: isonline is not working -->
+
 <script setup>
   import {useAuthStore} from "@/store/auth";
   import {computed, onMounted, ref} from "vue";
@@ -11,6 +14,7 @@
   const myFriendshipReqs = ref([]);
   const reqId = ref("");
   const is_online = ref(false);
+  const isReq = ref(false);
 
   function acceptRequest(request_id) {
     apiClient
@@ -26,6 +30,7 @@
         .get(`/api/v1/friend_requests/${user.value.id}/`)
         .then((res) => {
           myFriendshipReqs.value = res.data.friend_requests;
+          isReq.value = true;
         })
         .catch((err) => {
           console.error(err);
@@ -35,7 +40,7 @@
   function fetchFriends() {
     apiClient.get(`/api/v1/get_friends_list/${user.value.id}/`)
         .then((res) => {
-          friends.value = res.data.friends;
+            friends.value = res.data.friends;
         })
         .catch((err) => {
           console.error(err);
@@ -106,169 +111,137 @@
     getUserStatus();
   });
 
-
-
 </script>
 
 <template>
-  <div class="big-container">
-	<nav-bar />
-    <div class="container">
-      <div class="requests">
+  <nav-bar />
+  <div class="container">
+    <div class="requests">
         <h2>My Friendship Requests</h2>
+        <p class="requests-info">This space shows all pending friendship requests sent to you. 
+        Click 'Accept' to add them to your friends list!</p>
         <ul class="list-requests">
           <li v-for="req in myFriendshipReqs" :key="req.request_id">
-            A friend request was sent from {{ req.from_user }} with id {{ req.request_id }}
-            <button @click="acceptRequest(req.request_id)" class="btn-request">Accept Request</button>
+              A friend request was sent from <span>{{ req.from_user }}</span> of id {{ req.request_id }}
+            <button @click="acceptRequest(req.request_id)" class="btn-request">Accept</button>
           </li>
         </ul>
-      </div>
     </div>
 
-    <div class="container">
+    <div class="friends">
+        <div class="add-friend">
+            <h2>Add Friends By <strong>Username</strong></h2>
+            <div class="input-group">
+                <label for="username" class="input-label">Enter Username:</label>
+                <input
+                type="text"
+                id="username"
+                v-model="toAddUser"
+                placeholder="Enter a username"
+                class="input-field"
+                />
+                <button @click="addUser" class="btn-add">Add User</button>
+            </div>
+        </div>
       <div class="list-friends">
         <h2>List of Your Friends</h2>
         <ul class="friends-list">
           <li v-for="friend in friends" :key="friend.id">
-            This is {{ friend.username }} is your friend
-            <p>{{ is_online ? "Online" : "Offline" }}</p>
-            <button @click="removeFriend(friend.username)" class="btn-remove">Remove</button>
+              <div class="friends-list-container">
+                {{ friend.username }} 
+                <p>{{ is_online ? "Online" : "Offline" }}</p>
+                <button @click="removeFriend(friend.username)" class="btn-remove">Remove</button>
+              </div>
           </li>
         </ul>
       </div>
 
-      <div class="add-friend">
-        <h2>Add Friends By <strong>Username</strong></h2>
-        <div class="input-group">
-          <label for="username" class="input-label">Enter Username:</label>
-          <input
-              type="text"
-              id="username"
-              v-model="toAddUser"
-              placeholder="Enter a username"
-              class="input-field"
-          />
-          <button @click="addUser" class="btn-add">Add User</button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        font-size: 25px;
+        width: auto; 
+        height: 90vh;
+    }
 
-.big-container {
-  padding-top: 200px;
-}
+    .requests {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 40px;
+        width: 60%;
+    }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f3f4f6;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-}
+    .friends {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 50px 40px;
+        width: 60%;
+    }
 
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+    .add-friend {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 200px;
+    }
 
-h2 {
-  color: #2c3e50;
-  font-size: 24px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 10px;
-}
+    .list-friends {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 200px;
+    }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
+    h2 {
+        text-decoration: underline;
+    }
 
-li {
-  background-color: #ecf0f1;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .btn-request, .btn-add, .btn-remove {
+        font-family: '8bit';
+        font-size: 20px;
+        background-color: #9b0000;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
 
-li:nth-child(even) {
-  background-color: #e0e4e5;
-}
+    .friends-list-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
 
-.btn-request, .btn-remove, .btn-add {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
+    ul.friends-list {
+        list-style-type: upper-roman;
+    }
 
-.btn-request:hover, .btn-remove:hover, .btn-add:hover {
-  background-color: #2980b9;
-}
+    span {
+        font-style: italic;
+    }
 
-.btn-remove {
-  background-color: #e74c3c;
-}
-
-.btn-remove:hover {
-  background-color: #c0392b;
-}
-
-.input-group {
-  margin-top: 20px;
-}
-
-.input-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 16px;
-  color: #34495e;
-}
-
-.input-field {
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;
-  border: 2px solid #bdc3c7;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
-}
-
-.input-field:focus {
-  border-color: #3498db;
-  outline: none;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
-
-  .input-group {
-    width: 100%;
-  }
-
-  .input-field {
-    width: 100%;
-  }
-}
-
+    .requests-info {
+        text-align: center;
+        color: #666;
+        margin: 10px 0;
+        font-size: 20px;
+        max-width: 80%;
+    }
 </style>
