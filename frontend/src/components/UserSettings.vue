@@ -1,30 +1,57 @@
 <template>
     <NavBar />
     <div class="container">
-        <form @submit.prevent="updateAvatar">
-            <div class="avatar-container">
-                <img :src="avatar" id="avatar" alt="avatar" />
-                <label for="input-avatar" class="label-file-upload">
-                    <input id="input-avatar" type="file" @change="handleFileUpload" />
-                    Avatar
-                </label>
-            </div>
+          <form @submit.prevent="updateAvatar" class="avatar-container">
+            <img :src="avatarPreview || avatar" id="avatar" alt="avatar" />
+            <label for="input-avatar" class="label-file-upload">
+                <input 
+                    id="input-avatar" 
+                    type="file" 
+                    @change="handleFileUpload"
+                    accept="image/*"
+                />
+                Change Avatar
+            </label>
+            <button 
+                v-if="hasNewAvatar" 
+                type="submit" 
+                class="submit-btn"
+            >
+            Upload Avatar
+            </button>
         </form>
         <form @submit.prevent="onSubmitForm" class="form-data">
             <div class="form">
                 <label>First Name</label>
-                <input type="text" v-model="first_name" />
+                <input 
+                    type="text" 
+                    v-model="formData.first_name" 
+                    @input="trackChanges('first_name')"
+                />
             </div>
             <div class="form">
                 <label>Last Name</label>
-                <input type="text" v-model="last_name" />
+                <input 
+                    type="text" 
+                    v-model="formData.last_name" 
+                    @input="trackChanges('last_name')"
+                />
             </div>
             <div class="form">
                 <label>Email</label>
-                <input type="text" v-model="email" />
+                <input 
+                    type="email" 
+                    v-model="email" 
+                    @input="trackChanges('email')"
+                />
             </div>
             <div class="submit-btn">
-                <input id="submit-btn" type="submit" value="Submit">
+                <input 
+                    class="submit-btn" 
+                    type="submit" 
+                    value="Submit"
+                    :disabled="!hasChanges"
+                />
             </div>
         </form>
 
@@ -34,36 +61,108 @@
                 <input type="password" v-model="password" />
             </div>
             <div class="submit-btn">
-                <input id="submit-btn" type="submit" value="update password">
+                <input class="submit-btn" type="submit" value="Update password">
             </div>
         </form>
     </div>
 </template>
 
 <script setup>
-    import {ref, onMounted} from 'vue';
+    import {ref, onMounted, reactive, computed} from 'vue';
     import NavBar from '../components/NavBar.vue';
     import {useAuthStore} from "@/store/auth.js";
-    import {apiClient} from "@/services/apiService.js";
+    import apiClient from "@/services/apiService";
+    import { useToast } from "vue-toastification";
+
+
+    const   toast = useToast();
 
     const   authStore = useAuthStore();
-
-    const   first_name = ref("");
-    const   last_name = ref("");
-    const   email = ref("");
     const   password = ref("");
     const   avatar = ref("");
+    const   avatarPreview = ref(null);
+    const   selectedFile = ref(null);
+    const   hasNewAvatar = ref(false);
 
-    function updateAvatar() {
-        console.log("update avatar"); 
+    const   hasChanges = computed(() => {
+        return Object.values(modifiedFields).some(modified => modified);
+    });
+
+    function trackChanges(field) {
+        modifiedFields[field] = formData[field] !== originalData[field];
     }
 
-    function updatePassword() {
+    function getModifiedFields() {
+        const formDataToSend = new FormData();
+        Object.keys(modifiedFields).forEach(field => {
+            if (modifiedFields[field]) {
+                formDataToSend.append(field, formData[field]);
+            }
+        });
+        return formDataToSend;
+    }
+
+    const   formData = reactive({
+        first_name: "",
+        last_name: "",
+        email: ""
+    });
+
+    const   originalData = reactive({
+        first_name: "",
+        last_name: "",
+        email: ""
+    });
+
+    const   modifiedFields = reactive({
+        first_name:false, 
+        last_name:false, 
+        email:false 
+    });
+    
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        selectedFile.value = file;
+        avatarPreview.value = URL.createObjectURL(file);
+        hasNewAvatar.value = true;
+    }
+
+     async function updateAvatar() {
         try {
-            if (!password.value.isEmpty())
+            if (!selectedFile.value) return;
+            const formData = new FormData();
+            formData.append('avatar', selectedFile.value);
+            const response = await apiClient.patch(
+                `/api/user/${authStore.user.id}/`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStore.access_token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+            if (response.data) {
+                avatar.value = response.data.avatar;
+                authStore.user.avatar = response.data.avatar;
+                hasNewAvatar.value = false;
+                URL.revokeObjectURL(avatarPreview.value);
+                avatarPreview.value = null;
+                toast.success("Avatar updated successfully!");
+            }
+        } catch (error) {
+            console.error('Error updating avatar:', error);
+            toast.error("Failed to update avatar");
+        }
+    }
+
+    async function updatePassword() {
+        try {
+            if (password.value !== "")
             {
-                apiClient.patch(
-                    `/api/v1/update_password/${authStore.user.id}/${password.value}`,
+                const   response = await apiClient.patch(
+                    `/api/v1/update_password/${authStore.user.id}/${password.value}/`,
                     {
                         headers: {
                             Authorization: `Bearer ${authStore.access_token}`,
@@ -71,24 +170,29 @@
                         }
                     }
                 ); 
-           }
-           else {
+                if (response.data) {
+                    password.value = "";
+                    toast.success("Password updated successfully!");
+                }
+           } else {
                 console.log("no password was entered");
+                toast.error("No Password was entered!");
            }
         } catch (error) {
            console.log(error); 
+           toast.error(error);
         }
     }
 
-    function onSubmitForm() {
+    async function onSubmitForm() {
         try {
-            apiClient.patch(
-                `/api/user/${authStore.user.id}`,
-                {
-                    first_name: first_name.value,
-                    last_name: last_name.value,
-                    email: email.value
-                }, 
+            if (!hasChanges.value)
+                return ;
+
+            const   formDataToSend = getModifiedFields();
+            const   response = await apiClient.patch(
+                `/api/user/${authStore.user.id}/`,
+                formDataToSend,
                 {
                     headers: {
                         Authorization: `Bearer ${authStore.access_token}`,
@@ -96,17 +200,35 @@
                     }
                 }
             ); 
+            if (response.data)
+            {
+                authStore.user = { ...authStore.user, ...response.data };
+                Object.keys(response.data).forEach(key => {
+                    if (Object.hasOwn(originalData, key)) {
+                        originalData[key] = response.data[key];
+                    }
+                });
+                Object.keys(modifiedFields).forEach(key => {
+                    modifiedFields[key] = false;
+                });
+                toast.success("Password updated successfully!");
+            }
         } catch (error) {
             console.log(error);
+            toast.error("Profile was not updated, something went wrong!");
         }
     }
 
     onMounted(() => {
-        first_name.value = authStore.user.first_name;
-        last_name.value = authStore.user.last_name;
-        email.value = authStore.user.email;
+        formData.first_name = authStore.user.first_name;
+        formData.last_name = authStore.user.last_name;
+        formData.email = authStore.user.email;
+
+        originalData.first_name = authStore.user.first_name;
+        originalData.last_name = authStore.user.last_name;
+        originalData.email = authStore.user.email;
+        
         avatar.value = authStore.user.avatar;
-        console.log(avatar.value);
     })
 </script>
 
@@ -149,13 +271,19 @@
         padding: 10px 20px;
     }
 
-    #submit-btn {
+    .submit-btn {
+        font-family: '8bit';
         font-size: 20px;
-        padding: 10px 15px;
-        margin: 5px 10px;
+        padding: 5px 15px;
+        margin: 2px 10px;
+        background-color:  #8B0000;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
     }
 
-    input[type=text], input[type=password] {
+    input[type=text], input[type=password], input[type=email] {
         width: 90%;
         padding: 12px 20px;
         margin: 8px 0;
@@ -197,6 +325,4 @@
     input[type="file"] {
         display: none;
     }
-
-
 </style>
