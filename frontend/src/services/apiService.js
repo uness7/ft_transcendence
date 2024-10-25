@@ -28,7 +28,7 @@ apiClient.interceptors.request.use(async (request) => {
 		return  request;
 	}
 	const   response = await axios.post(
-		'http://localhost:8000/api/authentication/refresh/',
+		'http://localhost:8443/api/authentication/refresh/',
 		{
 			refresh: authStore.refresh_token,
 		},
