@@ -6,6 +6,14 @@
       </header>
 
       <form @submit.prevent="handleSubmit" class="auth-form" novalidate>
+        <div v-if="registerError" role="alert" class="error-summary">
+          <p class="error-summary__title">Registration failed</p>
+          <ul class="error-summary__list">
+            <li v-for="(error, field) in registerErrorMessages" :key="field">
+              {{ field }}: {{ error[0] }}
+            </li>
+          </ul>
+        </div>
 
         <div class="form-group">
           <label for="username" class="form-label">Username</label>
@@ -157,13 +165,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/store/auth';
-import { debounce } from 'lodash';
+import {ref, computed} from 'vue';
+import {useRouter} from 'vue-router';
+import axios from "axios";
+import {debounce} from 'lodash';
 
 const router = useRouter();
-const authStore = useAuthStore();
 
 const username = ref('');
 const firstname = ref('');
@@ -177,6 +184,8 @@ const lastnameError = ref(false);
 const emailError = ref(false);
 const passwordError = ref(false);
 const confirmPasswordError = ref(false);
+const registerError = ref(false);
+const registerErrorMessages = ref({});
 const isLoading = ref(false);
 
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,15}$/;
@@ -258,14 +267,20 @@ async function handleSubmit() {
       password: password.value,
     };
 
-    const response = await authStore.register(formData);
-
-    if (response) {
-      await router.push("/login");
-    } else {
-      password.value = "";
-      confirmPassword.value = "";
-    }
+    const response = await axios.post(
+        "http://localhost:8000/api/authentication/register/",
+        formData,
+    );
+    await router.push("/login");
+  } catch (e) {
+    registerError.value = true;
+    registerErrorMessages.value = e.response.data;
+    password.value = "";
+    confirmPassword.value = "";
+    Object.values(e.response.data).forEach(value => {
+          console.log(`${e.response.data[value]}`);
+        }
+    );
   } finally {
     isLoading.value = false;
   }
@@ -400,6 +415,26 @@ async function handleSubmit() {
   border-radius: 50%;
   border-top-color: transparent;
   animation: spin 0.6s linear infinite;
+}
+
+.error-summary {
+  background-color: rgba(220, 38, 38, 0.1);
+  border: var(--border-width) solid var(--color-error);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.error-summary__title {
+  color: var(--color-error);
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.error-summary__list {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+  color: var(--color-error);
 }
 
 @keyframes slideIn {
