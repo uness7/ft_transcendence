@@ -40,7 +40,7 @@
           <li v-for="match in matchHistory" :key="match.id" class="match-item">
             <div class="match-date"><strong>Played at: </strong> {{ match.date }}</div>
             <div class="match-details">
-              <p><strong>Final Score:</strong> {{ match.final_score }}</p>
+              <p><strong>Final Score:</strong> {{ match.final_score ? $t('won') : $t('lost') }}</p>
               <p><strong>Mode:</strong> {{ match.mode }}</p>
             </div>
           </li>

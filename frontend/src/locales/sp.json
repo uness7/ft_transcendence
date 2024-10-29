@@ -1,4 +1,5 @@
 {
+  "add-friends": "agregar amigos",
   "match-history": "historia",
   "anonymize-user": "anonimizar datos",
   "delete": "eliminar cuenta",
@@ -12,7 +13,7 @@
   "settings": "{'ajustes'}",
   "account-settings": "configuraciones de cuenta",
   "game-settings": "configuraciones del juego",
-  "logout": "{'logout'}",
+  "logout": "{'cerrar sesion'}",
   "team": "{'Nuestro equipo'}",
   "ouissem-status": "{'Responsable de docker'}",
   "lionel-status": "{'Responsable de pong'}",
@@ -33,6 +34,8 @@
   "no-account": "{'¿No tienes una cuenta?'}",
   "image-upload": "{'Sube tu foto de perfil'}",
   "local": "{'1v1'}",
+  "won": "ganado",
+  "lost": "perdido",
   "localDesc": "{'Modo 1v1 para jugar con amigo en el mismo dispositivo.'}",
   "multiplayer": "{'2v2'}",
   "multiplayerDesc": "{'Modo multijugador 2v2 para jugar con amigos en el mismo dispositivo.'}",

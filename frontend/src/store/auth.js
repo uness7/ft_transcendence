@@ -118,6 +118,15 @@ export const useAuthStore = defineStore(
             await router.push("/login");
             console.log("You are logged out successfully boy. ");
         }
+        // async function empty_logout() {
+        //     clearTokens();
+        //     isLoggedIn.value = false;
+        //     is_otp_verified.value = false;
+        //     user.value = {};
+        //     user_id.value = "";
+        //     await router.push("/login");
+        //     console.log("You are logged out bc refresh token has expired. ");
+        // }
 
         async function fetchUser(user_id) {
             try {

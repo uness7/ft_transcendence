@@ -45,6 +45,8 @@
   "easy": "easy",
   "medium": "medium",
   "hard": "hard",
+  "won": "won",
+  "lost": "lost",
   "read-privacy": "read our privacy policy",
   "register-raw": "Register",
   "register": "or register",

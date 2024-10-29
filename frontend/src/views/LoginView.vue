@@ -70,12 +70,6 @@
             <span>{{ isLoading ? 'Signing in...' : $t('sign-in') }}</span>
           </button>
         </div>
-
-        <div class="auth-links">
-          <router-link to="/forgot-password" class="auth-link auth-link--small">
-            Forgot password?
-          </router-link>
-        </div>
       </form>
     </div>
   </div>
