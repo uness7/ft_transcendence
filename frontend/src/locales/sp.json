@@ -44,6 +44,7 @@
   "easy": "{'facil'}",
   "medium": "{'media'}",
   "hard": "{'alta'}",
+  "register-raw": "{'Registrarse'}",
   "register": "{'o registrarse'}",
   "read-privacy": "{'leer nuestra politica de privacidad'}",
   "privacy": {
