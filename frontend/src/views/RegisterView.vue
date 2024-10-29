@@ -116,7 +116,7 @@
                 @input="validatePassword"
             />
             <span v-if="passwordError" id="password-error" class="form-error" role="alert">
-              Password must be at least 8 characters long.
+              {{ getPasswordErrorMessage() }}
             </span>
           </div>
         </div>
@@ -191,6 +191,7 @@ const isLoading = ref(false);
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,15}$/;
 const NAME_REGEX = /^[a-zA-Z-\s]{2,30}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PWD_REGEX = /^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,16}$/;
 
 const validateUsername = debounce(() => {
   usernameError.value = !USERNAME_REGEX.test(username.value);
@@ -239,9 +240,18 @@ const validateEmail = debounce(() => {
 }, 300);
 
 const validatePassword = debounce(() => {
-  passwordError.value = !(password.value.trim().length >= 8);
+  passwordError.value = !PWD_REGEX.test(password.value.trim());
 }, 300);
 
+const getPasswordErrorMessage = () => {
+  if (password.value.length < 8 || password.value.length > 16) {
+    return "Password be between 8 and 16 characters long.";
+  } else if (!PWD_REGEX.test(password.value)) {
+    return "Password must contain at least a special character.";
+  } else {
+    return "";
+  }
+}
 const validateConfirmPassword = debounce(() => {
   confirmPasswordError.value = password.value !== confirmPassword.value;
 }, 300);
