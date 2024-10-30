@@ -277,7 +277,7 @@ async function handleSubmit() {
       password: password.value,
     };
 
-    const response = await axios.post(
+    await axios.post(
         "http://localhost:8000/api/authentication/register/",
         formData,
     );

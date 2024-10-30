@@ -41,7 +41,7 @@
                 <label>Email</label>
                 <input 
                     type="email" 
-                    v-model="email" 
+                    v-model="formData.email" 
                     @input="trackChanges('email')"
                 />
             </div>
@@ -211,7 +211,7 @@
                 Object.keys(modifiedFields).forEach(key => {
                     modifiedFields[key] = false;
                 });
-                toast.success("Password updated successfully!");
+                toast.success("Profile updated successfully!");
             }
         } catch (error) {
             console.log(error);
