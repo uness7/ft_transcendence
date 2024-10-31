@@ -1,8 +1,8 @@
 <template>
     <NavBar />
     <div class="container">
-          <form @submit.prevent="updateAvatar" class="avatar-container">
-            <img :src="avatarPreview || avatar" id="avatar" alt="avatar" />
+        <form @submit.prevent="updateAvatar" class="avatar-container">
+            <img :src="avatarPreview || avatar" id="avatar" :alt="$t('avatar')" />
             <label for="input-avatar" class="label-file-upload">
                 <input 
                     id="input-avatar" 
@@ -10,19 +10,19 @@
                     @change="handleFileUpload"
                     accept="image/*"
                 />
-                Change Avatar
+                {{$t('change_avatar')}}
             </label>
             <button 
                 v-if="hasNewAvatar" 
                 type="submit" 
                 class="submit-btn"
             >
-            Upload Avatar
+                {{$t('upload_avatar')}}
             </button>
         </form>
         <form @submit.prevent="onSubmitForm" class="form-data">
             <div class="form">
-                <label>First Name</label>
+                <label>{{$t('first_name')}}</label>
                 <input 
                     type="text" 
                     v-model="formData.first_name" 
@@ -30,7 +30,7 @@
                 />
             </div>
             <div class="form">
-                <label>Last Name</label>
+                <label>{{$t('last_name')}}</label>
                 <input 
                     type="text" 
                     v-model="formData.last_name" 
@@ -38,7 +38,7 @@
                 />
             </div>
             <div class="form">
-                <label>Email</label>
+                <label>{{$t('email')}}</label>
                 <input 
                     type="email" 
                     v-model="formData.email" 
@@ -49,7 +49,7 @@
                 <input 
                     class="submit-btn" 
                     type="submit" 
-                    value="Submit"
+                    :value="$t('submit')" 
                     :disabled="!hasChanges"
                 />
             </div>
@@ -57,11 +57,11 @@
 
         <form @submit.prevent="updatePassword" class="form-password">
             <div class="form">
-                <label>Password</label>
+                <label>{{$t('password')}}</label>
                 <input type="password" v-model="password" />
             </div>
             <div class="submit-btn">
-                <input class="submit-btn" type="submit" value="Update password">
+                <input class="submit-btn" type="submit" :value="$t('update_password')">
             </div>
         </form>
     </div>

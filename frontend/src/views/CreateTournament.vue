@@ -1,15 +1,22 @@
 <template>
   <div class="content">
-    <h1>Create a Tournament</h1>
-    <p>Enter the name of your tournament below:</p>
+    <h1>{{$t('create_tournament')}}</h1>
+    <p>{{$t('enter_tournament_name')}}</p>
 
     <form @submit.prevent="createTournament" class="form-container">
-      <input type="text" v-model="tournamentName" placeholder="Tournament Name (10char max)" required
-             class="input-field" maxlength="10"/>
-      <button type="submit" class="btn">Create Tournament</button>
+      <input 
+        type="text" 
+        v-model="tournamentName" 
+        :placeholder="$t('tournament_name_placeholder')" 
+        required
+        class="input-field" 
+        maxlength="10"
+      />
+      <button type="submit" class="btn">{{$t('create_tournament')}}</button>
     </form>
   </div>
 </template>
+
 
 <script>
 export default {

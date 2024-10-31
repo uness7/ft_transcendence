@@ -1,14 +1,14 @@
 <template>
   <div class="content">
-    <h1>Tournament Page</h1>
-    <p>Welcome to the tournament page. Please choose an action below:</p>
+    <h1>{{$t('tournament_page')}}</h1>
+    <p>{{$t('welcome_tournament_page')}}</p>
 
     <div class="button-container">
       <router-link to="/tournament/create" class="btn">
-        Create Tournament
+        {{$t('create_tournament')}}
       </router-link>
       <router-link to="/tournament/details" class="btn">
-        Continue Tournament
+        {{$t('continue_tournament')}}
       </router-link>
     </div>
   </div>

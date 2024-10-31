@@ -40,14 +40,14 @@
 <template>
     <NavBar />
     <div class="container">
-        <h1>Match History</h1>
-        <p class="subtitle">Matches Details</p>
+        <h1>{{ $t("match_history") }}</h1>
+        <p class="subtitle">{{ $t("matches_details") }}</p>
         <table class="match-list">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Result</th>
-                    <th>Mode</th>
+                    <th>{{ $t("date") }}</th>
+                    <th>{{ $t("result") }}</th>
+                    <th>{{ $t("mode") }}</th>
                 </tr>
             </thead>
             <tbody>

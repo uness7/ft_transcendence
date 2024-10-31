@@ -117,48 +117,47 @@
   <nav-bar />
   <div class="container">
     <div class="requests">
-        <h2>My Friendship Requests</h2>
-        <p class="requests-info">This space shows all pending friendship requests sent to you. 
-        Click 'Accept' to add them to your friends list!</p>
+        <h2>{{$t('my_friendship_requests')}}</h2>
+        <p class="requests-info">{{$t('requests_info')}}</p>
         <ul class="list-requests">
           <li v-for="req in myFriendshipReqs" :key="req.request_id">
-              A friend request was sent from <span>{{ req.from_user }}</span> of id {{ req.request_id }}
-            <button @click="acceptRequest(req.request_id)" class="btn-request">Accept</button>
+              {{$t('friend_request_from')}} <span>{{ req.from_user }}</span> {{$t('request_id')}} {{ req.request_id }}
+            <button @click="acceptRequest(req.request_id)" class="btn-request">{{$t('accept')}}</button>
           </li>
         </ul>
     </div>
 
     <div class="friends">
         <div class="add-friend">
-            <h2>Add Friends By <strong>Username</strong></h2>
+            <h2>{{$t('add_friends_by')}} <strong>{{$t('username')}}</strong></h2>
             <div class="input-group">
-                <label for="username" class="input-label">Enter Username:</label>
+                <label for="username" class="input-label">{{$t('enter_username_label')}}</label>
                 <input
                 type="text"
                 id="username"
                 v-model="toAddUser"
-                placeholder="Enter a username"
+                :placeholder="$t('enter_username_placeholder')"
                 class="input-field"
                 />
-                <button @click="addUser" class="btn-add">Add User</button>
+                <button @click="addUser" class="btn-add">{{$t('add_user')}}</button>
             </div>
         </div>
       <div class="list-friends">
-        <h2>List of Your Friends</h2>
+        <h2>{{$t('list_of_friends')}}</h2>
         <ul class="friends-list">
           <li v-for="friend in friends" :key="friend.id">
               <div class="friends-list-container">
                 {{ friend.username }} 
-                <p>{{ is_online ? "Online" : "Offline" }}</p>
-                <button @click="removeFriend(friend.username)" class="btn-remove">Remove</button>
+                <p>{{ is_online ? $t('online') : $t('offline') }}</p>
+                <button @click="removeFriend(friend.username)" class="btn-remove">{{$t('remove')}}</button>
               </div>
           </li>
         </ul>
       </div>
-
     </div>
   </div>
 </template>
+
 
 <style>
     .container {

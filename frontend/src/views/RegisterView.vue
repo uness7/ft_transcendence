@@ -7,7 +7,7 @@
 
       <form @submit.prevent="handleSubmit" class="auth-form" novalidate>
         <div v-if="registerError" role="alert" class="error-summary">
-          <p class="error-summary__title">Registration failed</p>
+          <p class="error-summary__title">{{ $t("registration-failed") }}</p>
           <ul class="error-summary__list">
             <li v-for="(error, field) in registerErrorMessages" :key="field">
               {{ field }}: {{ error[0] }}
@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-group">
-          <label for="username" class="form-label">Username</label>
+          <label for="username" class="form-label">{{ $t("username") }}</label>
           <div class="form-input-wrapper">
             <input
                 id="username"
@@ -37,7 +37,7 @@
         </div>
 
         <div class="form-group">
-          <label for="firstname" class="form-label">First name</label>
+          <label for="firstname" class="form-label">{{ $t("first-name") }}</label>
           <div class="form-input-wrapper">
             <input
                 id="firstname"
@@ -58,7 +58,7 @@
         </div>
 
         <div class="form-group">
-          <label for="lastname" class="form-label">Last name</label>
+          <label for="lastname" class="form-label">{{ $t("last-name") }}</label>
           <div class="form-input-wrapper">
             <input
                 id="lastname"
@@ -79,7 +79,7 @@
         </div>
 
         <div class="form-group">
-          <label for="email" class="form-label">Email</label>
+          <label for="email" class="form-label">{{ $t("email") }}</label>
           <div class="form-input-wrapper">
             <input
                 id="email"
@@ -95,13 +95,13 @@
                 autocomplete="email"
             />
             <span v-if="emailError" id="email-error" class="form-error" role="alert">
-              Please enter a valid email address.
+              {{ $t("valid-email") }}
             </span>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="password" class="form-label">Password</label>
+          <label for="password" class="form-label">{{ $t("password") }}</label>
           <div class="form-input-wrapper">
             <input
                 id="password"
@@ -122,7 +122,7 @@
         </div>
 
         <div class="form-group">
-          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <label for="confirmPassword" class="form-label">{{ $t("confirm-password") }}</label>
           <div class="form-input-wrapper">
             <input
                 id="confirmPassword"
@@ -137,7 +137,7 @@
                 @input="validateConfirmPassword"
             />
             <span v-if="confirmPasswordError" id="confirmPassword-error" class="form-error" role="alert">
-              Passwords do not match.
+              {{ $t("passwords-not-match") }}
             </span>
           </div>
         </div>
@@ -150,19 +150,20 @@
               :disabled="!registerValid || isLoading"
           >
             <span v-if="isLoading" class="loader" aria-hidden="true"></span>
-            <span>{{ isLoading ? 'Registering...' : $t('register-raw') }}</span>
+            <span>{{ isLoading ? $t("registering") : $t('register-raw') }}</span>
           </button>
         </div>
 
         <div class="auth-links">
           <router-link to="/login" class="auth-link auth-link--small">
-            Already have an account ?
+            {{ $t("already-have-account") }}
           </router-link>
         </div>
       </form>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import {ref, computed} from 'vue';

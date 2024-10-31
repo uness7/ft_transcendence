@@ -2,26 +2,30 @@
   <div class="otp-verification">
     <transition name="fade" mode="out-in">
       <div v-if="isFirstTime" key="qr-code-view" class="qr-code-container">
-        <h2>Scan QR Code for 2FA Setup</h2>
-        <p>To secure your account, please scan the QR code with your authentication app (Google Authenticator, etc.)</p>
-        <img :src="`data:image/svg+xml;base64,${qrCode}`" alt="QR Code" v-if="qrCode" class="qr-code-img"/>
-        <button id="next-btn" @click="handleNext">Next</button>
+        <h2>{{$t('scan_qr_code')}}</h2>
+        <p>{{$t('secure_account_instruction')}}</p>
+        <img :src="`data:image/svg+xml;base64,${qrCode}`" :alt="$t('qr_code')" v-if="qrCode" class="qr-code-img"/>
+        <button id="next-btn" @click="handleNext">{{$t('next')}}</button>
       </div>
 
       <div v-else key="otp-input-view" class="otp-container">
-        <h2>Enter OTP Code</h2>
-        <p>Please enter the 6-digit code from your authentication app.</p>
-        <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input"/>
-        <button @click.prevent="verifyOTP">Verify</button>
-		<p>
-			<span id="contact-code" >Have you lost your code?
-			<a href="mailto:younes.zioual.dev@gmail.com">Contact an admin</a><br>or<br><a href="#" @click="logout">Sign out</a>
-			</span>
-		</p>
+        <h2>{{$t('enter_otp_code')}}</h2>
+        <p>{{$t('enter_code_instruction')}}</p>
+        <input v-model="otpCode" type="text" maxlength="6" :placeholder="$t('enter_otp')" class="otp-input"/>
+        <button @click.prevent="verifyOTP">{{$t('verify')}}</button>
+        <p>
+          <span id="contact-code">
+            {{$t('lost_code_question')}}
+            <a href="mailto:younes.zioual.dev@gmail.com">{{$t('contact_admin')}}</a>
+            <br>{{$t('or')}}<br>
+            <a href="#" @click="logout">{{$t('sign_out')}}</a>
+          </span>
+        </p>
       </div>
     </transition>
   </div>
 </template>
+
 
 <script>
 
