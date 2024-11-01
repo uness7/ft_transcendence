@@ -122,7 +122,7 @@ export default {
 .sidebar {
 	color: white;
 	margin-top: 82px;
-	margin-left: 140px;
+	margin-left: 90px;
 	position: fixed;
 	top: 0;
 	left: 0;
