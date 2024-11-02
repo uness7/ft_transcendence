@@ -122,7 +122,7 @@ export default {
 .sidebar {
 	color: white;
 	margin-top: 82px;
-	margin-left: 140px;
+	margin-left: 90px;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -186,6 +186,8 @@ export default {
 #logout-button {
 	display: flex;
 	flex-direction: column;
+  align-items: center;
+	justify-content: center;
 	color: white;
 	background-color: rgb(155, 0, 0);
 	border: none;
