@@ -13,30 +13,38 @@ const   apiClient = axios.create({
 	},
 });
 
+
 apiClient.interceptors.request.use(async (request) => {
-	const   authStore = useAuthStore();
-	if (!accessToken) {
-		accessToken = localStorage.getItem("access");
-		request.headers.Authorization = `Bearer ${accessToken}`;
-	}
-	const   tokenInfo = jwtDecode(accessToken);
-	const   isExpired = dayjs.unix(tokenInfo.exp).diff(dayjs()) < 1;
-	console.log("Is token expired? " + isExpired);
-	if (!isExpired)
-	{
-		request.headers.Authorization = `Bearer ${accessToken}`;
-		return  request;
-	}
-	const   response = await axios.post(
-		'http://localhost:8000/api/authentication/refresh/',
-		{
-			refresh: authStore.refresh_token,
-		},
-	);
-	authStore.setAccessToken(response.data.access);
-	authStore.setRefreshToken(response.data.refresh);
-	request.headers.Authorization = `Bearer ${response.data.access}`;
-	return request;
-});
+		const authStore = useAuthStore();
+		if (!accessToken) {
+			accessToken = localStorage.getItem("access");
+			request.headers.Authorization = `Bearer ${accessToken}`;
+		}
+		const tokenInfo = jwtDecode(accessToken);
+		const isExpired = dayjs.unix(tokenInfo.exp).diff(dayjs()) < 1;
+		console.log("Is token expired? " + isExpired);
+		if (!isExpired) {
+			request.headers.Authorization = `Bearer ${accessToken}`;
+			return request;
+		}
+		const response = await axios.post(
+			'http://localhost:8000/api/authentication/refresh/',
+			{
+				refresh: authStore.refresh_token,
+			},
+		);
+		authStore.setAccessToken(response.data.access);
+		authStore.setRefreshToken(response.data.refresh);
+		request.headers.Authorization = `Bearer ${response.data.access}`;
+		return request;
+	},
+	// (error) => {
+	// 	const authStore = useAuthStore();
+	// 	// handling the err
+	// 	if (error.response.status === 401) {
+	// 		authStore.empty_logout();
+	// 	}
+	// }
+);
 
 export default apiClient;

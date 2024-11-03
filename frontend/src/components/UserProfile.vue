@@ -40,7 +40,7 @@
 import Chart from "chart.js/auto";
 import {computed} from 'vue';
 import {useAuthStore} from '@/store/auth';
-import axios from "axios"
+import apiClient from "@/services/apiService";
 
 export default {
   data() {
@@ -52,11 +52,11 @@ export default {
     const authStore = useAuthStore();
     const user = computed(() => authStore.user || {username: 'default', id: ''});
     try {
-      this.response = await axios.get(
-          `http://localhost:8000/api/user/${user.value.id}/`,
+      this.response = await apiClient.get(
+          `/api/user/${user.value.id}/`,
           {
             headers: {
-              Authorization: `Bearer ${authStore.accessToken}`,
+              Authorization: `Bearer ${authStore.access_token}`,
               'Content-Type': 'application/json'
             }
           }

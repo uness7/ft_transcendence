@@ -3,7 +3,7 @@
     <canvas id="game-canvas"></canvas>
   </div>
   <div id="button-container">
-    <button v-on:click="navigateToTournament()" id="return-button">BACK</button>
+    <button v-on:click="navigateToTournament()" id="return-button">{{ $t("back") }}</button>
   </div>
 </template>
 

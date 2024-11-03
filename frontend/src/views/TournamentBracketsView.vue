@@ -1,40 +1,41 @@
 <template>
   <div class="content">
-    <h1>{{ tournament ? `${tournament.name} Tournament` : "Error: no tournament" }}</h1>
+    <h1>{{ tournament ? tournament.name + " Tournament" : "Error: no tournament" }}</h1>
     <h2>Match 1 - {{ tournament?.matches?.[0].playerLeft }} vs {{ tournament?.matches?.[0].playerRight }}</h2>
     <p>{{ tournament?.matches?.[0].state }}</p>
     <div v-if="tournament?.matches?.[0].state === 'pending'">
-      <button class="btn join-btn" @click="startMatch">Start Match</button>
+      <button class="btn join-btn" @click="startMatch">{{$t('start_match')}}</button>
     </div>
     <div v-else>
-      <p>Winner: {{ tournament?.matches?.[0].winner }}</p>
-      <p>Score: {{ tournament?.matches?.[0].playerLeftScore }} vs {{ tournament?.matches?.[0].playerRightScore }}</p>
+      <p>{{$t('winner')}}: {{ tournament?.matches?.[0].winner }}</p>
+      <p>{{$t('score')}}: {{ tournament?.matches?.[0].playerLeftScore }} vs {{ tournament?.matches?.[0].playerRightScore }}</p>
     </div>
 
     <h2>Match 2 - {{ tournament?.matches?.[1].playerLeft }} vs {{ tournament?.matches?.[1].playerRight }}</h2>
     <p>{{ tournament?.matches?.[1].state }}</p>
     <div v-if="tournament?.matches?.[0].state === 'finished' && tournament?.matches?.[1].state === 'pending'">
-      <button class="btn join-btn" @click="startMatch">Start Match</button>
+      <button class="btn join-btn" @click="startMatch">{{$t('start_match')}}</button>
     </div>
     <div v-if="tournament?.matches?.[1].state === 'finished'">
-      <p>Winner: {{ tournament?.matches?.[1].winner }}</p>
-      <p>Score: {{ tournament?.matches?.[1].playerLeftScore }} vs {{ tournament?.matches?.[1].playerRightScore }}</p>
+      <p>{{$t('winner')}}: {{ tournament?.matches?.[1].winner }}</p>
+      <p>{{$t('score')}}: {{ tournament?.matches?.[1].playerLeftScore }} vs {{ tournament?.matches?.[1].playerRightScore }}</p>
     </div>
 
     <div v-if="tournament?.matches?.[0].state === 'finished' && tournament?.matches?.[1].state === 'finished'">
       <h2>Match 3 - {{ tournament?.matches?.[2].playerLeft }} vs {{ tournament?.matches?.[2].playerRight }}</h2>
       <p>{{ tournament?.matches?.[2].state }}</p>
       <div v-if="tournament?.matches?.[2].state === 'pending'">
-        <button class="btn join-btn" @click="startMatch">Start Match</button>
+        <button class="btn join-btn" @click="startMatch">{{$t('start_match')}}</button>
       </div>
       <div v-else>
-        <p>Winner: {{ tournament?.matches?.[2].winner }}</p>
-        <p>Score: {{ tournament?.matches?.[2].playerLeftScore }} vs {{ tournament?.matches?.[2].playerRightScore }}</p>
-        <h1>Congratulations {{ tournament?.matches?.[2].winner }} !</h1>
+        <p>{{$t('winner')}}: {{ tournament?.matches?.[2].winner }}</p>
+        <p>{{$t('score')}}: {{ tournament?.matches?.[2].playerLeftScore }} vs {{ tournament?.matches?.[2].playerRightScore }}</p>
+        <h1>{{$t('congratulations')}} {{ tournament?.matches?.[2].winner }}!</h1>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {

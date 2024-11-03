@@ -1,7 +1,11 @@
+
+<!-- issues: isonline is not working -->
+
 <script setup>
   import {useAuthStore} from "@/store/auth";
   import {computed, onMounted, ref} from "vue";
-  import axios from "axios";
+  import apiClient from "@/services/apiService";
+  import navBar from "@/components/NavBar.vue";
 
   const authStore = useAuthStore();
   const user = computed(() => authStore.user);
@@ -10,10 +14,11 @@
   const myFriendshipReqs = ref([]);
   const reqId = ref("");
   const is_online = ref(false);
+  const isReq = ref(false);
 
   function acceptRequest(request_id) {
-    axios
-        .post(`http://localhost:8000/api/v1/accept_request/${user.value.id}/${request_id}/`)
+    apiClient
+        .post(`/api/v1/accept_request/${user.value.id}/${request_id}/`)
         .then((res) => {
           alert(res.data.message);
         })
@@ -21,10 +26,11 @@
   }
 
   function fetchFriendshipReqs() {
-    axios
-        .get(`http://localhost:8000/api/v1/friend_requests/${user.value.id}/`)
+    apiClient
+        .get(`/api/v1/friend_requests/${user.value.id}/`)
         .then((res) => {
           myFriendshipReqs.value = res.data.friend_requests;
+          isReq.value = true;
         })
         .catch((err) => {
           console.error(err);
@@ -32,9 +38,9 @@
   }
 
   function fetchFriends() {
-    axios.get(`http://localhost:8000/api/v1/get_friends_list/${user.value.id}/`)
+    apiClient.get(`/api/v1/get_friends_list/${user.value.id}/`)
         .then((res) => {
-          friends.value = res.data.friends;
+            friends.value = res.data.friends;
         })
         .catch((err) => {
           console.error(err);
@@ -43,9 +49,9 @@
 
   async function getUserByUsername(username) {
     let user = null;
-    const res = await axios.get(`http://localhost:8000/api/user/`, {
+    const res = await apiClient.get(`/api/user/`, {
       headers: {
-        Authorization: `Bearer ${authStore.accessToken}`,
+        Authorization: `Bearer ${authStore.access_token}`,
         "Content-Type": "application/json"
       }
     });
@@ -61,7 +67,7 @@
     } else {
       const user_id = user.value.id;
       const to_add_user_id = to_add_user.id;
-      const response = await axios.post(`http://localhost:8000/api/v1/send_request/${user_id}/${to_add_user_id}/`);
+      const response = await apiClient.post(`/api/v1/send_request/${user_id}/${to_add_user_id}/`);
       if (response.status === 200) {
         reqId.value = response.data.request_id;
         alert("Friend request was sent!");
@@ -72,10 +78,10 @@
   }
 
   function getUserStatus() {
-    axios
-        .get(`http://localhost:8000/api/user/${user.value.id}/`, {
+    apiClient
+        .get(`/api/user/${user.value.id}/`, {
           headers: {
-            Authorization: `Bearer ${authStore.accessToken}`,
+            Authorization: `Bearer ${authStore.access_token}`,
             "Content-Type": "application/json"
           },
         })
@@ -90,7 +96,7 @@
   }
 
   async function removeFriend(username) {
-    const response = await axios.post(`http://localhost:8000/api/v1/remove_friend/${user.value.id}/${username}/`);
+    const response = await apiClient.post(`/api/v1/remove_friend/${user.value.id}/${username}/`);
     if (response.status === 200) {
       alert(`${username} was removed!`);
     } else {
@@ -105,169 +111,136 @@
     getUserStatus();
   });
 
-
-
 </script>
 
 <template>
-  <div class="big-container">
-
-    <div class="container">
-      <div class="requests">
-        <h2>My Friendship Requests</h2>
+  <nav-bar />
+  <div class="container">
+    <div class="requests">
+        <h2>{{$t('my_friendship_requests')}}</h2>
+        <p class="requests-info">{{$t('requests_info')}}</p>
         <ul class="list-requests">
           <li v-for="req in myFriendshipReqs" :key="req.request_id">
-            A friend request was sent from {{ req.from_user }} with req.id {{ req.request_id }}
-            <button @click="acceptRequest(req.request_id)" class="btn-request">Accept Request</button>
+              {{$t('friend_request_from')}} <span>{{ req.from_user }}</span> {{$t('request_id')}} {{ req.request_id }}
+            <button @click="acceptRequest(req.request_id)" class="btn-request">{{$t('accept')}}</button>
           </li>
         </ul>
-      </div>
     </div>
 
-    <div class="container">
+    <div class="friends">
+        <div class="add-friend">
+            <h2>{{$t('add_friends_by')}} <strong>{{$t('username')}}</strong></h2>
+            <div class="input-group">
+                <label for="username" class="input-label">{{$t('enter_username_label')}}</label>
+                <input
+                type="text"
+                id="username"
+                v-model="toAddUser"
+                :placeholder="$t('enter_username_placeholder')"
+                class="input-field"
+                />
+                <button @click="addUser" class="btn-add">{{$t('add_user')}}</button>
+            </div>
+        </div>
       <div class="list-friends">
-        <h2>List of Your Friends</h2>
+        <h2>{{$t('list_of_friends')}}</h2>
         <ul class="friends-list">
           <li v-for="friend in friends" :key="friend.id">
-            This is {{ friend.username }} is your friend
-            <p>{{ is_online ? "Online" : "Offline" }}</p>
-            <button @click="removeFriend(friend.username)" class="btn-remove">Remove</button>
+              <div class="friends-list-container">
+                {{ friend.username }} 
+                <p>{{ is_online ? $t('online') : $t('offline') }}</p>
+                <button @click="removeFriend(friend.username)" class="btn-remove">{{$t('remove')}}</button>
+              </div>
           </li>
         </ul>
-      </div>
-
-      <div class="add-friend">
-        <h2>Add Friends By <strong>Username</strong></h2>
-        <div class="input-group">
-          <label for="username" class="input-label">Enter Username:</label>
-          <input
-              type="text"
-              id="username"
-              v-model="toAddUser"
-              placeholder="Enter a username"
-              class="input-field"
-          />
-          <button @click="addUser" class="btn-add">Add User</button>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
 
-.big-container {
-  padding-top: 200px;
-}
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        font-size: 25px;
+        width: auto; 
+        height: 90vh;
+    }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f3f4f6;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-}
+    .requests {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 40px;
+        width: 60%;
+    }
 
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+    .friends {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 50px 40px;
+        width: 60%;
+    }
 
-h2 {
-  color: #2c3e50;
-  font-size: 24px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 10px;
-}
+    .add-friend {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 200px;
+    }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
+    .list-friends {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 200px;
+    }
 
-li {
-  background-color: #ecf0f1;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    h2 {
+        text-decoration: underline;
+    }
 
-li:nth-child(even) {
-  background-color: #e0e4e5;
-}
+    .btn-request, .btn-add, .btn-remove {
+        font-family: '8bit';
+        font-size: 20px;
+        background-color: #9b0000;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
 
-.btn-request, .btn-remove, .btn-add {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
+    .friends-list-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
 
-.btn-request:hover, .btn-remove:hover, .btn-add:hover {
-  background-color: #2980b9;
-}
+    ul.friends-list {
+        list-style-type: upper-roman;
+    }
 
-.btn-remove {
-  background-color: #e74c3c;
-}
+    span {
+        font-style: italic;
+    }
 
-.btn-remove:hover {
-  background-color: #c0392b;
-}
-
-.input-group {
-  margin-top: 20px;
-}
-
-.input-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 16px;
-  color: #34495e;
-}
-
-.input-field {
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;
-  border: 2px solid #bdc3c7;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
-}
-
-.input-field:focus {
-  border-color: #3498db;
-  outline: none;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
-
-  .input-group {
-    width: 100%;
-  }
-
-  .input-field {
-    width: 100%;
-  }
-}
-
+    .requests-info {
+        text-align: center;
+        color: #666;
+        margin: 10px 0;
+        font-size: 20px;
+        max-width: 80%;
+    }
 </style>

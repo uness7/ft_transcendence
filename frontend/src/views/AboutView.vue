@@ -41,7 +41,7 @@ export default {
         },
         {
           name: "Youness Zioual",
-          statusKey: 'youness-status',
+          statusKey: 'joker',
           profileImage: require("../assets/img/pp/yzioual.jpg"),
         },
         {
@@ -100,6 +100,11 @@ export default {
   height: auto;
   object-fit: cover;
   border-radius: 5%;
+  filter: blur(3px);
+}
+
+.img img:hover{
+  filter: blur(0);
 }
 
 .info {
