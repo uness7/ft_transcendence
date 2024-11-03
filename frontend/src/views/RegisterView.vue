@@ -168,8 +168,9 @@
 <script setup>
 import {ref, computed} from 'vue';
 import {useRouter} from 'vue-router';
-import axios from "axios";
 import {debounce} from 'lodash';
+import axios from "axios";
+
 
 const router = useRouter();
 
@@ -279,7 +280,7 @@ async function handleSubmit() {
     };
 
     await axios.post(
-        "http://localhost:8000/api/authentication/register/",
+        "https://localhost:8443/api/authentication/register/",
         formData,
     );
     await router.push("/login");

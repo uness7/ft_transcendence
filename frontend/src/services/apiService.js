@@ -6,13 +6,12 @@ import {useAuthStore} from "@/store/auth.js";
 let     accessToken = localStorage.getItem("access");
 
 const   apiClient = axios.create({
-	baseURL: 'http://localhost:8000',
+	baseURL: 'https://localhost:8443',
 	headers: {
 		Authorization: `Bearer ${accessToken}`,
 		'Content-Type': 'application/json',
 	},
 });
-
 
 apiClient.interceptors.request.use(async (request) => {
 		const authStore = useAuthStore();
@@ -28,7 +27,7 @@ apiClient.interceptors.request.use(async (request) => {
 			return request;
 		}
 		const response = await axios.post(
-			'http://localhost:8000/api/authentication/refresh/',
+			'https://localhost:8443/api/authentication/refresh/',
 			{
 				refresh: authStore.refresh_token,
 			},

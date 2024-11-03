@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import {ref} from "vue";
-import axios from "axios";
 import apiClient from "@/services/apiService";
 import router from "@/router/index.js";
+import axios from "axios";
 
 export const useAuthStore = defineStore(
     'auth',
@@ -60,7 +60,7 @@ export const useAuthStore = defineStore(
         async function login(credentials) {
             try {
                 const response = await axios.post(
-                    "http://localhost:8000/api/authentication/login/",
+                    "https://localhost:8443/api/authentication/login/",
                     credentials
                 );
                 isLoggedIn.value = true;
@@ -78,7 +78,7 @@ export const useAuthStore = defineStore(
         async function register(userData) {
             try {
                 await axios.post(
-                    "http://localhost:8000/api/authentication/register/",
+                    "https://localhost:8443/api/authentication/register/",
                     userData
                 );
                 return true;
