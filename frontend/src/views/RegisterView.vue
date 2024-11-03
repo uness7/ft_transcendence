@@ -289,10 +289,10 @@ async function handleSubmit() {
     registerErrorMessages.value = e.response.data;
     password.value = "";
     confirmPassword.value = "";
-    Object.values(e.response.data).forEach(value => {
-          console.log(`${e.response.data[value]}`);
-        }
-    );
+    // Object.values(e.response.data).forEach(value => {
+    //       console.log(`${e.response.data[value]}`);
+    //     }
+    // );
   } finally {
     isLoading.value = false;
   }

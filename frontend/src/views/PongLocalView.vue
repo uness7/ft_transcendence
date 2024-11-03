@@ -119,7 +119,7 @@ export default {
         console.error(e);
       }
 
-      console.log("response from ponglocal " + response);
+      // console.log("response from ponglocal " + response);
       const username = response.data.username;
 
       const gameConfig = this.gameConfig;

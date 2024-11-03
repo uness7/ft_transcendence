@@ -21,7 +21,7 @@ apiClient.interceptors.request.use(async (request) => {
 		}
 		const tokenInfo = jwtDecode(accessToken);
 		const isExpired = dayjs.unix(tokenInfo.exp).diff(dayjs()) < 1;
-		console.log("Is token expired? " + isExpired);
+		// console.log("Is token expired? " + isExpired);
 		if (!isExpired) {
 			request.headers.Authorization = `Bearer ${accessToken}`;
 			return request;
