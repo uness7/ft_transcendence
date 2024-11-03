@@ -24,3 +24,6 @@ qrcode
 # data anonymization
 django-anon
 
+# prod version
+gunicorn>=20.0,<21.0
+
