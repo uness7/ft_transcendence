@@ -389,7 +389,7 @@ async function handleSubmit() {
 
 .btn--primary {
   background-color: var(--color-primary);
-  color: var(--color-text);
+  color: #1d4ed8;
   border: none;
 }
 
