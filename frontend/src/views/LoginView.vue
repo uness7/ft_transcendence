@@ -208,6 +208,7 @@ async function handleSubmit() {
 
 .btn--primary:hover:not(:disabled) {
 	background-color: var(--color-primary-dark);
+	color: white;
 }
 
 .btn--disabled {
