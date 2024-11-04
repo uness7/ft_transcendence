@@ -1,14 +1,7 @@
 <template>
   <div class="content">
     <canvas id="game-canvas"></canvas>
-    <div class="power-up-buttons">
-      <button :class="{ active: pongConfig?.isSpeedBuffActive ?? false }" @click="togglePlayerSpeed">Speed Buff</button>
-      <button :class="{ active: pongConfig?.isLargerPaddleActive ?? false }" @click="toggleLargerPaddle">Larger Paddle
-      </button>
-      <button :class="{ active: pongConfig?.isFasterBallActive ?? false }" @click="toggleFasterBall">Faster Ball
-      </button>
-      <button :class="{ active: pongConfig?.isImmortalActive ?? false }" @click="togglePlayerImmortal">Immortal</button>
-    </div>
+
   </div>
 </template>
 
