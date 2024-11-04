@@ -1,169 +1,166 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
+import {ref} from "vue";
+import apiClient from "@/services/apiService";
+import router from "@/router/index.js";
 import axios from "axios";
-import { encryptToken, decryptToken, generateKey } from './encryptAPI';
 
-const key = await generateKey();
+export const useAuthStore = defineStore(
+    'auth',
+    () => {
+        const   access_token = ref('');
+        const   refresh_token = ref('');
+        const   user = ref({});
+        const   isLoggedIn = ref(false);
+        const   is_otp_verified = ref(false);
+        const   user_id = ref("");
 
-export const useAuthStore = defineStore("auth", {
-    state: () => ({
-        accessToken: null,
-        refreshToken: null,
-        user: null,
-        user_id: '',
-        isOTPVerified: false,
-    }),
-    getters: {
-        isAuthenticated: (state) => !!state.accessToken,
-        getUser: (state) => state.user,
-        getUserId: (state) => state.user_id,
-    },
-    actions: {
-        async initTokens() {
-            const key = await generateKey();
-            this.accessToken = await decryptToken(localStorage.getItem("accessToken"), key) || null;
-            this.refreshToken = await decryptToken(localStorage.getItem("refreshToken"), key) || null;
-        },
-        async setTokens(accessToken, refreshToken) {
-            this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
+        function initTokens() {
+            access_token.value = localStorage.getItem('access');
+            refresh_token.value = localStorage.getItem('refresh');
+        }
 
-            // setting the encrypted tokens        
-            const encryptedAccessToken = await encryptToken(accessToken, key);
-            const encryptedRefreshToken = await encryptToken(refreshToken, key);
-            localStorage.setItem("accessToken", encryptedAccessToken);
-            localStorage.setItem("refreshToken", encryptedRefreshToken);
+        function    setAccessToken(token) {
+            access_token.value = token;
+            localStorage.setItem('access', access_token.value);
+        }
 
-        },
-        clearTokens() {
-            this.accessToken = null;
-            this.refreshToken = null;
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-        },
-        setUser(user) {
-            this.user = user;          
-        },
-        async login(credentials) {
+        function    setRefreshToken(token) {
+            if (token) {
+                refresh_token.value = token;
+                localStorage.setItem('refresh', refresh_token.value);
+            }
+        }
+
+        function clearTokens() {
+            access_token.value = null;
+            refresh_token.value = null;
+            localStorage.removeItem("access");
+            localStorage.removeItem("refresh");
+        }
+
+        async function apiBlacklistToken() {
+            try {
+                await apiClient.post(
+                    "/api/authentication/logout/",
+                    {
+                        refresh: refresh_token.value,
+                    },                
+                    {
+                        headers: {
+                            Authorization: `Bearer ${access_token.value}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+            } catch (error) {
+                throw new Error(error);
+            }
+        }
+
+        async function login(credentials) {
             try {
                 const response = await axios.post(
-                    "http://localhost:8000/api/authentication/login/",
+                    "https://localhost:8443/api/authentication/login/",
                     credentials
                 );
-                this.setTokens(response.data.access, response.data.refresh);
-                this.setUser(response.data.user);
-                this.user_id = response.data.user.user_id;
-                this.isOTPVerified = response.data.user.is_otp_verified;
-
-                await this.fetchUser(response.data.user.id);
+                isLoggedIn.value = true;
+                setAccessToken(response.data.access);
+                setRefreshToken(response.data.refresh);
+                user_id.value = response.data.user.id;
+                fetchUser(user_id.value);
                 return true;
             } catch (error) {
                 console.error("Login failed:", error);
                 return false;
             }
-        },
-        async register(userData) {
+        }
+
+        async function register(userData) {
             try {
                 await axios.post(
-                    "http://localhost:8000/api/authentication/register/",
+                    "https://localhost:8443/api/authentication/register/",
                     userData
                 );
-                return await this.login({
-                    username: userData.username,
-                    first_name: userData.first_name,
-                    last_name: userData.last_name,
-                    email: userData.email,
-                    password: userData.password,
-                });
+                return true;
             } catch (error) {
                 console.error("Registration failed:", error);
                 return false;
             }
-        },
-        async apiBlacklistToken() {
+        }
+
+        async function setOffOTP() {
             try {
-                const response = await axios.post(
-                    "http://localhost:8000/api/authentication/logout/",
+                await apiClient.patch(
+                    `/api/user/${user_id.value}/`,
                     {
-                        refresh: this.refreshToken,
+                        is_otp_verified: false,
                     },
                     {
                         headers: {
-                            Authorization: `Bearer ${this.accessToken}`,
+                            Authorization: `Bearer ${access_token.value}`,
                             'Content-Type': 'application/json'
                         }
                     }
-                );                
-                if (response.status != 204) {
-                    throw new Error('Failed to blacklist the token');
-                }
-                else
-                    console.error("Logged out successfully!");
+                );
             } catch (error) {
                 throw new Error(error);
             }
-        },
-        async onLogout() {
+        }
+
+        async function logout() {            
+            await apiBlacklistToken();
+            clearTokens();
+            isLoggedIn.value = false;
+            is_otp_verified.value = false;
+            await setOffOTP();
+            user.value = {};
+            user_id.value = "";
+            await router.push("/login");
+            console.log("You are logged out successfully boy. ");
+        }
+        // async function empty_logout() {
+        //     clearTokens();
+        //     isLoggedIn.value = false;
+        //     is_otp_verified.value = false;
+        //     user.value = {};
+        //     user_id.value = "";
+        //     await router.push("/login");
+        //     console.log("You are logged out bc refresh token has expired. ");
+        // }
+
+        async function fetchUser(user_id) {
             try {
-                await axios.patch(
-                    `http://localhost:8000/api/user/${this.user.id}/`,
-                    {
-                        "is_otp_verified": false
-                    },
+                const response = await apiClient.get(
+                    `/api/user/${user_id}`,
                     {
                         headers: {
-                            Authorization: `Bearer ${this.accessToken}`,
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-            } catch (e) {
-                console.error(e);
-            }
-        },
-        async logout() {
-            await this.onLogout();
-            await this.apiBlacklistToken();
-            this.clearTokens();
-            this.setUser(null);
-        },
-        async getRefreshToken() {
-            try {
-                const response = await axios.post(
-                    "http://localhost:8000/api/authentication/refresh/",
-                    {
-                        refresh: this.refreshToken,
-                    }
-                );
-                this.setTokens(response.data.access, this.refreshToken);
-                console.log("I refresh: ", this.refreshToekn);
-                return response.data.access;
-            } catch (error) {
-                console.error("Token refresh failed:", error);
-                this.clearTokens();
-                return null;
-            }
-        },
-        async fetchUser(user_id) {
-            try {
-                const response = await axios.get(
-                    `http://localhost:8000/api/user/${user_id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${this.accessToken}`,
+                            Authorization: `Bearer ${access_token.value}}`,
                         },
                     }
                 );
-                this.setUser(response.data);
-            } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    const newToken = await this.getRefreshToken();
-                    if (newToken) {
-                        return this.fetchUser();
-                    }
-                }
+                user.value = response.data;
+            } catch (error) {               
                 console.error("Fetch user failed:", error);
             }
-        },
+        }
+
+        return {
+            access_token,
+            refresh_token,
+            user,
+            initTokens,
+            setAccessToken,
+            setRefreshToken,
+            login,
+            register,
+            logout,
+            is_otp_verified,
+            isLoggedIn,
+            user_id,
+            clearTokens,
+        };
     },
-    persist: true,
-});
+    {
+        persist: true,
+    }
+);

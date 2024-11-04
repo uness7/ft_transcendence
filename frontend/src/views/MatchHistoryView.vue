@@ -1,118 +1,119 @@
 <script setup>
-  import {useAuthStore} from "@/store/auth";
-  import {computed, onMounted, ref} from "vue";
-  import axios from "axios";
+    import {useAuthStore} from "@/store/auth";
+    import {computed, onMounted, ref} from "vue";
+    import NavBar from "@/components/NavBar.vue";
+    import apiClient from "@/services/apiService";
 
-  const authStore = useAuthStore();
-  const user = computed(() => authStore.user || { username: 'default', id: '' });
 
-  const matchHistory = ref([]);
-  const message = ref("");
+    const authStore = useAuthStore();
+    const user = computed(() => authStore.user || { username: 'default', id: '' });
 
-  const URL_MATCH_HISTORY = `http://localhost:8000/api/v1/user/match_history/${user.value.id}`;
+    const matchHistory = ref([]);
+    const message = ref("");
 
-  function fetchMatchHistories() {
-    axios
-        .get(URL_MATCH_HISTORY)
-        .then((res) => {
-          message.value = res.data.message;
-          matchHistory.value = res.data.match_history;
-        })
-        .catch((err) => {
-          console.error(err)
-        });
-  }
+    const URL_MATCH_HISTORY = `/api/v1/user/match_history/${user.value.id}`;
 
-  onMounted(() => {
-    console.log("View has been mounted");
-    fetchMatchHistories();
-  });
+    function fetchMatchHistories() {
+        apiClient
+            .get(URL_MATCH_HISTORY)
+            .then((res) => {
+              message.value = res.data.message;
+              matchHistory.value = res.data.match_history;
+            })
+            .catch((err) => {
+              console.error(err)
+            });
+    }
+
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
+
+    onMounted(() => {
+        fetchMatchHistories();
+    });
+
 </script>
 
 <template>
-  <div class="container">
-    <h1>Match History</h1>
-    <p class="subtitle">Matches Details</p>
-    <ul class="match-list">
-      <li v-for="match in matchHistory" :key="match.id" class="match-item">
-        <div class="match-date"><strong>Played at: </strong> {{ match.date }}</div>
-        <div class="match-details">
-          <p><strong>Final Score:</strong> {{ match.final_score }}</p>
-          <p><strong>Mode:</strong> {{ match.mode }}</p>
-        </div>
-      </li>
-    </ul>
-  </div>
+    <NavBar />
+    <div class="container">
+        <h1>{{ $t("match_history") }}</h1>
+        <p class="subtitle">{{ $t("matches_details") }}</p>
+        <table class="match-list">
+            <thead>
+                <tr>
+                    <th>{{ $t("date") }}</th>
+                    <th>{{ $t("result") }}</th>
+                    <th>{{ $t("mode") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="match in matchHistory" :key="match.id">
+                    <td>{{ formatDate(match.date) }}</td>
+                    <td>
+                        <span :class="match.final_score ? 'status-won' : 'status-lost'">
+                            {{ match.final_score ? $t('won') : $t('lost') }}
+                        </span>
+                    </td>
+                    <td>{{ match.mode }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <style scoped>
-/* Styling the container */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding-top: 100px;
-  padding-bottom: 40px;
-  padding-right: 40px;
-  padding-left: 40px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  color: #2c3e50;
-  font-family: 'Arial', sans-serif;
-}
+    .container {
+        color: white;
+        width: 590px;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto; /* Center the container */
+    }
 
-/* Styling the header */
-h1 {
-  text-align: center;
-  font-size: 32px;
-  color: #3498db;
-  margin-bottom: 20px;
-}
+    h1 {
+        text-align: center;
+        font-size: 2em; /* Slightly smaller heading */
+        margin-bottom: 10px;
+    }
 
-/* Styling the subtitle */
-.subtitle {
-  text-align: center;
-  font-size: 18px;
-  color: #7f8c8d;
-  margin-bottom: 30px;
-}
+    .subtitle {
+        text-align: center;
+        color: white; /* Darker grey for subtlety */
+        margin-bottom: 20px;
+    }
 
-/* Styling the match list */
-.match-list {
-  list-style: none;
-  padding: 0;
-}
+    .match-list {
+        width: 100%;
+        border-collapse: collapse; /* Combine borders */
+    }
 
-.match-item {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
-  transition: transform 0.3s ease;
-}
+    .match-list th,
+    .match-list td {
+        padding: 10px; /* Basic padding */
+        text-align: left;
+        border: 1px solid #ccc; /* Light border */
+    }
 
-/* Hover effect */
-.match-item:hover {
-  transform: translateY(-5px);
-}
+    .match-list th {
+        background-color: #909090; /* Light grey for headers */
+    }
 
-.match-date {
-  font-size: 18px;
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
+    .match-list tr:nth-child(even) {
+        background-color: #909090; /* Light background for even rows */
+    }
 
-.match-details {
-  font-size: 16px;
-  color: #7f8c8d;
-}
+    .status-won {
+        color: green; /* Color for won status */
+        font-weight: bold; /* Bold text */
+    }
 
-.match-details p {
-  margin: 5px 0;
-}
+    .status-lost {
+        color: red; /* Color for lost status */
+        font-weight: bold; /* Bold text */
+    }
 
-strong {
-  color: #2c3e50;
-}
 </style>

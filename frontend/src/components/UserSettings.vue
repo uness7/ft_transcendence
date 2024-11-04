@@ -1,362 +1,344 @@
 <template>
-  <div>
-    <NavBar/>
-    <div class="content">
-      <div class="settings">
-        <h2>{{ $t('account-settings') }}</h2>
-        <div class="account-settings">
-          <form @submit.prevent="onFormSubmitted">
-
+    <NavBar />
+    <div class="container">
+        <form @submit.prevent="updateAvatar" class="avatar-container">
+<!--            <img src="media/avatars/default_avatar.jpg" id="avatar"/>-->
+            <label for="input-avatar" class="label-file-upload">
+                <input 
+                    id="input-avatar" 
+                    type="file" 
+                    @change="handleFileUpload"
+                    accept="image/*"
+                />
+                {{$t('change_avatar')}}
+            </label>
+            <button 
+                v-if="hasNewAvatar" 
+                type="submit" 
+                class="submit-btn"
+            >
+                {{$t('upload_avatar')}}
+            </button>
+        </form>
+        <form @submit.prevent="onSubmitForm" class="form-data">
             <div class="form">
-              <div>
-                <img id="preview" src="" alt="Preview" width="200">
-              </div>
-<!--              <div>-->
-<!--                <label for="avatar">Avatar</label>-->
-<!--                <input-->
-<!--                    type="file"-->
-<!--                    id="avatar"-->
-<!--                    accept="image/*"-->
-<!--                />-->
-<!--              </div>-->
+                <label>{{$t('first_name')}}</label>
+                <input 
+                    type="text" 
+                    v-model="formData.first_name" 
+                    @input="trackChanges('first_name')"
+                />
             </div>
-
             <div class="form">
-              <label for="firstName">First Name</label>
-              <input
-                  type="text"
-                  id="firstName"
-              />
+                <label>{{$t('last_name')}}</label>
+                <input 
+                    type="text" 
+                    v-model="formData.last_name" 
+                    @input="trackChanges('last_name')"
+                />
             </div>
-
             <div class="form">
-              <label for="lastName">Last Name</label>
-              <input
-                  type="text"
-                  id="lastName"
-              />
+                <label>{{$t('email')}}</label>
+                <input 
+                    type="email" 
+                    v-model="formData.email" 
+                    @input="trackChanges('email')"
+                />
             </div>
+            <div class="submit-btn">
+                <input 
+                    class="submit-btn" 
+                    type="submit" 
+                    :value="$t('submit')" 
+                    :disabled="!hasChanges"
+                />
+            </div>
+        </form>
 
+        <form @submit.prevent="updatePassword" class="form-password">
             <div class="form">
-
-              <label for="email">Email</label>
-              <input
-                  type="text"
-                  id="email"
-              />
+                <label>{{$t('password')}}</label>
+                <input type="password" v-model="password" />
             </div>
-
-            <div class="form">
-              <label for="password">Password</label>
-              <input
-                  type="password"
-                  id="password"
-              />
+            <div class="submit-btn">
+                <input class="submit-btn" type="submit" :value="$t('update_password')">
             </div>
-
-            <div class="form">
-              <label for="password">Confirm Password</label>
-              <input
-                  type="password"
-                  id="confirm-password"
-              />
-            </div>
-
-            <div class="form">
-              <button id="submit-button" type="submit">Save Modifications</button>
-            </div>
-
-            <div class="form">
-              <p id="submit-status"></p>
-            </div>
-
-          </form>
-        </div>
-
-      </div>
+        </form>
     </div>
-  </div>
 </template>
 
+<script setup>
+    import {ref, onMounted, reactive, computed} from 'vue';
+    import NavBar from '../components/NavBar.vue';
+    import {useAuthStore} from "@/store/auth.js";
+    import apiClient from "@/services/apiService";
+    import { useToast } from "vue-toastification";
 
-<script>
-import NavBar from '../components/NavBar.vue';
-import {useAuthStore} from "@/store/auth";
-import {computed} from "vue";
-import axios from "axios";
 
-export default {
-  name: 'UserSettings',
-  components: {
-    NavBar,
-  },
-  data() {
-    return {
-      user: null,
-      userId: null,
-      accessToken: null,
-      firstName: null,
-      lastName: null,
-      email: null,
-      password: null,
-      confirmPassword: null,
-      // avatarInput: null,
-      avatarPreview: null,
-    };
-  },
-  methods: {
-    // onNewAvatarLoaded(event) {
-    //   event.preventDefault();
-    //   const file = event.target.files[0];
-    //   if (file && file.type.match('image.*')) {
-    //     this.avatarPreview.src = URL.createObjectURL(file);
-    //     this.avatarPreview.onload = () => {
-    //       URL.revokeObjectURL(this.avatarPreview.src);
-    //     }
-    //   }
-    // },
-    selectDOMInputs() {
-      this.firstName = document.querySelector("#firstName");
-      this.lastName = document.querySelector("#lastName");
-      this.email = document.querySelector("#email");
-      this.password = document.querySelector("#password");
-      this.confirmPassword = document.querySelector("#confirm-password");
-      // this.avatarInput = document.querySelector("#avatar");
-      this.avatarPreview = document.querySelector("#preview");
-    },
-    fetchAuthStore() {
-      const authStore = useAuthStore();
-      const user = computed(() => authStore.user || {username: 'default', id: ''});
-      this.userId = user.value.id;
-      this.accessToken = authStore.accessToken;
-    },
-    async fetchUser() {
-      let response = null;
-      try {
-        response = await axios.get(
-            `http://localhost:8000/api/user/${this.userId}/`,
-            {
-              headers: {
-                Authorization: `Bearer ${this.accessToken}`,
-                'Content-Type': 'application/json'
-              }
+    const   toast = useToast();
+
+    const   authStore = useAuthStore();
+    const   password = ref("");
+    const   avatar = ref("");
+    const   avatarPreview = ref(null);
+    const   selectedFile = ref(null);
+    const   hasNewAvatar = ref(false);
+
+    const   hasChanges = computed(() => {
+        return Object.values(modifiedFields).some(modified => modified);
+    });
+
+    function trackChanges(field) {
+        modifiedFields[field] = formData[field] !== originalData[field];
+    }
+
+    function getModifiedFields() {
+        const formDataToSend = new FormData();
+        Object.keys(modifiedFields).forEach(field => {
+            if (modifiedFields[field]) {
+                formDataToSend.append(field, formData[field]);
             }
-        );
-        this.user = response.data;
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    renderSubmitStatus(text, color) {
-      const statusText = document.querySelector("#submit-status");
-      statusText.style.color = color;
-      statusText.textContent = text;
-    },
-    async onFormSubmitted() {
-      if (!this.isFormValid()) {
-        this.renderSubmitStatus("Invalid fields", "red");
-        await this.updateInputsValues();
-      } else {
-        const updatedData = {};
-        if (this.firstName.value !== this.user.first_name)
-          updatedData["first_name"] = this.firstName.value;
-        if (this.lastName.value !== this.user.last_name)
-          updatedData["last_name"] = this.lastName.value;
-        if (this.email.value !== this.user.email)
-          updatedData["email"] = this.email.value;
-        // if (this.avatarPreview.src !== this.user.avatar)
-        //   updatedData["avatar"] = this.avatarPreview.src;
-        if (Object.keys(updatedData).length > 0) {
-          await this.patchUser(updatedData);
-        } else {
-          if (this.password.value === "")
-            this.renderSubmitStatus("No field changed", "red");
+        });
+        return formDataToSend;
+    }
+
+    const   formData = reactive({
+        first_name: "",
+        last_name: "",
+        email: ""
+    });
+
+    const   originalData = reactive({
+        first_name: "",
+        last_name: "",
+        email: ""
+    });
+
+    const   modifiedFields = reactive({
+        first_name:false, 
+        last_name:false, 
+        email:false 
+    });
+    
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        selectedFile.value = file;
+        avatarPreview.value = URL.createObjectURL(file).slice(17);
+        hasNewAvatar.value = true;
+    }
+
+     async function updateAvatar() {
+        try {
+            if (!selectedFile.value) return;
+            const formData = new FormData();
+            formData.append('avatar', selectedFile.value);
+            const response = await apiClient.patch(
+                `/api/user/${authStore.user.id}/`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStore.access_token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+            if (response.data) {
+                avatar.value = response.data.avatar.slice(17);
+                authStore.user.avatar = response.data.avatar.slice(17);
+                hasNewAvatar.value = false;
+                URL.revokeObjectURL(avatarPreview.value.slice(1));
+                avatarPreview.value = null;
+                toast.success("Avatar updated successfully!");
+            }
+        } catch (error) {
+            console.error('Error updating avatar:', error);
+            toast.error("Failed to update avatar");
         }
-        if (this.password.value !== "")
-          await this.patchPassword(this.password.value);
-      }
-    },
-    async updateInputsValues() {
-      await this.fetchUser();
-      this.firstName.value = this.user.first_name;
-      this.lastName.value = this.user.last_name;
-      this.email.value = this.user.email;
-      this.avatarPreview.src = this.user.avatar;
-      // this.avatarInput.value = "";
-      this.password.value = "";
-      this.confirmPassword.value = "";
-    },
-    async patchPassword(newPassword) {
-      let response = null;
-      try {
-        response = await axios.patch(
-            `http://localhost:8000/api/v1/update_password/${this.userId}/${newPassword}/`,
+    }
+	
+	async function getAvatar() {
+		try {
+			let response = await apiClient.get(
+				`/api/user/${authStore.user.id}/`,
+				{
+					headers: {
+						Authorization: `Bearer ${authStore.access_token}`,
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+			avatar.value = response.data.avatar.slice(17);
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+    async function updatePassword() {
+        try {
+            if (password.value !== "")
             {
-              headers: {
-                Authorization: `Bearer ${this.accessToken}`,
-                'Content-Type': 'application/json'
-              }
-            }
-        );
-        if (parseInt(response.status, 10) === 201)
-          this.renderSubmitStatus("Updated account", "green");
-      } catch (e) {
-        console.error(e);
-      }
-      await this.updateInputsValues();
-    },
-    async patchUser(userData) {
-      let response = null;
-      try {
-        response = await axios.patch(
-            `http://localhost:8000/api/user/${this.userId}/`,
-            userData,
+                const   response = await apiClient.patch(
+                    `/api/v1/update_password/${authStore.user.id}/${password.value}/`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authStore.access_token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                ); 
+                if (response.data) {
+                    password.value = "";
+                    toast.success("Password updated successfully!");
+                }
+           } else {
+                console.log("no password was entered");
+                toast.error("No Password was entered!");
+           }
+        } catch (error) {
+           console.log(error); 
+           toast.error(error);
+        }
+    }
+
+    async function onSubmitForm() {
+        try {
+            if (!hasChanges.value)
+                return ;
+
+            const   formDataToSend = getModifiedFields();
+            const   response = await apiClient.patch(
+                `/api/user/${authStore.user.id}/`,
+                formDataToSend,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStore.access_token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            ); 
+            if (response.data)
             {
-              headers: {
-                Authorization: `Bearer ${this.accessToken}`,
-                'Content-Type': 'application/json'
-              }
+                authStore.user = { ...authStore.user, ...response.data };
+                Object.keys(response.data).forEach(key => {
+                    if (Object.hasOwn(originalData, key)) {
+                        originalData[key] = response.data[key];
+                    }
+                });
+                Object.keys(modifiedFields).forEach(key => {
+                    modifiedFields[key] = false;
+                });
+                toast.success("Profile updated successfully!");
             }
-        );
-        if (parseInt(response.status, 10) === 200)
-          this.renderSubmitStatus("Updated account", "green");
-      } catch (e) {
-        console.error(Object.values(e.response.data)[0]);
-        this.renderSubmitStatus(Object.values(e.response.data)[0], "red");
-      }
-      await this.updateInputsValues();
-    },
-    isFormValid() {
-      const emailRe = /^\S+@\S+\.\S+$/;
-      const passwordRe = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+        } catch (error) {
+            console.log(error);
+            toast.error("Profile was not updated, something went wrong!");
+        }
+    }
 
-      const fields = {};
-      fields["isFistNameValid"] = String(this.firstName.value).trim() !== "";
-      fields["isLastNameValid"] = String(this.lastName.value).trim() !== "";
-      fields["isEmailValid"] = emailRe.test(this.email.value);
-      fields["isPasswordValid"] = this.password.value.length === 0 || passwordRe.test(this.password.value);
-      fields["isConfirmPasswordValid"] = this.confirmPassword.value === this.password.value;
+    onMounted(() => {
+        formData.first_name = authStore.user.first_name;
+        formData.last_name = authStore.user.last_name;
+        formData.email = authStore.user.email;
 
-      return Object.values(fields).every(value => value === true);
-    },
-  },
-  async mounted() {
-    this.fetchAuthStore();
-    await this.fetchUser();
-    this.selectDOMInputs();
-    await this.updateInputsValues();
-
-    // this.avatarInput.addEventListener("change", this.onNewAvatarLoaded);
-  },
-};
+        originalData.first_name = authStore.user.first_name;
+        originalData.last_name = authStore.user.last_name;
+        originalData.email = authStore.user.email;
+		getAvatar();
+    })
 </script>
 
+<style>
+	.container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+		color: white;
+		margin-top: 80px;
+		margin-left: 350px;
+		font-family: '8bit', sans-serif;
+        width: auto;
+        height: 100vh;
+	}
+    
+    .form-data, 
+    .form-password,
+    .avatar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 50%;
+        width: 70%;
+        margin-left: 50px;
+        margin-right: 50px;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
 
-<style scoped>
-.content {
-  color: white;
-  margin-top: 80px;
-  margin-left: 400px;
-  font-family: '8bit', sans-serif;
-}
+    .form {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        width: 70%;
+        font-size: 30px;
+        padding: 10px 20px;
+    }
 
-#submit-button {
-  font-family: '8bit', sans-serif;
-  font-size: 20px;
-}
+    .submit-btn {
+        font-family: '8bit';
+        font-size: 20px;
+        padding: 5px 15px;
+        margin: 2px 10px;
+        background-color:  #8B0000;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+    }
 
-#submit-status {
-  font-family: '8bit', sans-serif;
-  font-size: 20px;
-  color: white;
-}
+    input[type=text], input[type=password], input[type=email] {
+        width: 90%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+    }
 
-.settings {
-  padding: 20px;
-  font-size: 40px;
-}
+    .avatar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        padding: 20px;
+        background-color: #0A0A0A;
+        transition: border-color 0.3s;
+        width: 70%;
+    }
 
-label {
-  color: white;
-  font-size: 20px;
-  margin-top: 10px;
+    #avatar {
+        width: 100px;  
+        height: 100px;
+        border-radius: 70%;
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
 
-}
+    .label-file-upload {
+        display: inline-block;
+        background-color: #8B0000;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s;
+    }
 
-input {
-  background-color: white;
-  color: black;
-  font-size: 20px;
-  margin-top: 5px;
-}
-
-form {
-  max-width: 600px; /* Limit the width of the form */
-  margin: 0 auto; /* Center the form */
-  padding: 20px; /* Padding around the form */
-  background-color: #f9f9f9; /* Light background color */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.form {
-  margin-bottom: 20px; /* Space between form elements */
-}
-
-label {
-  display: block; /* Ensure labels are block elements */
-  font-weight: bold; /* Bold font for labels */
-  margin-bottom: 5px; /* Space below the label */
-  color: #34495e; /* Darker text color */
-}
-
-input[type="text"], input[type="file"] {
-  width: 100%; /* Full width input */
-  padding: 10px; /* Padding inside the input */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 5px; /* Rounded corners */
-  box-sizing: border-box; /* Include padding in total width */
-  font-size: 16px; /* Font size */
-  transition: border-color 0.3s ease; /* Transition for border color */
-}
-
-/* Focus effect for inputs */
-input[type="text"]:focus, input[type="file"]:focus {
-  border-color: #3498db; /* Change border color on focus */
-  outline: none; /* Remove outline */
-}
-
-/* Button styling */
-#submit-button {
-  background-color: #3498db; /* Primary button color */
-  color: white; /* White text */
-  padding: 10px; /* Padding inside button */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor */
-  font-size: 16px; /* Font size */
-  transition: background-color 0.3s ease; /* Transition for hover effect */
-}
-
-/* Button hover effect */
-#submit-button:hover {
-  background-color: #2980b9; /* Darker shade on hover */
-}
-
-/* Image preview styling */
-#preview {
-  margin-bottom: 10px; /* Space below the image */
-  border: 1px solid #ddd; /* Light border around the preview */
-  border-radius: 5px; /* Rounded corners */
-  width: 100%; /* Make sure the image fits */
-  max-width: 200px; /* Limit the width */
-}
-
-/* Submit status message styling */
-#submit-status {
-  margin-top: 10px; /* Space above the status message */
-  font-weight: bold; /* Bold text */
-  color: #27ae60; /* Green color for success messages */
-}
-
+    input[type="file"] {
+        display: none;
+    }
 </style>

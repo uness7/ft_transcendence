@@ -15,29 +15,25 @@ services:
   web:
     container_name: web
     env_file:
-      - ./.env.dev
+      - ./.env.prod
     build:
       context: ./backend
-      dockerfile: Dockerfile.dev
-    ports:
-      - "8000:8000"
+      dockerfile: Dockerfile
     volumes:
       - ./backend:/app
     restart: unless-stopped
     depends_on:
       - db
 
-  vue:
-    container_name: vue-app
+  nginx:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
+      context: . 
+      dockerfile: Dockerfile  
     ports:
-      - "8080:80"
+      - "8443:8443"
+    depends_on:
+      - web
     restart: unless-stopped
-    volumes:
-      - ./frontend:/app
-
 
 volumes:
   pgdata:

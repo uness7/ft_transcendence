@@ -2,41 +2,49 @@
   <div class="otp-verification">
     <transition name="fade" mode="out-in">
       <div v-if="isFirstTime" key="qr-code-view" class="qr-code-container">
-        <h2>Scan QR Code for 2FA Setup</h2>
-        <p>To secure your account, please scan the QR code with your authentication app (Google Authenticator, etc.)</p>
-        <img :src="`data:image/svg+xml;base64,${qrCode}`" alt="QR Code" v-if="qrCode" class="qr-code-img"/>
-        <button @click="handleNext">Next</button>
+        <h2>{{$t('scan_qr_code')}}</h2>
+        <p>{{$t('secure_account_instruction')}}</p>
+        <img :src="`data:image/svg+xml;base64,${qrCode}`" :alt="$t('qr_code')" v-if="qrCode" class="qr-code-img"/>
+        <button id="next-btn" @click="handleNext">{{$t('next')}}</button>
       </div>
 
       <div v-else key="otp-input-view" class="otp-container">
-        <h2>Enter OTP Code</h2>
-        <p>Please enter the 6-digit code from your authentication app.</p>
-        <input v-model="otpCode" type="text" maxlength="6" placeholder="Enter OTP" class="otp-input"/>
-        <button @click="verifyOTP">Verify</button>
-        <button @click="displayQR">Display QR Code</button>
-        <img :src="`data:image/svg+xml;base64,${qrCodeAgain}`" alt="QR Code" v-if="qrCodeAgain" class="qr-code-img"/>
+        <h2>{{$t('enter_otp_code')}}</h2>
+        <p>{{$t('enter_code_instruction')}}</p>
+        <input v-model="otpCode" type="text" maxlength="6" :placeholder="$t('enter_otp')" class="otp-input"/>
+        <button @click.prevent="verifyOTP">{{$t('verify')}}</button>
+        <p>
+          <span id="contact-code">
+            {{$t('lost_code_question')}}
+            <a href="mailto:younes.zioual.dev@gmail.com">{{$t('contact_admin')}}</a>
+            <br>{{$t('or')}}<br>
+            <a href="#" @click="logout">{{$t('sign_out')}}</a>
+          </span>
+        </p>
       </div>
     </transition>
   </div>
 </template>
+
 
 <script>
 
 import {computed, onMounted, ref} from 'vue';
 import {useAuthStore} from '@/store/auth';
 import {useRouter} from 'vue-router';
-import axios from "axios";
+import apiClient from '@/services/apiService';
+
 
 export default {
   name: 'QRCodeViewer',
   setup() {
     const authStore = useAuthStore();
-    const router = useRouter();
+    const router = useRouter();  
 
-    const isLoggedIn = computed(() => authStore.isAuthenticated);
+    const isLoggedIn = computed(() => authStore.isLoggedIn);
     const user = computed(() => authStore.user || {username: '', id: ''});
     const username = computed(() => user.value.username);
-    const userId = computed(() => user.value.id);
+    const userId = computed(() => authStore.user_id);
 
     const isFirstTime = ref();
     const qrCode = ref("");
@@ -45,7 +53,7 @@ export default {
     const qrCodeAgain = ref("");
 
     const displayQR = () => {
-      axios.get(`http://localhost:8000/api/v1/display_qr_code/${userId.value}/`)
+      apiClient.get(`/api/v1/display_qr_code/${userId.value}/`)
           .then(response => {
             qrCodeAgain.value = response.data.qr_code;
           })
@@ -56,12 +64,12 @@ export default {
 
     const verifyOTP = async () => {
       try {
-        const response = await axios.post(`http://localhost:8000/api/v1/verify_otp_code/${userId.value}/`, {
+        const response = await apiClient.post(`/api/v1/verify_otp_code/${userId.value}/`, {
           otp_code: otpCode.value,
         });
         if (response.request.status === 200) {
           router.push('/');
-          authStore.isOTPVerified = true;
+          authStore.is_otp_verified = true;
         } else {
           console.error("Verify otp has failed");
         }
@@ -73,13 +81,13 @@ export default {
     const generateQRCode = async () => {
       if (isLoggedIn.value) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/v1/get_qr_code/${userId.value}/`);
+          const response = await apiClient.get(`/api/v1/get_qr_code/${userId.value}/`);
 
           qrCode.value = response.data.qr_code;
           sharedKey.value = response.data.key;
 
           try {
-            const response = await axios.post(`http://localhost:8000/api/v1/save_qr_code/${userId.value}/`, {
+            const response = await apiClient.post(`/api/v1/save_qr_code/${userId.value}/`, {
               key: sharedKey.value,
             });
             if (response.request.status === 201) {
@@ -97,6 +105,17 @@ export default {
         router.push('/login');
       }
     };
+	
+	const   logout = async () => {
+		const   authStore = useAuthStore();
+		authStore.clearTokens();
+		authStore.isLoggedIn = false;
+		authStore.is_otp_verified = false;
+		authStore.user = {};
+		authStore.user_id = "";
+		await router.push("/login");
+		console.log("You are logged out successfully boy. ");
+	};
 
     const handleNext = () => {
       isFirstTime.value = false;
@@ -107,16 +126,17 @@ export default {
     });
 
     return {
-      generateQRCode,
-      isFirstTime,
-      handleNext,
-      verifyOTP,
-      userId,
-      username,
-      qrCode,
-      otpCode,
-      displayQR,
-      qrCodeAgain
+		generateQRCode,
+		isFirstTime,
+		handleNext,
+		verifyOTP,
+		userId,
+		username,
+		qrCode,
+		otpCode,
+		displayQR,
+		qrCodeAgain,
+		logout
     }
   },
 }
@@ -135,6 +155,13 @@ p, h2, img {
   color: white;
 }
 
+.qr-code-container {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+}
+
 .qr-code-container,
 .otp-container {
   max-width: 400px;
@@ -149,7 +176,7 @@ p, h2, img {
 .qr-code-container img {
   width: 200px;
   height: 200px;
-  margin: 20px 0;
+  margin-left: 100px;
   color: white;
 }
 
@@ -177,4 +204,23 @@ button {
 .fade-leave-to {
   opacity: 0;
 }
+
+.otp-btn {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	justify-content: center;
+	margin-bottom: 50px;
+}
+
+#contact-code {
+	font-style: italic;
+}
+
+#contact-code, a {
+	text-decoration: underline;
+	font-size: 20px;
+	color: white;
+}
+
 </style>

@@ -4,8 +4,8 @@ import App from './App.vue'
 import router from './router'
 import i18n from './i18n'
 import './assets/styles/global.css'
-import axios from 'axios'
-import { useAuthStore } from './store/auth'
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 
 import piniaPluginPersistedState  from "pinia-plugin-persistedstate"
@@ -17,24 +17,20 @@ app.use(pinia);
 app.use(router);
 app.use(i18n);
 
-const authStore = useAuthStore()
-
-axios.interceptors.response.use(
-  response => response,
-  async error => {
-    if (error.response && error.response.status === 401) {
-      const originalRequest = error.config
-      if (!originalRequest._retry) {
-        originalRequest._retry = true
-        const newToken = await authStore.refreshToken()
-        if (newToken) {
-          originalRequest.headers['Authorization'] = `Bearer ${newToken}`
-          return axios(originalRequest)
-        }
-      }
-    }
-    return Promise.reject(error)
-  }
-)
+const options = {
+    position: "top-right",
+    timeout: 3000,
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: false,
+    closeButton: "button",
+    icon: true,
+    rtl: false
+};
+app.use(Toast, options);
 
 app.mount('#app')
