@@ -2,6 +2,31 @@
   <div class="content">
     <canvas id="game-canvas"></canvas>
 
+    <div class="controls-guide">
+      <div class="player-controls">
+        <div class="player">
+          <h3>Player 1 (Left Upper)</h3>
+          <p>Move Up: <span class="key">W</span></p>
+          <p>Move Down: <span class="key">S</span></p>
+        </div>
+        <div class="player">
+          <h3>Player 2 (Left Lower)</h3>
+          <p>Move Up: <span class="key">U</span></p>
+          <p>Move Down: <span class="key">J</span></p>
+        </div>
+        <div class="player">
+          <h3>Player 3 (Right Upper)</h3>
+          <p>Move Up: <span class="key">↑</span></p>
+          <p>Move Down: <span class="key">↓</span></p>
+        </div>
+        <div class="player">
+          <h3>Player 4 (Right Lower)</h3>
+          <p>Move Up: <span class="key">Page Up</span></p>
+          <p>Move Down: <span class="key">Page Down</span></p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -515,6 +540,38 @@ export default {
   left: 0;
   right: 0;
   border: 2px solid white;
+}
+
+.controls-guide {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.player-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.player {
+  min-width: 150px;
+}
+
+.key {
+  display: inline-block;
+  padding: 2px 5px;
+  border: 1px solid white;
+  border-radius: 3px;
+  background-color: #333;
+  color: #fff;
+  font-weight: bold;
 }
 
 </style>
