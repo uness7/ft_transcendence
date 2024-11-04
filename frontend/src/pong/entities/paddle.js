@@ -18,7 +18,7 @@ export default class Paddle {
         this.resetPos;
         this.pos;
         this.boundBox;
-        this.maxMagnitude = 1.8;
+        this.maxMagnitude = 2.5;
         this.maxRotation = 70;
     }
 
