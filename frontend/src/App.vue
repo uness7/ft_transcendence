@@ -35,7 +35,7 @@ export default {
 		const router = useRouter();
 		const isLoggedIn = computed(() => authStore.isLoggedIn);
 		const user = computed(() => authStore.user);
-		console.log("User: ", user.value);
+		// console.log("User: ", user.value);
 
 		const logout = async () => {
 			await authStore.logout();

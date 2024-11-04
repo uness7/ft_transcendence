@@ -2,7 +2,7 @@
     <NavBar />
     <div class="container">
         <form @submit.prevent="updateAvatar" class="avatar-container">
-            <img :src="avatarPreview || avatar" id="avatar" :alt="$t('avatar')" />
+<!--            <img src="media/avatars/default_avatar.jpg" id="avatar"/>-->
             <label for="input-avatar" class="label-file-upload">
                 <input 
                     id="input-avatar" 
@@ -124,7 +124,7 @@
         const file = event.target.files[0];
         if (!file) return;
         selectedFile.value = file;
-        avatarPreview.value = URL.createObjectURL(file);
+        avatarPreview.value = URL.createObjectURL(file).slice(17);
         hasNewAvatar.value = true;
     }
 
@@ -144,10 +144,10 @@
                 }
             );
             if (response.data) {
-                avatar.value = response.data.avatar;
-                authStore.user.avatar = response.data.avatar;
+                avatar.value = response.data.avatar.slice(17);
+                authStore.user.avatar = response.data.avatar.slice(17);
                 hasNewAvatar.value = false;
-                URL.revokeObjectURL(avatarPreview.value);
+                URL.revokeObjectURL(avatarPreview.value.slice(1));
                 avatarPreview.value = null;
                 toast.success("Avatar updated successfully!");
             }
@@ -156,6 +156,23 @@
             toast.error("Failed to update avatar");
         }
     }
+	
+	async function getAvatar() {
+		try {
+			let response = await apiClient.get(
+				`/api/user/${authStore.user.id}/`,
+				{
+					headers: {
+						Authorization: `Bearer ${authStore.access_token}`,
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+			avatar.value = response.data.avatar.slice(17);
+		} catch (e) {
+			console.error(e);
+		}
+	}
 
     async function updatePassword() {
         try {
@@ -227,8 +244,7 @@
         originalData.first_name = authStore.user.first_name;
         originalData.last_name = authStore.user.last_name;
         originalData.email = authStore.user.email;
-        
-        avatar.value = authStore.user.avatar;
+		getAvatar();
     })
 </script>
 
@@ -305,8 +321,8 @@
     #avatar {
         width: 100px;  
         height: 100px;
-        border-radius: 50%; 
-        object-fit: cover; 
+        border-radius: 70%;
+        object-fit: cover;
         margin-bottom: 15px;
     }
 

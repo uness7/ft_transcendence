@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="profile-section">
-      <img :src="`${response?.data?.avatar}`" alt="Profile Image" class="profile-img">
+      <img :src="avatar" alt="Profile Image" class="profile-img">
       <h1 class="username">{{ response?.data?.username ?? "default" }}</h1>
       <h1>{{ response?.data?.first_name ?? "default" }}</h1>
       <h1>{{ response?.data?.last_name ?? "default" }}</h1>
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       response: null,
+      avatar: null,	    
     };
   },
   async mounted() {
@@ -61,6 +62,7 @@ export default {
             }
           }
       );
+      this.avatar = this.response.data.avatar.slice(17);	    
     } catch (e) {
       console.error(e);
     }
